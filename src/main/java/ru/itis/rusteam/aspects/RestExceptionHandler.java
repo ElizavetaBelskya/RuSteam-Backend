@@ -7,10 +7,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.itis.rusteam.dto.ExceptionDto;
 import ru.itis.rusteam.exceptions.NotFoundException;
 
+/**
+ * @author Elizaveta Belskaya
+ */
+
 
 @ControllerAdvice
 public class RestExceptionHandler {
-
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ExceptionDto> handleNotFound(NotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -19,4 +22,5 @@ public class RestExceptionHandler {
                         .status(HttpStatus.NOT_FOUND.value())
                         .build());
     }
+
 }

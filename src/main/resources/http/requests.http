@@ -1,0 +1,6 @@
+GET http://localhost/users?id=1
+
+###
+
+POST http://localhost/users
+Content-Type: application/json

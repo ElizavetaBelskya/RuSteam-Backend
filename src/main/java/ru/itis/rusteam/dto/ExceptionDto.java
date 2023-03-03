@@ -1,19 +1,20 @@
 package ru.itis.rusteam.dto;
-
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import lombok.*;
+/**
+ * @author Elizaveta Belskaya
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Schema(description = "Сведения об ошибке")
+@Schema(description = "Data about errors")
 public class ExceptionDto {
-    @Schema(description = "Текст ошибки", example = "Урок не найден")
+
+    @Schema(description = "Error message", example = "User not found")
     private String message;
-    @Schema(description = "HTTP-код ошибки", example = "404")
+    @Schema(description = "HTTP-status of error", example = "404")
     private int status;
+
+
 }
