@@ -11,10 +11,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.itis.rusteam.dto.ApplicationDto;
-import ru.itis.rusteam.dto.ApplicationsPage;
-import ru.itis.rusteam.dto.ExceptionDto;
-import ru.itis.rusteam.dto.NewOrUpdateApplicationDto;
+import ru.itis.rusteam.dto.application.ApplicationDto;
+import ru.itis.rusteam.dto.application.ApplicationsPage;
+import ru.itis.rusteam.dto.exception.ExceptionDto;
+import ru.itis.rusteam.dto.application.NewOrUpdateApplicationDto;
 
 @Tags(value = {
         @Tag(name = "Applications")

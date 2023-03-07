@@ -10,9 +10,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.itis.rusteam.dto.NewOrUpdateUserDto;
-import ru.itis.rusteam.dto.UserDto;
-import ru.itis.rusteam.dto.UsersPage;
+import ru.itis.rusteam.dto.user.NewOrUpdateUserDto;
+import ru.itis.rusteam.dto.user.UserDto;
+import ru.itis.rusteam.dto.user.UsersPage;
 
 /**
  * @author Elizaveta Belskaya

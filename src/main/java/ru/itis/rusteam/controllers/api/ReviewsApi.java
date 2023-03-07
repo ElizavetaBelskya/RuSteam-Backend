@@ -11,7 +11,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.itis.rusteam.dto.*;
+import ru.itis.rusteam.dto.exception.ExceptionDto;
+import ru.itis.rusteam.dto.review.NewOrUpdateReviewDto;
+import ru.itis.rusteam.dto.review.ReviewDto;
+import ru.itis.rusteam.dto.review.ReviewsPage;
 
 @Tags(value = {
         @Tag(name = "Reviews")

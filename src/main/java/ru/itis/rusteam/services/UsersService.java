@@ -1,8 +1,8 @@
 package ru.itis.rusteam.services;
 
-import ru.itis.rusteam.dto.NewOrUpdateUserDto;
-import ru.itis.rusteam.dto.UserDto;
-import ru.itis.rusteam.dto.UsersPage;
+import ru.itis.rusteam.dto.user.NewOrUpdateUserDto;
+import ru.itis.rusteam.dto.user.UserDto;
+import ru.itis.rusteam.dto.user.UsersPage;
 
 /**
  * @author Elizaveta Belskaya

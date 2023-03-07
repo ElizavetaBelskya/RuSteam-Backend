@@ -1,8 +1,8 @@
 package ru.itis.rusteam.services;
 
-import ru.itis.rusteam.dto.NewOrUpdateReviewDto;
-import ru.itis.rusteam.dto.ReviewDto;
-import ru.itis.rusteam.dto.ReviewsPage;
+import ru.itis.rusteam.dto.review.NewOrUpdateReviewDto;
+import ru.itis.rusteam.dto.review.ReviewDto;
+import ru.itis.rusteam.dto.review.ReviewsPage;
 
 public interface ReviewsService {
     ReviewsPage getAllReviews(int page);

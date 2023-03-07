@@ -1,4 +1,4 @@
-package ru.itis.rusteam.dto;
+package ru.itis.rusteam.dto.exception;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 /**

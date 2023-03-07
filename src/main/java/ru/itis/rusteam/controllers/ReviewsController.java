@@ -5,7 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import ru.itis.rusteam.controllers.api.ReviewsApi;
-import ru.itis.rusteam.dto.*;
+import ru.itis.rusteam.dto.review.NewOrUpdateReviewDto;
+import ru.itis.rusteam.dto.review.ReviewDto;
+import ru.itis.rusteam.dto.review.ReviewsPage;
 import ru.itis.rusteam.services.ReviewsService;
 
 @RequiredArgsConstructor

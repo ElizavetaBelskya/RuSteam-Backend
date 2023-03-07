@@ -5,9 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import ru.itis.rusteam.controllers.api.ApplicationsApi;
-import ru.itis.rusteam.dto.ApplicationDto;
-import ru.itis.rusteam.dto.ApplicationsPage;
-import ru.itis.rusteam.dto.NewOrUpdateApplicationDto;
+import ru.itis.rusteam.dto.application.ApplicationDto;
+import ru.itis.rusteam.dto.application.ApplicationsPage;
+import ru.itis.rusteam.dto.application.NewOrUpdateApplicationDto;
 import ru.itis.rusteam.services.ApplicationsService;
 
 @RequiredArgsConstructor
