@@ -1,6 +1,8 @@
 package ru.itis.rusteam.models;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+import ru.itis.rusteam.models.base.LongIdEntity;
 
 import javax.persistence.*;
 
@@ -8,13 +10,16 @@ import javax.persistence.*;
  * @author Elizaveta Belskaya
  */
 
-@Data
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
+@Data
+
 @Entity
 @Table(name = "users")
-public class User {
+public class User extends LongIdEntity {
 
     public enum State {
         ALIVE,
@@ -22,9 +27,6 @@ public class User {
         DELETED
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String nickname;
     private String email;
     private String status;
