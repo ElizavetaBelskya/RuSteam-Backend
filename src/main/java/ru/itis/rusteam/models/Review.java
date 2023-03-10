@@ -1,26 +1,27 @@
 package ru.itis.rusteam.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import ru.itis.rusteam.models.base.LongIdEntity;
 
 import javax.persistence.*;
 
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Data
+
 @Entity
-public class Review {
+@Table(name = "reviews")
+public class Review extends LongIdEntity {
     public enum State {
         ACTIVE,
         DRAFT,
         DELETED
     }
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+
     private Long applicationId;
     private String reviewText;
     private int rating;
