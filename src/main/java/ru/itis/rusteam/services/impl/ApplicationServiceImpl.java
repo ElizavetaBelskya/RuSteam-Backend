@@ -9,7 +9,7 @@ import ru.itis.rusteam.dto.application.ApplicationDto;
 import ru.itis.rusteam.dto.application.ApplicationsPage;
 import ru.itis.rusteam.dto.application.NewOrUpdateApplicationDto;
 import ru.itis.rusteam.exceptions.NotFoundException;
-import ru.itis.rusteam.models.Application;
+import ru.itis.rusteam.models.deprecated.Application;
 import ru.itis.rusteam.repositories.ApplicationsRepository;
 import ru.itis.rusteam.services.ApplicationsService;
 

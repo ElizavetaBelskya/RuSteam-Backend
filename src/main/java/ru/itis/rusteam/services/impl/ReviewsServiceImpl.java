@@ -9,7 +9,7 @@ import ru.itis.rusteam.dto.review.NewOrUpdateReviewDto;
 import ru.itis.rusteam.dto.review.ReviewDto;
 import ru.itis.rusteam.dto.review.ReviewsPage;
 import ru.itis.rusteam.exceptions.NotFoundException;
-import ru.itis.rusteam.models.Review;
+import ru.itis.rusteam.models.deprecated.Review;
 import ru.itis.rusteam.repositories.ReviewsRepository;
 import ru.itis.rusteam.services.ReviewsService;
 

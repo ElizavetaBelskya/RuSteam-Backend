@@ -1,4 +1,4 @@
-package ru.itis.rusteam.models;
+package ru.itis.rusteam.models.deprecated;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -14,20 +14,17 @@ import javax.persistence.*;
 @Data
 
 @Entity
-@Table(name = "applications")
-public class Application extends LongIdEntity {
-
+@Table(name = "reviews_depr")
+public class Review extends LongIdEntity {
     public enum State {
         ACTIVE,
         DRAFT,
         DELETED
     }
 
-    private String name;
-
-    private Long companyId;
-
-
+    private Long applicationId;
+    private String reviewText;
+    private int rating;
     @Enumerated(value = EnumType.STRING)
     private State state;
 }

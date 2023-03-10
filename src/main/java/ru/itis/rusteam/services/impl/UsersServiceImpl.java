@@ -9,7 +9,7 @@ import ru.itis.rusteam.dto.user.NewOrUpdateUserDto;
 import ru.itis.rusteam.dto.user.UserDto;
 import ru.itis.rusteam.dto.user.UsersPage;
 import ru.itis.rusteam.exceptions.NotFoundException;
-import ru.itis.rusteam.models.User;
+import ru.itis.rusteam.models.deprecated.UserDepr;
 import ru.itis.rusteam.repositories.UsersRepository;
 import ru.itis.rusteam.services.UsersService;
 
@@ -33,7 +33,7 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public UserDto addUser(NewOrUpdateUserDto userDto) {
-        User user = User.builder()
+        UserDepr user = UserDepr.builder()
                 .email(userDto.getEmail())
                 .nickname(userDto.getNickname())
                 .build();
@@ -42,15 +42,15 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public void deleteUser(Long id) {
-        User userForDelete = getUserOrThrow(id);
-        userForDelete.setState(User.State.DELETED);
+        UserDepr userForDelete = getUserOrThrow(id);
+        userForDelete.setState(UserDepr.State.DELETED);
         usersRepository.save(userForDelete);
     }
 
     @Override
     public UsersPage getAllUsers(int page) {
         PageRequest pageRequest = PageRequest.of(page, defaultPageSize);
-        Page<User> userPage = usersRepository.findAllByStateOrderById(pageRequest, User.State.ALIVE);
+        Page<UserDepr> userPage = usersRepository.findAllByStateOrderById(pageRequest, UserDepr.State.ALIVE);
 
         return UsersPage.builder()
                 .lessons(UserDto.from(userPage.getContent()))
@@ -61,7 +61,7 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public UserDto updateUser(long id, NewOrUpdateUserDto updatedUser) {
-        User userForUpdate = getUserOrThrow(id);
+        UserDepr userForUpdate = getUserOrThrow(id);
 
         userForUpdate.setNickname(updatedUser.getNickname());
         usersRepository.save(userForUpdate);
@@ -70,7 +70,7 @@ public class UsersServiceImpl implements UsersService {
     }
 
 
-    private User getUserOrThrow(Long userId) {
+    private UserDepr getUserOrThrow(Long userId) {
         return usersRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User with id <" + userId + "> not found"));
     }

@@ -6,6 +6,7 @@ import ru.itis.rusteam.models.base.LongIdEntity;
 
 import javax.persistence.*;
 
+
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @AllArgsConstructor
@@ -14,17 +15,22 @@ import javax.persistence.*;
 @Data
 
 @Entity
-@Table(name = "reviews")
-public class Review extends LongIdEntity {
+@Table(name = "accounts")
+public class Account extends LongIdEntity {
+
     public enum State {
-        ACTIVE,
-        DRAFT,
-        DELETED
+        NOT_CONFIRMED, CONFIRMED, DELETED, BANNED
     }
 
-    private Long applicationId;
-    private String reviewText;
-    private int rating;
+    @Column(unique = true, nullable = false)
+    private String email;
+    @Column(nullable = false)
+    private String passwordHash;
+
+    @Column(unique = true, nullable = false)
+    private String nickname;
+
     @Enumerated(value = EnumType.STRING)
     private State state;
+
 }

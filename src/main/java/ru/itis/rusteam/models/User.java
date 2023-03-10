@@ -5,10 +5,8 @@ import lombok.experimental.SuperBuilder;
 import ru.itis.rusteam.models.base.LongIdEntity;
 
 import javax.persistence.*;
+import java.sql.Date;
 
-/**
- * @author Elizaveta Belskaya
- */
 
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
@@ -21,16 +19,26 @@ import javax.persistence.*;
 @Table(name = "users")
 public class User extends LongIdEntity {
 
-    public enum State {
-        ALIVE,
-        BLOCKED,
-        DELETED
+    public enum Role {
+        USER, MODERATOR, ADMIN
     }
 
-    private String nickname;
-    private String email;
-    private String status;
+    public enum Gender {
+        MALE, FEMALE
+    }
+
+    @OneToOne(optional = false)
+    private Account account;
+
+    private String name;
+    private String surname;
+
     @Enumerated(value = EnumType.STRING)
-    private State state;
+    private Gender gender;
+
+    private Date birthdayDate;
+
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
 
 }

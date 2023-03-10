@@ -2,7 +2,7 @@ package ru.itis.rusteam.dto.user;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import ru.itis.rusteam.models.User;
+import ru.itis.rusteam.models.deprecated.UserDepr;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,7 +27,7 @@ public class UserDto {
     @Schema(description = "status of user, his personal information", example = "I am alive")
     private String status;
 
-    public static UserDto from(User user) {
+    public static UserDto from(UserDepr user) {
         return UserDto.builder()
                 .id(user.getId())
                 .nickname(user.getNickname())
@@ -36,7 +36,7 @@ public class UserDto {
                 .build();
     }
 
-    public static List<UserDto> from(List<User> users) {
+    public static List<UserDto> from(List<UserDepr> users) {
         return users.stream()
                 .map(UserDto::from)
                 .collect(Collectors.toList());
