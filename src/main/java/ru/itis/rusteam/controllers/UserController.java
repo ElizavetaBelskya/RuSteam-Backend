@@ -1,6 +1,5 @@
 package ru.itis.rusteam.controllers;
 
-import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,15 +15,16 @@ import ru.itis.rusteam.services.UsersService;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/users")
 public class UserController implements UserApi {
 
     private final UsersService usersService;
-    public ResponseEntity<UserDto> getUserById(@Parameter(description = "id of user") @RequestParam("id") long id) {
+    @Override
+    public ResponseEntity<UserDto> getUserById(Long id) {
         return ResponseEntity.ok(usersService.getUserById(id));
     }
 
-    public ResponseEntity<UserDto> addUser(@RequestBody NewOrUpdateUserDto newUser) {
+    @Override
+    public ResponseEntity<UserDto> addUser(NewOrUpdateUserDto newUser) {
         return ResponseEntity.status(HttpStatus.CREATED).body(usersService.addUser(newUser));
     }
 
@@ -44,7 +44,6 @@ public class UserController implements UserApi {
         usersService.deleteUser(id);
         return ResponseEntity.accepted().build();
     }
-
 
 
 }

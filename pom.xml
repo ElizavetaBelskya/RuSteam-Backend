@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ru.itis</groupId>
-	<artifactId>education-center</artifactId>
+	<artifactId>rusteam</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Spring Boot Rest API Project</name>
 	<description>Spring Boot Rest API Project</description>

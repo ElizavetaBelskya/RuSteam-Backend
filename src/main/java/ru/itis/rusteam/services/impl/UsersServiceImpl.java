@@ -53,7 +53,7 @@ public class UsersServiceImpl implements UsersService {
         Page<User> userPage = usersRepository.findAllByStateOrderById(pageRequest, User.State.ALIVE);
 
         return UsersPage.builder()
-                .lessons(UserDto.from(userPage.getContent()))
+                .users(UserDto.from(userPage.getContent()))
                 .totalPagesCount(userPage.getTotalPages())
                 .build();
 
@@ -64,6 +64,7 @@ public class UsersServiceImpl implements UsersService {
         User userForUpdate = getUserOrThrow(id);
 
         userForUpdate.setNickname(updatedUser.getNickname());
+        userForUpdate.setEmail(updatedUser.getEmail());
         usersRepository.save(userForUpdate);
         return UserDto.from(userForUpdate);
 

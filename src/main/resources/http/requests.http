@@ -1,6 +1,26 @@
-GET http://localhost/users?id=1
-
+GET http://localhost/users/5
 ###
 
 POST http://localhost/users
 Content-Type: application/json
+
+{
+  "nickname": "Elen",
+  "email": "Elen@example.com"
+}
+
+###
+DELETE http://localhost/users/3
+
+###
+
+GET http://localhost/users?page=2
+
+###
+PUT http://localhost/users/4/update
+Content-Type: application/json
+
+{
+  "nickname": "Elen2",
+  "email": "Elen2@example.com"
+}
