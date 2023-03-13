@@ -8,15 +8,15 @@ public interface ApplicationsService {
 
     ApplicationsPage getAllApplications(int page);
 
-    ApplicationDto addApplication(NewOrUpdateApplicationDto newApplication);
+    ApplicationDto getApplicationById(Long id);
 
-    ApplicationDto getApplication(Long applicationId);
+    ApplicationDto addApplication(NewOrUpdateApplicationDto application);
 
-    ApplicationDto updateApplication(Long applicationId, NewOrUpdateApplicationDto updatedApplication);
+    ApplicationDto updateApplication(Long id, NewOrUpdateApplicationDto updatedApplication);
 
-    void deleteApplication(Long applicationId);
+    void deleteApplication(Long id);
 
-    ApplicationDto publishApplication(Long applicationId);
+    ApplicationDto publishApplication(Long id);
 
 
 }

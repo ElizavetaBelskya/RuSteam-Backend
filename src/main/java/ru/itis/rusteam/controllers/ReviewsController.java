@@ -31,7 +31,7 @@ public class ReviewsController implements ReviewsApi {
     @Override
     public ResponseEntity<ReviewDto> getReview(Long reviewId) {
         return ResponseEntity
-                .ok(reviewsService.getReview(reviewId));
+                .ok(reviewsService.getReviewById(reviewId));
     }
 
     @Override

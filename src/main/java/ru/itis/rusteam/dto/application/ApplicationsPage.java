@@ -15,9 +15,9 @@ import java.util.List;
 @Schema(description = "Страница с приложениями и общее количество страниц")
 public class ApplicationsPage {
 
-    @Schema(description = "список приложений")
+    @Schema(description = "Список приложений")
     private List<ApplicationDto> applications;
 
-    @Schema(description = "общее количество страниц", example = "5")
+    @Schema(description = "Общее количество страниц", example = "5")
     private Integer totalPagesCount;
 }

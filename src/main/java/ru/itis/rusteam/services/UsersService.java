@@ -1,23 +1,18 @@
 package ru.itis.rusteam.services;
 
-import ru.itis.rusteam.dto.user.NewOrUpdateUserDto;
-import ru.itis.rusteam.dto.user.UserDto;
-import ru.itis.rusteam.dto.user.UsersPage;
+import ru.itis.rusteam.dto.account.user.NewOrUpdateUserDto;
+import ru.itis.rusteam.dto.account.user.UserDto;
 
-/**
- * @author Elizaveta Belskaya
- */
+
 public interface UsersService {
 
     UserDto getUserById(Long id);
 
     UserDto addUser(NewOrUpdateUserDto user);
 
+    UserDto updateUser(Long id, NewOrUpdateUserDto updatedUser);
+
     void deleteUser(Long id);
-
-    UsersPage getAllUsers(int page);
-
-    UserDto updateUser(long id, NewOrUpdateUserDto updatedUser);
 
 
 }

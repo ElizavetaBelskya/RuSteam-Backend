@@ -7,13 +7,13 @@ import ru.itis.rusteam.dto.review.ReviewsPage;
 public interface ReviewsService {
     ReviewsPage getAllReviews(int page);
 
-    ReviewDto addReview(NewOrUpdateReviewDto newReview);
+    ReviewDto getReviewById(Long id);
 
-    ReviewDto getReview(Long reviewId);
+    ReviewDto addReview(NewOrUpdateReviewDto review);
 
-    ReviewDto updateReview(Long reviewId, NewOrUpdateReviewDto updatedReview);
+    ReviewDto updateReview(Long id, NewOrUpdateReviewDto updatedReview);
 
-    void deleteReview(Long reviewId);
+    void deleteReview(Long id);
 
-    ReviewDto publishReview(Long reviewId);
+    ReviewDto publishReview(Long id);
 }

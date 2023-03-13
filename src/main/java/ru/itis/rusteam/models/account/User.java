@@ -1,8 +1,7 @@
-package ru.itis.rusteam.models;
+package ru.itis.rusteam.models.account;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import ru.itis.rusteam.models.base.LongIdEntity;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -17,28 +16,18 @@ import java.sql.Date;
 
 @Entity
 @Table(name = "users")
-public class User extends LongIdEntity {
+public class User extends AccountExtension {
 
-    public enum Role {
-        USER, MODERATOR, ADMIN
-    }
 
     public enum Gender {
-        MALE, FEMALE
+        MALE("Мужской"), FEMALE("Женский");
+        Gender(String gender) {}
     }
-
-    @OneToOne(optional = false)
-    private Account account;
 
     private String name;
     private String surname;
-
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
-
     private Date birthdayDate;
-
-    @Enumerated(value = EnumType.STRING)
-    private Role role;
 
 }

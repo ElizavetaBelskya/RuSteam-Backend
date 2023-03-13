@@ -9,7 +9,9 @@ import ru.itis.rusteam.dto.application.ApplicationDto;
 import ru.itis.rusteam.dto.application.ApplicationsPage;
 import ru.itis.rusteam.dto.application.NewOrUpdateApplicationDto;
 import ru.itis.rusteam.exceptions.NotFoundException;
-import ru.itis.rusteam.models.deprecated.Application;
+import ru.itis.rusteam.models.Application;
+import ru.itis.rusteam.models.account.Account;
+import ru.itis.rusteam.models.account.Developer;
 import ru.itis.rusteam.repositories.ApplicationsRepository;
 import ru.itis.rusteam.services.ApplicationsService;
 
@@ -37,20 +39,20 @@ public class ApplicationServiceImpl implements ApplicationsService {
     }
 
     @Override
-    public ApplicationDto addApplication(NewOrUpdateApplicationDto newApplication) {
-        Application application = Application.builder()
-                .name(newApplication.getName())
-                .companyId(newApplication.getCompanyId())
+    public ApplicationDto addApplication(NewOrUpdateApplicationDto application) {
+        Application applicationToSave = Application.builder()
+                .name(application.getName())
+                .developer(getDeveloper(application))
                 .state(Application.State.DRAFT)
                 .build();
 
-        applicationsRepository.save(application);
+        applicationsRepository.save(applicationToSave);
 
-        return from(application);
+        return from(applicationToSave);
     }
 
     @Override
-    public ApplicationDto getApplication(Long applicationId) {
+    public ApplicationDto getApplicationById(Long applicationId) {
         Application application = getApplicationOrThrow(applicationId);
         return from(application);
     }
@@ -60,7 +62,7 @@ public class ApplicationServiceImpl implements ApplicationsService {
         Application applicationForUpdate = getApplicationOrThrow(applicationId);
 
         applicationForUpdate.setName(updatedApplication.getName());
-        applicationForUpdate.setCompanyId(updatedApplication.getCompanyId());
+        applicationForUpdate.setDeveloper(getDeveloper(updatedApplication));
 
         applicationsRepository.save(applicationForUpdate);
 
@@ -91,5 +93,9 @@ public class ApplicationServiceImpl implements ApplicationsService {
     private Application getApplicationOrThrow(Long applicationId) {
         return applicationsRepository.findById(applicationId)
                 .orElseThrow(() -> new NotFoundException("Приложение с идентификатором <" + applicationId + "> не найдено"));
+    }
+
+    private Developer getDeveloper(NewOrUpdateApplicationDto application) {
+        return Developer.builder().account(Account.builder().id(application.getDeveloperId()).build()).build();
     }
 }

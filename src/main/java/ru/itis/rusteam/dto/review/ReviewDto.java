@@ -1,36 +1,43 @@
 package ru.itis.rusteam.dto.review;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import ru.itis.rusteam.models.deprecated.Review;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import ru.itis.rusteam.dto.base.LongIdDto;
+import ru.itis.rusteam.models.Review;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Schema(description = "Review")
-public class ReviewDto {
-    @Schema(description = "Id of review", example = "1")
-    private Long id;
-    @Schema(description = "Id of application", example = "8")
-    private Long applicationId;
-    @Schema(description = "Text of review", example = "Good application!")
-    private String reviewText;
+@SuperBuilder
+@Schema(description = "Отзыв")
+public class ReviewDto extends LongIdDto {
 
-    @Schema(description = "Rating of the application from 1 to 5", example = "3")
+
+    @Schema(description = "Идентификатор приложения", example = "1642")
+    private Long applicationId;
+
+    @Schema(description = "Текст", example = "Отличное приложение!")
+    private String text;
+
+    @Schema(description = "Дата публикации", example = "01.01.2000")
+    private Date publicationTime;
+
+    @Schema(description = "Рейтинг приложения от 1 до 5", example = "4")
     private int rating;
 
     public static ReviewDto from(Review review) {
         return ReviewDto.builder()
                 .id(review.getId())
-                .applicationId(review.getApplicationId())
-                .reviewText(review.getReviewText())
+                .applicationId(review.getApplication().getId())
+                .text(review.getText())
+                .publicationTime(review.getPublicationTime())
                 .rating(review.getRating())
                 .build();
     }

@@ -6,9 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.itis.rusteam.controllers.api.UserApi;
-import ru.itis.rusteam.dto.user.NewOrUpdateUserDto;
-import ru.itis.rusteam.dto.user.UserDto;
-import ru.itis.rusteam.dto.user.UsersPage;
+import ru.itis.rusteam.dto.account.user.NewOrUpdateUserDto;
+import ru.itis.rusteam.dto.account.user.UserDto;
 import ru.itis.rusteam.services.UsersService;
 
 /**

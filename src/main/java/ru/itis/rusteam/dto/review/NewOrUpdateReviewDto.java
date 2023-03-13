@@ -13,12 +13,12 @@ import lombok.NoArgsConstructor;
 @Schema(description = "Новый отзыв/Изменение отзыва")
 public class NewOrUpdateReviewDto {
 
-    @Schema(description = "Текст ревью", example = "The best game ever!")
-    private String reviewText;
-
-    @Schema(description = "Идентификатор приложения к которому был написан ревью", example = "8")
+    @Schema(description = "Идентификатор приложения", example = "1642")
     private Long applicationId;
 
-    @Schema(description = "Рейтинг приложения", example = "4")
+    @Schema(description = "Текст ревью", example = "Отличное приложение!")
+    private String text;
+
+    @Schema(description = "Рейтинг приложения от 1 до 5", example = "4")
     private int rating;
 }

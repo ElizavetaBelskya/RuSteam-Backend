@@ -1,13 +1,9 @@
 package ru.itis.rusteam.repositories;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.itis.rusteam.models.deprecated.UserDepr;
+import ru.itis.rusteam.models.account.Account;
+import ru.itis.rusteam.models.account.User;
 
-/**
- * @author Elizaveta Belskaya
- */
-public interface UsersRepository extends JpaRepository<UserDepr, Long> {
-    Page<UserDepr> findAllByStateOrderById(PageRequest pageRequest, UserDepr.State state);
+public interface UsersRepository extends JpaRepository<User, Long> {
+    User findByAccount(Account state);
 }

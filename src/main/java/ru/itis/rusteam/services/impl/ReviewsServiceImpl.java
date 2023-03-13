@@ -9,7 +9,7 @@ import ru.itis.rusteam.dto.review.NewOrUpdateReviewDto;
 import ru.itis.rusteam.dto.review.ReviewDto;
 import ru.itis.rusteam.dto.review.ReviewsPage;
 import ru.itis.rusteam.exceptions.NotFoundException;
-import ru.itis.rusteam.models.deprecated.Review;
+import ru.itis.rusteam.models.Review;
 import ru.itis.rusteam.repositories.ReviewsRepository;
 import ru.itis.rusteam.services.ReviewsService;
 
@@ -37,7 +37,7 @@ public class ReviewsServiceImpl implements ReviewsService {
     @Override
     public ReviewDto addReview(NewOrUpdateReviewDto newReview) {
         Review review = Review.builder()
-                .reviewText(newReview.getReviewText())
+                .text(newReview.getReviewText())
                 .applicationId(newReview.getApplicationId())
                 .build();
 
@@ -47,7 +47,7 @@ public class ReviewsServiceImpl implements ReviewsService {
     }
 
     @Override
-    public ReviewDto getReview(Long applicationId) {
+    public ReviewDto getReviewById(Long applicationId) {
         Review review = getReviewOrThrow(applicationId);
         return ReviewDto.from(review);
     }
@@ -56,7 +56,7 @@ public class ReviewsServiceImpl implements ReviewsService {
     public ReviewDto updateReview(Long reviewId, NewOrUpdateReviewDto updatedReview) {
         Review reviewForUpdate = getReviewOrThrow(reviewId);
 
-        reviewForUpdate.setReviewText(updatedReview.getReviewText());
+        reviewForUpdate.setText(updatedReview.getReviewText());
         reviewForUpdate.setRating(updatedReview.getRating());
 
         reviewsRepository.save(reviewForUpdate);

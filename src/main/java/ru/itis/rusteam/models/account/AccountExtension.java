@@ -1,24 +1,20 @@
-package ru.itis.rusteam.models.base;
-
+package ru.itis.rusteam.models.account;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
 
 @SuperBuilder
 @Data
 @MappedSuperclass
 @NoArgsConstructor
-public abstract class LongIdEntity {
+public abstract class AccountExtension {
 
     @Id
-    @GeneratedValue(generator = "unique_id_in_db")
-    private Long id;
-
-
-
+    @OneToOne(optional = false)
+    private Account account;
 }

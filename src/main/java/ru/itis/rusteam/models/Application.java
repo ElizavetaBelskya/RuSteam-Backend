@@ -2,10 +2,10 @@ package ru.itis.rusteam.models;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import ru.itis.rusteam.models.account.Developer;
 import ru.itis.rusteam.models.base.LongIdEntity;
 
 import javax.persistence.*;
-
 
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
@@ -15,22 +15,21 @@ import javax.persistence.*;
 @Data
 
 @Entity
-@Table(name = "accounts")
-public class Account extends LongIdEntity {
+@Table(name = "applications")
+public class Application extends LongIdEntity {
 
     public enum State {
-        NOT_CONFIRMED, CONFIRMED, DELETED, BANNED
+        DRAFT, ACTIVE, HIDDEN, DELETED
     }
 
-    @Column(unique = true, nullable = false)
-    private String email;
-    @Column(nullable = false)
-    private String passwordHash;
+    private String name;
+    private String description;
 
-    @Column(unique = true, nullable = false)
-    private String nickname;
+    @ManyToOne(optional = false)
+    @Column(nullable = false)
+    private Developer developer;
+
 
     @Enumerated(value = EnumType.STRING)
     private State state;
-
 }
