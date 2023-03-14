@@ -46,32 +46,33 @@ public class ApplicationServiceImpl implements ApplicationsService {
                 .state(Application.State.DRAFT)
                 .build();
 
+        //TODO - сделать проверку корректности данных
         applicationsRepository.save(applicationToSave);
 
         return from(applicationToSave);
     }
 
     @Override
-    public ApplicationDto getApplicationById(Long applicationId) {
-        Application application = getApplicationOrThrow(applicationId);
-        return from(application);
+    public ApplicationDto getApplicationById(Long id) {
+        return from(getApplicationOrThrow(id));
     }
 
     @Override
-    public ApplicationDto updateApplication(Long applicationId, NewOrUpdateApplicationDto updatedApplication) {
-        Application applicationForUpdate = getApplicationOrThrow(applicationId);
+    public ApplicationDto updateApplication(Long id, NewOrUpdateApplicationDto updatedApplication) {
+        Application applicationForUpdate = getApplicationOrThrow(id);
 
         applicationForUpdate.setName(updatedApplication.getName());
         applicationForUpdate.setDeveloper(getDeveloper(updatedApplication));
 
+        //TODO - сделать проверку корректности данных
         applicationsRepository.save(applicationForUpdate);
 
         return from(applicationForUpdate);
     }
 
     @Override
-    public void deleteApplication(Long applicationId) {
-        Application applicationForDelete = getApplicationOrThrow(applicationId);
+    public void deleteApplication(Long id) {
+        Application applicationForDelete = getApplicationOrThrow(id);
 
         applicationForDelete.setState(Application.State.DELETED);
 
@@ -79,8 +80,8 @@ public class ApplicationServiceImpl implements ApplicationsService {
     }
 
     @Override
-    public ApplicationDto publishApplication(Long applicationId) {
-        Application applicationForPublish = getApplicationOrThrow(applicationId);
+    public ApplicationDto publishApplication(Long id) {
+        Application applicationForPublish = getApplicationOrThrow(id);
 
         applicationForPublish.setState(Application.State.ACTIVE);
 
@@ -90,12 +91,13 @@ public class ApplicationServiceImpl implements ApplicationsService {
     }
 
 
-    private Application getApplicationOrThrow(Long applicationId) {
-        return applicationsRepository.findById(applicationId)
-                .orElseThrow(() -> new NotFoundException("Приложение с идентификатором <" + applicationId + "> не найдено"));
+    private Application getApplicationOrThrow(Long id) {
+        return applicationsRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Приложение с идентификатором <" + id + "> не найдено"));
     }
 
     private Developer getDeveloper(NewOrUpdateApplicationDto application) {
+        //TODO - тут, наверное, стоит сделать проверку, что разработчик вообще существует
         return Developer.builder().account(Account.builder().id(application.getDeveloperId()).build()).build();
     }
 }

@@ -13,7 +13,7 @@ public interface AccountsService {
 
     void deleteAccount(Long id);
 
-    void confirmAccount(Long id);
+    AccountDto confirmAccount(Long id);
 
     void banAccount(Long id);
 

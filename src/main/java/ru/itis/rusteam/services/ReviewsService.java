@@ -3,9 +3,10 @@ package ru.itis.rusteam.services;
 import ru.itis.rusteam.dto.review.NewOrUpdateReviewDto;
 import ru.itis.rusteam.dto.review.ReviewDto;
 import ru.itis.rusteam.dto.review.ReviewsPage;
+import ru.itis.rusteam.models.Application;
 
 public interface ReviewsService {
-    ReviewsPage getAllReviews(int page);
+    ReviewsPage getAllReviewsForApplication(int page, Application application);
 
     ReviewDto getReviewById(Long id);
 
