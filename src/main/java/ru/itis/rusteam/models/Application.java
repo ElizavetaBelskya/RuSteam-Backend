@@ -26,7 +26,6 @@ public class Application extends LongIdEntity {
     private String description;
 
     @ManyToOne(optional = false)
-    @Column(nullable = false)
     private Developer developer;
 
 

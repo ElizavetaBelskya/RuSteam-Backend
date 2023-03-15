@@ -22,7 +22,6 @@ public class Review extends LongIdEntity {
     }
 
     @ManyToOne(optional = false)
-    @Column(nullable = false)
     private Application application;
 
 

@@ -10,9 +10,9 @@ import ru.itis.rusteam.dto.application.ApplicationsPage;
 import ru.itis.rusteam.dto.application.NewOrUpdateApplicationDto;
 import ru.itis.rusteam.exceptions.NotFoundException;
 import ru.itis.rusteam.models.Application;
-import ru.itis.rusteam.models.account.Account;
 import ru.itis.rusteam.models.account.Developer;
 import ru.itis.rusteam.repositories.ApplicationsRepository;
+import ru.itis.rusteam.repositories.DevelopersRepository;
 import ru.itis.rusteam.services.ApplicationsService;
 
 import static ru.itis.rusteam.dto.application.ApplicationDto.from;
@@ -22,6 +22,8 @@ import static ru.itis.rusteam.dto.application.ApplicationDto.from;
 public class ApplicationServiceImpl implements ApplicationsService {
 
     private final ApplicationsRepository applicationsRepository;
+
+    private final DevelopersRepository developersRepository;
 
     @Value("${default.page-size}")
     private int defaultPageSize;
@@ -42,7 +44,7 @@ public class ApplicationServiceImpl implements ApplicationsService {
     public ApplicationDto addApplication(NewOrUpdateApplicationDto application) {
         Application applicationToSave = Application.builder()
                 .name(application.getName())
-                .developer(getDeveloper(application))
+                .developer(getDeveloperOrThrow(application.getDeveloperId()))
                 .state(Application.State.DRAFT)
                 .build();
 
@@ -62,7 +64,7 @@ public class ApplicationServiceImpl implements ApplicationsService {
         Application applicationForUpdate = getApplicationOrThrow(id);
 
         applicationForUpdate.setName(updatedApplication.getName());
-        applicationForUpdate.setDeveloper(getDeveloper(updatedApplication));
+        applicationForUpdate.setDeveloper(getDeveloperOrThrow(updatedApplication.getDeveloperId()));
 
         //TODO - сделать проверку корректности данных
         applicationsRepository.save(applicationForUpdate);
@@ -96,8 +98,9 @@ public class ApplicationServiceImpl implements ApplicationsService {
                 .orElseThrow(() -> new NotFoundException("Приложение с идентификатором <" + id + "> не найдено"));
     }
 
-    private Developer getDeveloper(NewOrUpdateApplicationDto application) {
+    private Developer getDeveloperOrThrow(Long id) {
         //TODO - тут, наверное, стоит сделать проверку, что разработчик вообще существует
-        return Developer.builder().account(Account.builder().id(application.getDeveloperId()).build()).build();
+        return developersRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Разработчик с идентификатором <" + id + "> не найден"));
     }
 }

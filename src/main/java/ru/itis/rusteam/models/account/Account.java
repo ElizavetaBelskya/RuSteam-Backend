@@ -27,8 +27,6 @@ public class Account extends LongIdEntity {
     }
 
 
-
-
     @Column(unique = true, nullable = false)
     private String email;
     @Column(nullable = false)
