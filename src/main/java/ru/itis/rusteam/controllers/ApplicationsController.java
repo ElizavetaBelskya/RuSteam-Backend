@@ -48,6 +48,7 @@ public class ApplicationsController implements ApplicationsApi {
 
     @Override
     public ResponseEntity<ApplicationDto> publishApplication(Long applicationId) {
-        return ResponseEntity.accepted().body(applicationsService.publishApplication(applicationId));
+        return ResponseEntity.accepted()
+                .body(applicationsService.publishApplication(applicationId));
     }
 }

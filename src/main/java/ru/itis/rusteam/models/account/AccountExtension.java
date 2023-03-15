@@ -1,20 +1,23 @@
 package ru.itis.rusteam.models.account;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
+import ru.itis.rusteam.models.base.LongIdEntity;
 
-import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+@AllArgsConstructor
+@NoArgsConstructor
 @SuperBuilder
 @Data
 @MappedSuperclass
-@NoArgsConstructor
-public abstract class AccountExtension {
+public abstract class AccountExtension extends LongIdEntity {
 
-    @Id
     @OneToOne(optional = false)
+    @PrimaryKeyJoinColumn
     private Account account;
 }

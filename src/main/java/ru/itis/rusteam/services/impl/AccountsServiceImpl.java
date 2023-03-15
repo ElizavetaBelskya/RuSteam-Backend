@@ -25,6 +25,7 @@ public class AccountsServiceImpl implements AccountsService {
                 .nickname(account.getNickname())
                 .passwordHash(account.getPassword())
                 .state(Account.State.NOT_CONFIRMED)
+                .role(Account.Role.USER)
                 .build();
 
         //TODO - сделать проверку корректности данных

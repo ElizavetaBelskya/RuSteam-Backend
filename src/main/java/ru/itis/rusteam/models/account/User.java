@@ -20,8 +20,8 @@ public class User extends AccountExtension {
 
 
     public enum Gender {
-        MALE("Мужской"), FEMALE("Женский");
-        Gender(String gender) {}
+        MALE,
+        FEMALE
     }
 
     private String name;
