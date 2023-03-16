@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.itis.rusteam.dto.exception.ExceptionDto;
 import ru.itis.rusteam.dto.user.NewOrUpdateUserDto;
 import ru.itis.rusteam.dto.user.UserDto;
 import ru.itis.rusteam.dto.user.UsersPage;
@@ -29,16 +28,10 @@ public interface UserApi {
                     description = "User data",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = UserDto.class))
-                    }),
-            @ApiResponse(responseCode = "404", description = "Error data",
-                    content = {
-                            @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ExceptionDto.class))
-                    }
-            )
+                    })
     })
     @GetMapping("/{user-id}")
-    ResponseEntity<UserDto> getUserById(@Parameter(description = "id of user") @PathVariable("user-id") Long id);
+    ResponseEntity<UserDto> getUserById(@Parameter(description = "id of user") @RequestParam("id") long id);
 
     @Operation(summary = "Adding new user")
     @ApiResponses(value = {
@@ -63,22 +56,7 @@ public interface UserApi {
     @GetMapping
     ResponseEntity<UsersPage> getAllUsers(@Parameter(description = "Number of page") @RequestParam("page") int page);
 
-    @Operation(summary = "User updating")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "202", description = "Updated user",
-                    content = {
-                            @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = UserDto.class))
-                    }
-            ),
-            @ApiResponse(responseCode = "404", description = "Error data",
-                    content = {
-                            @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ExceptionDto.class))
-                    }
-            )
-    })
-    @PutMapping("/{user-id}/update")
+    @PutMapping("/{user-id}")
     ResponseEntity<UserDto> updateUser(
             @Parameter(description = "id of user", example = "1") @PathVariable("user-id") Long userId,
             @RequestBody NewOrUpdateUserDto updatedUser);
@@ -97,6 +75,7 @@ public interface UserApi {
     @DeleteMapping("/{user-id}")
     ResponseEntity<?> deleteUser(
             @Parameter(description = "id of user", example = "1") @PathVariable("user-id") Long userId);
+
 
 
 

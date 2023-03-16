@@ -20,7 +20,7 @@ import ru.itis.rusteam.services.UsersService;
 public class UserController implements UserApi {
 
     private final UsersService usersService;
-    public ResponseEntity<UserDto> getUserById(Long id) {
+    public ResponseEntity<UserDto> getUserById(@Parameter(description = "id of user") @RequestParam("id") long id) {
         return ResponseEntity.ok(usersService.getUserById(id));
     }
 
