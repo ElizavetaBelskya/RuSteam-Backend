@@ -4,25 +4,27 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.itis.rusteam.dto.account.user.NewOrUpdateUserDto;
 import ru.itis.rusteam.dto.account.user.UserDto;
-import ru.itis.rusteam.exceptions.NotFoundException;
 import ru.itis.rusteam.models.account.Account;
 import ru.itis.rusteam.models.account.User;
+import ru.itis.rusteam.repositories.AccountsRepository;
 import ru.itis.rusteam.repositories.UsersRepository;
 import ru.itis.rusteam.services.UsersService;
 
 import static ru.itis.rusteam.dto.account.user.UserDto.from;
+import static ru.itis.rusteam.utils.ServicesUtils.getOrThrow;
 
 @RequiredArgsConstructor
 @Service
 public class UsersServiceImpl implements UsersService {
 
     private final UsersRepository usersRepository;
+    private final AccountsRepository accountsRepository;
 
 
     @Override
     public UserDto addUser(NewOrUpdateUserDto user) {
         User userToSave = User.builder()
-                .account(getAccount(user))
+                .account(getAccountOrThrow(user.getAccountId()))
                 .name(user.getName())
                 .surname(user.getSurname())
                 .gender(user.getGender())
@@ -67,13 +69,13 @@ public class UsersServiceImpl implements UsersService {
 
 
     private User getUserOrThrow(Long id) {
-        return usersRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Пользователь с идентификатором <" + id + "> не найден"));
+        return getOrThrow(id, usersRepository, "User");
     }
 
-    private Account getAccount(NewOrUpdateUserDto user) {
-        //TODO - тут, наверное, стоит сделать проверку, что аккаунт вообще существует
-        return Account.builder().id(user.getAccountId()).build();
+    private Account getAccountOrThrow(Long id) {
+        return getOrThrow(id, accountsRepository, "Account");
     }
+
+
 
 }

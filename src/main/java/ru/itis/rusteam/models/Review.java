@@ -5,7 +5,7 @@ import lombok.experimental.SuperBuilder;
 import ru.itis.rusteam.models.base.LongIdEntity;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
@@ -29,7 +29,7 @@ public class Review extends LongIdEntity {
             columnDefinition = "text")
     private String text;
     @Column(nullable = false)
-    private Date publicationTime;
+    private LocalDateTime publicationTime;
     @Column(nullable = false,
             columnDefinition = "int check (rating between 1 and 5)")
     private int rating;

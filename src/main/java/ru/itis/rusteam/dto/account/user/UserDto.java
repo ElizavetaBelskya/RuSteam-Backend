@@ -7,9 +7,8 @@ import ru.itis.rusteam.dto.account.AccountDto;
 import ru.itis.rusteam.models.account.Account;
 import ru.itis.rusteam.models.account.User;
 
-import java.sql.Date;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.time.LocalDate;
+
 
 
 @EqualsAndHashCode(callSuper = true)
@@ -28,11 +27,11 @@ public class UserDto extends AccountDto {
     @Schema(description = "Фамилия", example = "Иванов")
     private String surname;
 
-    @Schema(description = "Пол", example = "Мужской, Женский")
+    @Schema(description = "Пол", example = "MALE")
     private User.Gender gender;
 
-    @Schema(description = "Дата рождения", example = "01.01.2000")
-    private Date birthdayDate;
+    @Schema(description = "Дата рождения", example = "2000-01-01")
+    private LocalDate birthdayDate;
 
 
     public static UserDto from(User user) {
@@ -48,11 +47,11 @@ public class UserDto extends AccountDto {
                 .build();
     }
 
-    public static List<UserDto> from2(List<User> users) {
-        return users.stream()
-                .map(UserDto::from)
-                .collect(Collectors.toList());
-    }
+//    public static List<UserDto> from2(List<User> users) {
+//        return users.stream()
+//                .map(UserDto::from)
+//                .collect(Collectors.toList());
+//    }
 
 }
 

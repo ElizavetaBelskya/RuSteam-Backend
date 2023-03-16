@@ -6,7 +6,7 @@ import lombok.experimental.SuperBuilder;
 import ru.itis.rusteam.dto.base.LongIdDto;
 import ru.itis.rusteam.models.Review;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,8 +26,8 @@ public class ReviewDto extends LongIdDto {
     @Schema(description = "Текст", example = "Отличное приложение!")
     private String text;
 
-    @Schema(description = "Дата публикации", example = "01.01.2000")
-    private Date publicationTime;
+    @Schema(description = "Дата публикации", example = "2000-01-01T00:00:00.0000000")
+    private LocalDateTime publicationTime;
 
     @Schema(description = "Рейтинг приложения от 1 до 5", example = "4")
     private int rating;

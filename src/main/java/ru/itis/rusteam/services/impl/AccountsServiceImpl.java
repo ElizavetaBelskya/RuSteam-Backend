@@ -4,12 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.itis.rusteam.dto.account.AccountDto;
 import ru.itis.rusteam.dto.account.NewOrUpdateAccountDto;
-import ru.itis.rusteam.exceptions.NotFoundException;
 import ru.itis.rusteam.models.account.Account;
 import ru.itis.rusteam.repositories.AccountsRepository;
 import ru.itis.rusteam.services.AccountsService;
 
 import static ru.itis.rusteam.dto.account.AccountDto.from;
+import static ru.itis.rusteam.utils.ServicesUtils.getOrThrow;
 
 
 @RequiredArgsConstructor
@@ -85,8 +85,7 @@ public class AccountsServiceImpl implements AccountsService {
 
 
     private Account getAccountOrThrow(Long id) {
-        return accountsRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Аккаунт с идентификатором <" + id + "> не найден"));
+        return getOrThrow(id, accountsRepository, "Account");
     }
 
 

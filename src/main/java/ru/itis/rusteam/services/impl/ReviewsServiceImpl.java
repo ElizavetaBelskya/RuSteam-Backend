@@ -8,21 +8,24 @@ import org.springframework.stereotype.Service;
 import ru.itis.rusteam.dto.review.NewOrUpdateReviewDto;
 import ru.itis.rusteam.dto.review.ReviewDto;
 import ru.itis.rusteam.dto.review.ReviewsPage;
-import ru.itis.rusteam.exceptions.NotFoundException;
 import ru.itis.rusteam.models.Application;
 import ru.itis.rusteam.models.Review;
+import ru.itis.rusteam.repositories.ApplicationsRepository;
 import ru.itis.rusteam.repositories.ReviewsRepository;
 import ru.itis.rusteam.services.ReviewsService;
 
-import java.sql.Date;
+
+import java.time.LocalDateTime;
 
 import static ru.itis.rusteam.dto.review.ReviewDto.from;
+import static ru.itis.rusteam.utils.ServicesUtils.getOrThrow;
 
 @RequiredArgsConstructor
 @Service
 public class ReviewsServiceImpl implements ReviewsService {
 
     private final ReviewsRepository reviewsRepository;
+    private final ApplicationsRepository applicationsRepository;
 
     @Value("${default.page-size}")
     private int defaultPageSize;
@@ -42,9 +45,9 @@ public class ReviewsServiceImpl implements ReviewsService {
     @Override
     public ReviewDto addReview(NewOrUpdateReviewDto review) {
         Review reviewToSave = Review.builder()
-                .application(getApplication(review))
+                .application(getApplicationOrThrow(review.getApplicationId()))
                 .text(review.getText())
-                .publicationTime(new Date(System.currentTimeMillis()))
+                .publicationTime(LocalDateTime.now())
                 .rating(review.getRating())
                 .state(Review.State.DRAFT)
                 .build();
@@ -95,13 +98,12 @@ public class ReviewsServiceImpl implements ReviewsService {
 
 
     private Review getReviewOrThrow(Long id) {
-        return reviewsRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Отзыв с идентификатором <" + id + "> не найден"));
+        return getOrThrow(id, reviewsRepository, "Review");
     }
 
-    private Application getApplication(NewOrUpdateReviewDto review) {
-        //TODO - тут, наверное, стоит сделать проверку, что приложение вообще существует
-        return Application.builder().id(review.getApplicationId()).build();
+    private Application getApplicationOrThrow(Long id) {
+        return getOrThrow(id, applicationsRepository, "Application");
     }
+
 }
 

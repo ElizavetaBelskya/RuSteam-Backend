@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import ru.itis.rusteam.dto.application.ApplicationDto;
 import ru.itis.rusteam.dto.application.ApplicationsPage;
 import ru.itis.rusteam.dto.application.NewOrUpdateApplicationDto;
-import ru.itis.rusteam.exceptions.NotFoundException;
 import ru.itis.rusteam.models.Application;
 import ru.itis.rusteam.models.account.Developer;
 import ru.itis.rusteam.repositories.ApplicationsRepository;
@@ -16,6 +15,7 @@ import ru.itis.rusteam.repositories.DevelopersRepository;
 import ru.itis.rusteam.services.ApplicationsService;
 
 import static ru.itis.rusteam.dto.application.ApplicationDto.from;
+import static ru.itis.rusteam.utils.ServicesUtils.getOrThrow;
 
 @RequiredArgsConstructor
 @Service
@@ -44,6 +44,7 @@ public class ApplicationServiceImpl implements ApplicationsService {
     public ApplicationDto addApplication(NewOrUpdateApplicationDto application) {
         Application applicationToSave = Application.builder()
                 .name(application.getName())
+                .description(application.getDescription())
                 .developer(getDeveloperOrThrow(application.getDeveloperId()))
                 .state(Application.State.DRAFT)
                 .build();
@@ -64,6 +65,7 @@ public class ApplicationServiceImpl implements ApplicationsService {
         Application applicationForUpdate = getApplicationOrThrow(id);
 
         applicationForUpdate.setName(updatedApplication.getName());
+        applicationForUpdate.setDescription(updatedApplication.getDescription());
         applicationForUpdate.setDeveloper(getDeveloperOrThrow(updatedApplication.getDeveloperId()));
 
         //TODO - сделать проверку корректности данных
@@ -94,13 +96,12 @@ public class ApplicationServiceImpl implements ApplicationsService {
 
 
     private Application getApplicationOrThrow(Long id) {
-        return applicationsRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Приложение с идентификатором <" + id + "> не найдено"));
+        return getOrThrow(id, applicationsRepository, "Application");
     }
 
     private Developer getDeveloperOrThrow(Long id) {
-        //TODO - тут, наверное, стоит сделать проверку, что разработчик вообще существует
-        return developersRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Разработчик с идентификатором <" + id + "> не найден"));
+        return  getOrThrow(id, developersRepository, "Developer");
     }
+
+
 }

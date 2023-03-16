@@ -16,6 +16,9 @@ public class NewOrUpdateApplicationDto {
     @Schema(description = "Название приложения", example = "Atomic Heart")
     private String name;
 
+    @Schema(description = "Описание", example = "Игра")
+    private String description;
+
     @Schema(description = "Идентификатор разработчика", example = "1642")
     private Long developerId;
 }

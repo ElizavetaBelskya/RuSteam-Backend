@@ -22,6 +22,9 @@ public class ApplicationDto extends LongIdDto {
     @Schema(description = "Наименование", example = "Atomic Heart")
     private String name;
 
+    @Schema(description = "Описание", example = "Игра")
+    private String description;
+
     @Schema(description = "Идентификатор разработчика", example = "1642")
     private Long developerId;
 
@@ -30,6 +33,7 @@ public class ApplicationDto extends LongIdDto {
         return ApplicationDto.builder()
                 .id(application.getId())
                 .name(application.getName())
+                .description(application.getDescription())
                 .developerId(application.getDeveloper().getAccount().getId())
                 .build();
     }

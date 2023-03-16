@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import ru.itis.rusteam.models.account.User;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -23,10 +23,10 @@ public class NewOrUpdateUserDto {
     @Schema(description = "Фамилия", example = "Иванов")
     private String surname;
 
-    @Schema(description = "Пол", example = "Мужской, Женский")
+    @Schema(description = "Пол", example = "MALE")
     private User.Gender gender;
 
-    @Schema(description = "Дата рождения", example = "01.01.2000")
-    private Date birthdayDate;
+    @Schema(description = "Дата рождения", example = "2000-01-01")
+    private LocalDate birthdayDate;
 
 }

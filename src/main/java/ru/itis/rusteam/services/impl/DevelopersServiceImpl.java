@@ -4,13 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.itis.rusteam.dto.account.developer.DeveloperDto;
 import ru.itis.rusteam.dto.account.developer.NewOrUpdateDeveloperDto;
-import ru.itis.rusteam.exceptions.NotFoundException;
 import ru.itis.rusteam.models.account.Account;
 import ru.itis.rusteam.models.account.Developer;
+import ru.itis.rusteam.repositories.AccountsRepository;
 import ru.itis.rusteam.repositories.DevelopersRepository;
 import ru.itis.rusteam.services.DevelopersService;
 
 import static ru.itis.rusteam.dto.account.developer.DeveloperDto.from;
+import static ru.itis.rusteam.utils.ServicesUtils.getOrThrow;
 
 @RequiredArgsConstructor
 @Service
@@ -18,10 +19,12 @@ public class DevelopersServiceImpl implements DevelopersService {
 
     private final DevelopersRepository developersRepository;
 
+    private final AccountsRepository accountsRepository;
+
     @Override
     public DeveloperDto addDeveloper(NewOrUpdateDeveloperDto developer) {
         Developer developerToSave = Developer.builder()
-                .account(getAccount(developer))
+                .account(getAccountOrThrow(developer.getAccountId()))
                 .name(developer.getName())
                 .description(developer.getDescription())
                 .build();
@@ -58,13 +61,12 @@ public class DevelopersServiceImpl implements DevelopersService {
         developersRepository.deleteById(id);
     }
 
+
     private Developer getDeveloperOrThrow(Long id) {
-        return developersRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Разработчик с идентификатором <" + id + "> не найден"));
+        return  getOrThrow(id, developersRepository, "Developer");
     }
 
-    private Account getAccount(NewOrUpdateDeveloperDto developer) {
-        //TODO - тут, наверное, стоит сделать проверку, что аккаунт вообще существует
-        return Account.builder().id(developer.getAccountId()).build();
+    private Account getAccountOrThrow(Long id) {
+        return getOrThrow(id, accountsRepository, "Account");
     }
 }

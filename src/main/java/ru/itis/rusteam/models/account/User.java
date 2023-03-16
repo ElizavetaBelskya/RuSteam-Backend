@@ -4,7 +4,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.time.LocalDate;
 
 
 @EqualsAndHashCode(callSuper = true)
@@ -28,6 +28,6 @@ public class User extends AccountExtension {
     private String surname;
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
-    private Date birthdayDate;
+    private LocalDate birthdayDate;
 
 }

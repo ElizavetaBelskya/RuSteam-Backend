@@ -23,4 +23,15 @@ public class RestExceptionHandler {
                         .build());
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ExceptionDto> handleOther() {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ExceptionDto.builder()
+                        .message("Server error")
+                        .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                        .build());
+    }
+
+
+
 }
