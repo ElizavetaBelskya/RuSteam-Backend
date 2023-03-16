@@ -20,6 +20,4 @@ public abstract class LongIdEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "unique_id_in_all_db")
     private Long id;
 
-
-
 }

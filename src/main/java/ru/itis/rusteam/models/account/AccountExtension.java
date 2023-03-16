@@ -10,12 +10,12 @@ import javax.persistence.*;
 @Data
 @MappedSuperclass
 @NoArgsConstructor
-public abstract class AccountExtension  {
+public abstract class AccountExtension {
 
     @Id
     private Long id;
 
-    @OneToOne(optional = false)
-//    @PrimaryKeyJoinColumn
+    @OneToOne
+    //TODO: тут бы объединить столбцы
     private Account account;
 }

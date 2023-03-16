@@ -5,6 +5,7 @@ import lombok.experimental.SuperBuilder;
 import ru.itis.rusteam.models.base.LongIdEntity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 
 @EqualsAndHashCode(callSuper = true)
@@ -16,7 +17,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "accounts")
-public class Account extends LongIdEntity {
+public class Account extends LongIdEntity implements Serializable {
 
     public enum State {
         NOT_CONFIRMED, CONFIRMED, DELETED, BANNED
