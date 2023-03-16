@@ -3,17 +3,18 @@ package ru.itis.rusteam.services;
 import ru.itis.rusteam.dto.review.NewOrUpdateReviewDto;
 import ru.itis.rusteam.dto.review.ReviewDto;
 import ru.itis.rusteam.dto.review.ReviewsPage;
+import ru.itis.rusteam.models.Application;
 
 public interface ReviewsService {
-    ReviewsPage getAllReviews(int page);
+    ReviewsPage getAllReviewsForApplication(int page, Application application);
 
-    ReviewDto addReview(NewOrUpdateReviewDto newReview);
+    ReviewDto getReviewById(Long id);
 
-    ReviewDto getReview(Long reviewId);
+    ReviewDto addReview(NewOrUpdateReviewDto review);
 
-    ReviewDto updateReview(Long reviewId, NewOrUpdateReviewDto updatedReview);
+    ReviewDto updateReview(Long id, NewOrUpdateReviewDto updatedReview);
 
-    void deleteReview(Long reviewId);
+    void deleteReview(Long id);
 
-    ReviewDto publishReview(Long reviewId);
+    ReviewDto publishReview(Long id);
 }

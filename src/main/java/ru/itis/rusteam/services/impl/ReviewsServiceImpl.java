@@ -8,25 +8,33 @@ import org.springframework.stereotype.Service;
 import ru.itis.rusteam.dto.review.NewOrUpdateReviewDto;
 import ru.itis.rusteam.dto.review.ReviewDto;
 import ru.itis.rusteam.dto.review.ReviewsPage;
-import ru.itis.rusteam.exceptions.NotFoundException;
+import ru.itis.rusteam.models.Application;
 import ru.itis.rusteam.models.Review;
+import ru.itis.rusteam.repositories.ApplicationsRepository;
 import ru.itis.rusteam.repositories.ReviewsRepository;
 import ru.itis.rusteam.services.ReviewsService;
+
+
+import java.time.LocalDateTime;
+
+import static ru.itis.rusteam.dto.review.ReviewDto.from;
+import static ru.itis.rusteam.utils.ServicesUtils.getOrThrow;
 
 @RequiredArgsConstructor
 @Service
 public class ReviewsServiceImpl implements ReviewsService {
 
     private final ReviewsRepository reviewsRepository;
+    private final ApplicationsRepository applicationsRepository;
 
     @Value("${default.page-size}")
     private int defaultPageSize;
 
 
     @Override
-    public ReviewsPage getAllReviews(int page) {
+    public ReviewsPage getAllReviewsForApplication(int page, Application application) {
         PageRequest pageRequest = PageRequest.of(page, defaultPageSize);
-        Page<Review> reviewsPage = reviewsRepository.findAllByStateOrderById(pageRequest, Review.State.ACTIVE);
+        Page<Review> reviewsPage = reviewsRepository.findAllByStateAndApplicationOrderById(pageRequest, Review.State.ACTIVE, application);
 
         return ReviewsPage.builder()
                 .reviews(ReviewDto.from(reviewsPage.getContent()))
@@ -35,37 +43,42 @@ public class ReviewsServiceImpl implements ReviewsService {
     }
 
     @Override
-    public ReviewDto addReview(NewOrUpdateReviewDto newReview) {
-        Review review = Review.builder()
-                .reviewText(newReview.getReviewText())
-                .applicationId(newReview.getApplicationId())
+    public ReviewDto addReview(NewOrUpdateReviewDto review) {
+        Review reviewToSave = Review.builder()
+                .application(getApplicationOrThrow(review.getApplicationId()))
+                .text(review.getText())
+                .publicationTime(LocalDateTime.now())
+                .rating(review.getRating())
+                .state(Review.State.DRAFT)
                 .build();
 
-        reviewsRepository.save(review);
+        //TODO - сделать проверку корректности данных
+        reviewsRepository.save(reviewToSave);
 
-        return ReviewDto.from(review);
+        return from(reviewToSave);
     }
 
     @Override
-    public ReviewDto getReview(Long applicationId) {
-        Review review = getReviewOrThrow(applicationId);
-        return ReviewDto.from(review);
+    public ReviewDto getReviewById(Long applicationId) {
+        return from(getReviewOrThrow(applicationId));
     }
 
     @Override
-    public ReviewDto updateReview(Long reviewId, NewOrUpdateReviewDto updatedReview) {
-        Review reviewForUpdate = getReviewOrThrow(reviewId);
+    public ReviewDto updateReview(Long id, NewOrUpdateReviewDto updatedReview) {
+        Review reviewForUpdate = getReviewOrThrow(id);
 
-        reviewForUpdate.setReviewText(updatedReview.getReviewText());
+        reviewForUpdate.setText(updatedReview.getText());
+        //TODO - подумать над датой изменения
         reviewForUpdate.setRating(updatedReview.getRating());
 
+        //TODO - сделать проверку корректности данных
         reviewsRepository.save(reviewForUpdate);
         return ReviewDto.from(reviewForUpdate);
     }
 
     @Override
-    public void deleteReview(Long reviewId) {
-        Review reviewForDelete = getReviewOrThrow(reviewId);
+    public void deleteReview(Long id) {
+        Review reviewForDelete = getReviewOrThrow(id);
 
         reviewForDelete.setState(Review.State.DELETED);
 
@@ -73,8 +86,8 @@ public class ReviewsServiceImpl implements ReviewsService {
     }
 
     @Override
-    public ReviewDto publishReview(Long reviewId) {
-        Review reviewToPublish = getReviewOrThrow(reviewId);
+    public ReviewDto publishReview(Long id) {
+        Review reviewToPublish = getReviewOrThrow(id);
 
         reviewToPublish.setState(Review.State.ACTIVE);
 
@@ -84,9 +97,13 @@ public class ReviewsServiceImpl implements ReviewsService {
     }
 
 
-    private Review getReviewOrThrow(Long reviewId) {
-        return reviewsRepository.findById(reviewId)
-                .orElseThrow(() -> new NotFoundException("Отзыв с идентификатором <" + reviewId + "> не найдено"));
+    private Review getReviewOrThrow(Long id) {
+        return getOrThrow(id, reviewsRepository, "Review");
     }
+
+    private Application getApplicationOrThrow(Long id) {
+        return getOrThrow(id, applicationsRepository, "Application");
+    }
+
 }
 

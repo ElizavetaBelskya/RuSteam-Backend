@@ -31,7 +31,7 @@ public interface ApplicationsApi {
     })
     @GetMapping
     ResponseEntity<ApplicationsPage> getAllApplications(
-            @Parameter(description = "Номер страницы") @RequestParam("page") int page);
+            @Parameter(description = "Номер страницы", example = "1") @RequestParam("page") int page);
 
 
     @Operation(summary = "Добавление приложения")
@@ -65,7 +65,7 @@ public interface ApplicationsApi {
     })
     @GetMapping("/{application-id}")
     ResponseEntity<ApplicationDto> getApplication(
-            @Parameter(description = "Идентификатор приложения", example = "1")
+            @Parameter(description = "Идентификатор приложения", example = "1642")
             @PathVariable("application-id") Long applicationId);
 
 
@@ -86,7 +86,7 @@ public interface ApplicationsApi {
     })
     @PutMapping("/{application-id}")
     ResponseEntity<ApplicationDto> updateApplication(
-            @Parameter(description = "Идентификатор приложения", example = "1") @PathVariable("application-id") Long applicationId,
+            @Parameter(description = "Идентификатор приложения", example = "1642") @PathVariable("application-id") Long applicationId,
             @RequestBody NewOrUpdateApplicationDto updatedApplication);
 
 
@@ -102,7 +102,7 @@ public interface ApplicationsApi {
     })
     @DeleteMapping("/{application-id}")
     ResponseEntity<?> deleteApplication(
-            @Parameter(description = "Идентификатор приложения", example = "1") @PathVariable("application-id") Long applicationId);
+            @Parameter(description = "Идентификатор приложения", example = "1642") @PathVariable("application-id") Long applicationId);
 
 
     @Operation(summary = "Публикация приложения")
@@ -122,7 +122,7 @@ public interface ApplicationsApi {
     })
     @PutMapping("/{application-id}/publish")
     ResponseEntity<ApplicationDto> publishApplication(
-            @Parameter(description = "Идентификатор приложения", example = "1") @PathVariable("application-id") Long applicationId);
+            @Parameter(description = "Идентификатор приложения", example = "1642") @PathVariable("application-id") Long applicationId);
 
 
 }

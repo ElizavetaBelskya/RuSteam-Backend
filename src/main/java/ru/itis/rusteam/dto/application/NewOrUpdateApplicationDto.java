@@ -13,9 +13,12 @@ import lombok.NoArgsConstructor;
 @Schema(description = "Новое приложение/Изменение приложения")
 public class NewOrUpdateApplicationDto {
 
-    @Schema(description = "название приложения", example = "Atomic Heart")
+    @Schema(description = "Название приложения", example = "Atomic Heart")
     private String name;
 
-    @Schema(description = "идентификатор компании разработчика", example = "1")
-    private Long companyId;
+    @Schema(description = "Описание", example = "Игра")
+    private String description;
+
+    @Schema(description = "Идентификатор разработчика", example = "1642")
+    private Long developerId;
 }

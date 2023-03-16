@@ -1,37 +1,40 @@
 package ru.itis.rusteam.dto.application;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import ru.itis.rusteam.dto.base.LongIdDto;
 import ru.itis.rusteam.models.Application;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Schema(description = "Приложение")
-public class ApplicationDto {
+public class ApplicationDto extends LongIdDto {
 
-    @Schema(description = "идентификатор приложения", example = "1")
-    private Long id;
 
-    @Schema(description = "название приложения", example = "Atomic Heart")
+    @Schema(description = "Наименование", example = "Atomic Heart")
     private String name;
 
-    @Schema(description = "идентификатор компании разработчика", example = "1")
-    private Long companyId;
+    @Schema(description = "Описание", example = "Игра")
+    private String description;
+
+    @Schema(description = "Идентификатор разработчика", example = "1642")
+    private Long developerId;
 
 
     public static ApplicationDto from(Application application) {
         return ApplicationDto.builder()
                 .id(application.getId())
                 .name(application.getName())
-                .companyId(application.getCompanyId())
+                .description(application.getDescription())
+                .developerId(application.getDeveloper().getAccount().getId())
                 .build();
     }
 

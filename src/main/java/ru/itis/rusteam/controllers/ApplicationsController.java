@@ -31,7 +31,7 @@ public class ApplicationsController implements ApplicationsApi {
     @Override
     public ResponseEntity<ApplicationDto> getApplication(Long applicationId) {
         return ResponseEntity
-                .ok(applicationsService.getApplication(applicationId));
+                .ok(applicationsService.getApplicationById(applicationId));
     }
 
     @Override
@@ -48,6 +48,7 @@ public class ApplicationsController implements ApplicationsApi {
 
     @Override
     public ResponseEntity<ApplicationDto> publishApplication(Long applicationId) {
-        return ResponseEntity.accepted().body(applicationsService.publishApplication(applicationId));
+        return ResponseEntity.accepted()
+                .body(applicationsService.publishApplication(applicationId));
     }
 }

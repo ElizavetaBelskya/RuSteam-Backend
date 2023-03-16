@@ -8,18 +8,22 @@ import org.springframework.stereotype.Service;
 import ru.itis.rusteam.dto.application.ApplicationDto;
 import ru.itis.rusteam.dto.application.ApplicationsPage;
 import ru.itis.rusteam.dto.application.NewOrUpdateApplicationDto;
-import ru.itis.rusteam.exceptions.NotFoundException;
 import ru.itis.rusteam.models.Application;
+import ru.itis.rusteam.models.account.Developer;
 import ru.itis.rusteam.repositories.ApplicationsRepository;
+import ru.itis.rusteam.repositories.DevelopersRepository;
 import ru.itis.rusteam.services.ApplicationsService;
 
 import static ru.itis.rusteam.dto.application.ApplicationDto.from;
+import static ru.itis.rusteam.utils.ServicesUtils.getOrThrow;
 
 @RequiredArgsConstructor
 @Service
 public class ApplicationServiceImpl implements ApplicationsService {
 
     private final ApplicationsRepository applicationsRepository;
+
+    private final DevelopersRepository developersRepository;
 
     @Value("${default.page-size}")
     private int defaultPageSize;
@@ -37,39 +41,42 @@ public class ApplicationServiceImpl implements ApplicationsService {
     }
 
     @Override
-    public ApplicationDto addApplication(NewOrUpdateApplicationDto newApplication) {
-        Application application = Application.builder()
-                .name(newApplication.getName())
-                .companyId(newApplication.getCompanyId())
+    public ApplicationDto addApplication(NewOrUpdateApplicationDto application) {
+        Application applicationToSave = Application.builder()
+                .name(application.getName())
+                .description(application.getDescription())
+                .developer(getDeveloperOrThrow(application.getDeveloperId()))
                 .state(Application.State.DRAFT)
                 .build();
 
-        applicationsRepository.save(application);
+        //TODO - сделать проверку корректности данных
+        applicationsRepository.save(applicationToSave);
 
-        return from(application);
+        return from(applicationToSave);
     }
 
     @Override
-    public ApplicationDto getApplication(Long applicationId) {
-        Application application = getApplicationOrThrow(applicationId);
-        return from(application);
+    public ApplicationDto getApplicationById(Long id) {
+        return from(getApplicationOrThrow(id));
     }
 
     @Override
-    public ApplicationDto updateApplication(Long applicationId, NewOrUpdateApplicationDto updatedApplication) {
-        Application applicationForUpdate = getApplicationOrThrow(applicationId);
+    public ApplicationDto updateApplication(Long id, NewOrUpdateApplicationDto updatedApplication) {
+        Application applicationForUpdate = getApplicationOrThrow(id);
 
         applicationForUpdate.setName(updatedApplication.getName());
-        applicationForUpdate.setCompanyId(updatedApplication.getCompanyId());
+        applicationForUpdate.setDescription(updatedApplication.getDescription());
+        applicationForUpdate.setDeveloper(getDeveloperOrThrow(updatedApplication.getDeveloperId()));
 
+        //TODO - сделать проверку корректности данных
         applicationsRepository.save(applicationForUpdate);
 
         return from(applicationForUpdate);
     }
 
     @Override
-    public void deleteApplication(Long applicationId) {
-        Application applicationForDelete = getApplicationOrThrow(applicationId);
+    public void deleteApplication(Long id) {
+        Application applicationForDelete = getApplicationOrThrow(id);
 
         applicationForDelete.setState(Application.State.DELETED);
 
@@ -77,8 +84,8 @@ public class ApplicationServiceImpl implements ApplicationsService {
     }
 
     @Override
-    public ApplicationDto publishApplication(Long applicationId) {
-        Application applicationForPublish = getApplicationOrThrow(applicationId);
+    public ApplicationDto publishApplication(Long id) {
+        Application applicationForPublish = getApplicationOrThrow(id);
 
         applicationForPublish.setState(Application.State.ACTIVE);
 
@@ -88,8 +95,13 @@ public class ApplicationServiceImpl implements ApplicationsService {
     }
 
 
-    private Application getApplicationOrThrow(Long applicationId) {
-        return applicationsRepository.findById(applicationId)
-                .orElseThrow(() -> new NotFoundException("Приложение с идентификатором <" + applicationId + "> не найдено"));
+    private Application getApplicationOrThrow(Long id) {
+        return getOrThrow(id, applicationsRepository, "Application");
     }
+
+    private Developer getDeveloperOrThrow(Long id) {
+        return  getOrThrow(id, developersRepository, "Developer");
+    }
+
+
 }

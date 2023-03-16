@@ -1,30 +1,43 @@
 package ru.itis.rusteam.services.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.itis.rusteam.dto.user.NewOrUpdateUserDto;
-import ru.itis.rusteam.dto.user.UserDto;
-import ru.itis.rusteam.dto.user.UsersPage;
-import ru.itis.rusteam.exceptions.NotFoundException;
-import ru.itis.rusteam.models.User;
+import ru.itis.rusteam.dto.account.user.NewOrUpdateUserDto;
+import ru.itis.rusteam.dto.account.user.UserDto;
+import ru.itis.rusteam.models.account.Account;
+import ru.itis.rusteam.models.account.User;
+import ru.itis.rusteam.repositories.AccountsRepository;
 import ru.itis.rusteam.repositories.UsersRepository;
 import ru.itis.rusteam.services.UsersService;
 
+import static ru.itis.rusteam.dto.account.user.UserDto.from;
+import static ru.itis.rusteam.utils.ServicesUtils.getOrThrow;
 
-/**
- * @author Elizaveta Belskaya
- */
 @RequiredArgsConstructor
 @Service
 public class UsersServiceImpl implements UsersService {
-    @Value("${default.page-size}")
-    private int defaultPageSize;
-
 
     private final UsersRepository usersRepository;
+    private final AccountsRepository accountsRepository;
+
+
+    @Override
+    public UserDto addUser(NewOrUpdateUserDto user) {
+        User userToSave = User.builder()
+                .id(user.getAccountId())
+                .account(getAccountOrThrow(user.getAccountId()))
+                .name(user.getName())
+                .surname(user.getSurname())
+                .gender(user.getGender())
+                .birthdayDate(user.getBirthdayDate())
+                .build();
+
+        //TODO - сделать проверку корректности данных
+        usersRepository.save(userToSave);
+
+
+        return from(userToSave);
+    }
 
     @Override
     public UserDto getUserById(Long id) {
@@ -32,47 +45,36 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public UserDto addUser(NewOrUpdateUserDto userDto) {
-        User user = User.builder()
-                .email(userDto.getEmail())
-                .nickname(userDto.getNickname())
-                .build();
-        return UserDto.from(usersRepository.save(user));
+    public UserDto updateUser(Long id, NewOrUpdateUserDto updatedUser) {
+        User userForUpdate = getUserOrThrow(id);
+
+        userForUpdate.setName(updatedUser.getName());
+        userForUpdate.setSurname(updatedUser.getSurname());
+        userForUpdate.setGender(updatedUser.getGender());
+        userForUpdate.setBirthdayDate(updatedUser.getBirthdayDate());
+
+        //TODO - сделать проверку корректности данных
+        usersRepository.save(userForUpdate);
+
+        return from(userForUpdate);
     }
+
 
     @Override
     public void deleteUser(Long id) {
-        User userForDelete = getUserOrThrow(id);
-        userForDelete.setState(User.State.DELETED);
-        usersRepository.save(userForDelete);
-    }
+        getUserOrThrow(id);
 
-    @Override
-    public UsersPage getAllUsers(int page) {
-        PageRequest pageRequest = PageRequest.of(page, defaultPageSize);
-        Page<User> userPage = usersRepository.findAllByStateOrderById(pageRequest, User.State.ALIVE);
-
-        return UsersPage.builder()
-                .lessons(UserDto.from(userPage.getContent()))
-                .totalPagesCount(userPage.getTotalPages())
-                .build();
-
-    }
-
-    @Override
-    public UserDto updateUser(long id, NewOrUpdateUserDto updatedUser) {
-        User userForUpdate = getUserOrThrow(id);
-
-        userForUpdate.setNickname(updatedUser.getNickname());
-        usersRepository.save(userForUpdate);
-        return UserDto.from(userForUpdate);
-
+        //TODO - продумать удаление данных подтаблиц
+        usersRepository.deleteById(id);
     }
 
 
-    private User getUserOrThrow(Long userId) {
-        return usersRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User with id <" + userId + "> not found"));
+    private User getUserOrThrow(Long id) {
+        return getOrThrow(id, usersRepository, "User");
+    }
+
+    private Account getAccountOrThrow(Long id) {
+        return getOrThrow(id, accountsRepository, "Account");
     }
 
 

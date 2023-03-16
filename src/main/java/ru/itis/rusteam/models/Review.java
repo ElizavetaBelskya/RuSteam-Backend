@@ -5,6 +5,7 @@ import lombok.experimental.SuperBuilder;
 import ru.itis.rusteam.models.base.LongIdEntity;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
@@ -17,14 +18,22 @@ import javax.persistence.*;
 @Table(name = "reviews")
 public class Review extends LongIdEntity {
     public enum State {
-        ACTIVE,
-        DRAFT,
-        DELETED
+        DRAFT, ACTIVE, HIDDEN, DELETED
     }
 
-    private Long applicationId;
-    private String reviewText;
+    @ManyToOne(optional = false)
+    private Application application;
+
+
+    @Column(nullable = false,
+            columnDefinition = "text")
+    private String text;
+    @Column(nullable = false)
+    private LocalDateTime publicationTime;
+    @Column(nullable = false,
+            columnDefinition = "int check (rating between 1 and 5)")
     private int rating;
     @Enumerated(value = EnumType.STRING)
+    @Column(nullable = false)
     private State state;
 }

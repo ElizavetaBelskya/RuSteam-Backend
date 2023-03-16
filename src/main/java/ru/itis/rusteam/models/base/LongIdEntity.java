@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
@@ -13,10 +14,12 @@ import javax.persistence.MappedSuperclass;
 @Data
 @MappedSuperclass
 @NoArgsConstructor
-public class LongIdEntity {
+public abstract class LongIdEntity {
 
     @Id
-    @GeneratedValue(generator = "unique_id_in_db")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "unique_id_in_all_db")
     private Long id;
+
+
 
 }

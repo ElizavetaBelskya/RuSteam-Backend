@@ -22,7 +22,7 @@ import ru.itis.rusteam.dto.review.ReviewsPage;
 @RequestMapping("/reviews")
 public interface ReviewsApi {
 
-    @Operation(summary = "Получение списка отзывов")
+    @Operation(summary = "Получение списка отзывов приложения")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Страница с отзывами",
                     content = {
@@ -31,7 +31,8 @@ public interface ReviewsApi {
     })
     @GetMapping
     ResponseEntity<ReviewsPage> getAllReviews(
-            @Parameter(description = "Номер страницы") @RequestParam("page") int page);
+            @Parameter(description = "Номер страницы", example = "1") @RequestParam("page") int page,
+            @Parameter(description = "Идентификатор приложения", example = "1642") @RequestParam("applicationId") Long applicationId);
 
 
     @Operation(summary = "Добавление отзыва")
@@ -65,7 +66,7 @@ public interface ReviewsApi {
     })
     @GetMapping("/{review-id}")
     ResponseEntity<ReviewDto> getReview(
-            @Parameter(description = "Идентификатор отзыва", example = "1")
+            @Parameter(description = "Идентификатор отзыва", example = "1642")
             @PathVariable("review-id") Long reviewId);
 
 
@@ -86,7 +87,7 @@ public interface ReviewsApi {
     })
     @PutMapping("/{review-id}")
     ResponseEntity<ReviewDto> updateReview(
-            @Parameter(description = "Идентификатор отзыва", example = "1") @PathVariable("review-id") Long reviewId,
+            @Parameter(description = "Идентификатор отзыва", example = "1642") @PathVariable("review-id") Long reviewId,
             @RequestBody NewOrUpdateReviewDto updatedReview);
 
 
@@ -102,7 +103,7 @@ public interface ReviewsApi {
     })
     @DeleteMapping("/{review-id}")
     ResponseEntity<?> deleteReview(
-            @Parameter(description = "Идентификатор отзыва", example = "1") @PathVariable("review-id") Long reviewId);
+            @Parameter(description = "Идентификатор отзыва", example = "1642") @PathVariable("review-id") Long reviewId);
 
 
     @Operation(summary = "Публикация отзыва")
@@ -122,7 +123,7 @@ public interface ReviewsApi {
     })
     @PutMapping("/{review-id}/publish")
     ResponseEntity<ReviewDto> publishApplication(
-            @Parameter(description = "Идентификатор отзыва", example = "1") @PathVariable("review-id") Long reviewId);
+            @Parameter(description = "Идентификатор отзыва", example = "1642") @PathVariable("review-id") Long reviewId);
 
 
 }

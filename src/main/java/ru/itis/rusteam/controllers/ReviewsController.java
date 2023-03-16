@@ -8,6 +8,7 @@ import ru.itis.rusteam.controllers.api.ReviewsApi;
 import ru.itis.rusteam.dto.review.NewOrUpdateReviewDto;
 import ru.itis.rusteam.dto.review.ReviewDto;
 import ru.itis.rusteam.dto.review.ReviewsPage;
+import ru.itis.rusteam.models.Application;
 import ru.itis.rusteam.services.ReviewsService;
 
 @RequiredArgsConstructor
@@ -17,9 +18,12 @@ public class ReviewsController implements ReviewsApi {
     private final ReviewsService reviewsService;
 
     @Override
-    public ResponseEntity<ReviewsPage> getAllReviews(int page) {
+    public ResponseEntity<ReviewsPage> getAllReviews(int page, Long applicationId) {
+        Application application = new Application();
+        application.setId(applicationId);
+
         return ResponseEntity
-                .ok(reviewsService.getAllReviews(page));
+                .ok(reviewsService.getAllReviewsForApplication(page, application));
     }
 
     @Override
@@ -31,7 +35,7 @@ public class ReviewsController implements ReviewsApi {
     @Override
     public ResponseEntity<ReviewDto> getReview(Long reviewId) {
         return ResponseEntity
-                .ok(reviewsService.getReview(reviewId));
+                .ok(reviewsService.getReviewById(reviewId));
     }
 
     @Override

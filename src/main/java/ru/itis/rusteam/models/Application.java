@@ -2,6 +2,7 @@ package ru.itis.rusteam.models;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import ru.itis.rusteam.models.account.Developer;
 import ru.itis.rusteam.models.base.LongIdEntity;
 
 import javax.persistence.*;
@@ -18,14 +19,14 @@ import javax.persistence.*;
 public class Application extends LongIdEntity {
 
     public enum State {
-        ACTIVE,
-        DRAFT,
-        DELETED
+        DRAFT, ACTIVE, HIDDEN, DELETED
     }
 
     private String name;
+    private String description;
 
-    private Long companyId;
+    @ManyToOne(optional = false)
+    private Developer developer;
 
 
     @Enumerated(value = EnumType.STRING)
