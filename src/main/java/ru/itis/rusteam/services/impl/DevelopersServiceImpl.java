@@ -24,6 +24,7 @@ public class DevelopersServiceImpl implements DevelopersService {
     @Override
     public DeveloperDto addDeveloper(NewOrUpdateDeveloperDto developer) {
         Developer developerToSave = Developer.builder()
+                .id(developer.getAccountId())
                 .account(getAccountOrThrow(developer.getAccountId()))
                 .name(developer.getName())
                 .description(developer.getDescription())

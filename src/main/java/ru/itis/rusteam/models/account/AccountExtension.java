@@ -16,6 +16,6 @@ public abstract class AccountExtension  {
     private Long id;
 
     @OneToOne(optional = false)
-    @PrimaryKeyJoinColumn
+//    @PrimaryKeyJoinColumn
     private Account account;
 }

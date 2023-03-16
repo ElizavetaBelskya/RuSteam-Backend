@@ -24,6 +24,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public UserDto addUser(NewOrUpdateUserDto user) {
         User userToSave = User.builder()
+                .id(user.getAccountId())
                 .account(getAccountOrThrow(user.getAccountId()))
                 .name(user.getName())
                 .surname(user.getSurname())
