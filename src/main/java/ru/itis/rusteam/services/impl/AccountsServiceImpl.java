@@ -1,6 +1,7 @@
 package ru.itis.rusteam.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.itis.rusteam.dto.account.AccountDto;
 import ru.itis.rusteam.dto.account.NewOrUpdateAccountDto;
@@ -18,12 +19,14 @@ public class AccountsServiceImpl implements AccountsService {
 
     private final AccountsRepository accountsRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Override
     public AccountDto addAccount(NewOrUpdateAccountDto account) {
         Account accountToSave = Account.builder()
                 .email(account.getEmail())
                 .nickname(account.getNickname())
-                .passwordHash(account.getPassword())
+                .passwordHash(passwordEncoder.encode(account.getPassword()))
                 .state(Account.State.NOT_CONFIRMED)
                 .role(Account.Role.USER)
                 .build();

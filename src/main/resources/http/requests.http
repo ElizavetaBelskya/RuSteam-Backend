@@ -1,6 +1,13 @@
-GET http://localhost/users?id=1
 
+
+GET http://localhost/applications/1
+Authorization: Bearer 7493ab38-fe6d-467d-abfb-e02718529eb4
 ###
 
-POST http://localhost/users
-Content-Type: application/json
+
+
+
+POST http://localhost/auth/login
+Content-Type: application/x-www-form-urlencoded
+
+email=example@mail.ru&password=qwerty007
