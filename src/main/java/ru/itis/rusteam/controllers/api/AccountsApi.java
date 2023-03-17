@@ -112,4 +112,8 @@ public interface AccountsApi {
     ResponseEntity<AccountDto> confirmAccount(
             @Parameter(description = "Идентификатор аккаунта", example = "1642") @PathVariable("account-id") Long accountId);
 
+
+//    @PostMapping("/login")
+
+
 }

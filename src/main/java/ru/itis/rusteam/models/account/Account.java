@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 
+
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @AllArgsConstructor
@@ -16,7 +17,7 @@ import java.io.Serializable;
 @Data
 
 @Entity
-@Table(name = "accounts")
+@Table(name = "accounts", schema = "auth")
 public class Account extends LongIdEntity implements Serializable {
 
     public enum State {
@@ -43,5 +44,13 @@ public class Account extends LongIdEntity implements Serializable {
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
+    public boolean isConfirmed() {
+        return this.state.equals(State.CONFIRMED);
+    }
+
+    public boolean isBanned() {
+        return this.state.equals(State.BANNED);
+    }
 
 }
