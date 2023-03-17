@@ -21,11 +21,12 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 
+import static ru.itis.rusteam.security.config.TokenSecurityConfig.AUTHENTICATION_URL;
+
 @Component
 public class TokenAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     public static final String USERNAME_PARAMETER = "email";
-    public static final String AUTHENTICATION_URL = "/auth/login";
 
     private final ObjectMapper objectMapper;
 
@@ -49,8 +50,6 @@ public class TokenAuthenticationFilter extends UsernamePasswordAuthenticationFil
     //TODO из json
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException {
-        response.setContentType("application/json");
-
         String value = UUID.randomUUID().toString();
 
         Optional<Account> account = accountsRepository.findByEmail(authResult.getName());
@@ -63,6 +62,7 @@ public class TokenAuthenticationFilter extends UsernamePasswordAuthenticationFil
             throw new RuntimeException("Account not found");
         }
 
+        response.setContentType("application/json");
         objectMapper.writeValue(response.getOutputStream(), Collections.singletonMap("token", value));
     }
 

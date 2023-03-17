@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
 
-import static ru.itis.rusteam.security.filters.TokenAuthenticationFilter.AUTHENTICATION_URL;
+import static ru.itis.rusteam.security.config.TokenSecurityConfig.AUTHENTICATION_URL;
 
 
 @Component
@@ -38,14 +38,14 @@ public class TokenAuthorizationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } else {
             if (authorizationHeaderUtil.hasAuthorizationToken(request)) {
-                String token = authorizationHeaderUtil.getToken(request);
+                String tokenValue = authorizationHeaderUtil.getToken(request);
 
                 try {
-                    Token userToken = tokensRepository.findByValue(token).orElseThrow();
+                    Token token = tokensRepository.findByValue(tokenValue).orElseThrow();
                     Authentication authentication = new UsernamePasswordAuthenticationToken(
-                            new UserDetailsImpl(userToken.getAccount()),
+                            new UserDetailsImpl(token.getAccount()),
                             null,
-                            Collections.singleton(new SimpleGrantedAuthority(userToken.getAccount().getRole().name()))
+                            Collections.singleton(new SimpleGrantedAuthority(token.getAccount().getRole().name()))
                     );
 
                     SecurityContextHolder.getContext().setAuthentication(authentication);

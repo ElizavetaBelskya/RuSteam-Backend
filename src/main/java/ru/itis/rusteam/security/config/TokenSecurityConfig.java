@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 import ru.itis.rusteam.security.filters.TokenAuthenticationFilter;
 import ru.itis.rusteam.security.filters.TokenAuthorizationFilter;
 
@@ -19,24 +20,35 @@ import ru.itis.rusteam.security.filters.TokenAuthorizationFilter;
 @EnableWebSecurity
 public class TokenSecurityConfig {
 
-    private final PasswordEncoder passwordEncoder;
+    public static final String AUTHENTICATION_URL = "/auth/login";
+    public static final String LOGOUT_URL = "/auth/logout";
 
+
+    private final PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsServiceImpl;
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity,
                                                    TokenAuthenticationFilter tokenAuthenticationFilter,
-                                                   TokenAuthorizationFilter tokenAuthorizationFilter) throws Exception {
+                                                   TokenAuthorizationFilter tokenAuthorizationFilter,
+                                                   LogoutHandler tokenLogoutHandler) throws Exception {
 
         httpSecurity.csrf().disable();
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         httpSecurity.authorizeRequests()
-                .antMatchers("/applications/**").authenticated()
-                .antMatchers("/swagger-ui.html/**").permitAll();
+                .antMatchers("/applications/**", "/auth/logout").authenticated()
+                .antMatchers("/swagger-ui.html/**").permitAll()
+                .and()
+                .logout(logout -> logout
+                        .logoutUrl(LOGOUT_URL)
+                        .addLogoutHandler(tokenLogoutHandler)
+                );
 
-        httpSecurity.addFilter(tokenAuthenticationFilter);
         httpSecurity.addFilterBefore(tokenAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilter(tokenAuthenticationFilter);
+
 
         return httpSecurity.build();
     }

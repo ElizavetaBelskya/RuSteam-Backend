@@ -11,3 +11,8 @@ POST http://localhost/auth/login
 Content-Type: application/x-www-form-urlencoded
 
 email=example@mail.ru&password=qwerty007
+
+###
+
+GET http://localhost/auth/logout
+Authorization: Bearer 0409a597-5f20-4aeb-98d7-2718c4340228
