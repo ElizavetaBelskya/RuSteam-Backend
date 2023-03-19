@@ -11,6 +11,8 @@ import ru.itis.rusteam.dto.review.ReviewsPage;
 import ru.itis.rusteam.models.Application;
 import ru.itis.rusteam.services.ReviewsService;
 
+import javax.validation.Valid;
+
 @RequiredArgsConstructor
 @RestController
 public class ReviewsController implements ReviewsApi {
@@ -27,7 +29,7 @@ public class ReviewsController implements ReviewsApi {
     }
 
     @Override
-    public ResponseEntity<ReviewDto> addReview(NewOrUpdateReviewDto newReview) {
+    public ResponseEntity<ReviewDto> addReview(@Valid NewOrUpdateReviewDto newReview) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(reviewsService.addReview(newReview));
     }
@@ -39,7 +41,7 @@ public class ReviewsController implements ReviewsApi {
     }
 
     @Override
-    public ResponseEntity<ReviewDto> updateReview(Long applicationId, NewOrUpdateReviewDto updatedReview) {
+    public ResponseEntity<ReviewDto> updateReview(Long applicationId,@Valid NewOrUpdateReviewDto updatedReview) {
         return ResponseEntity.accepted()
                 .body(reviewsService.updateReview(applicationId, updatedReview));
     }

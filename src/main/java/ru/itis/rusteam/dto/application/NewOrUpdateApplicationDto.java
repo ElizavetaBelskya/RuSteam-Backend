@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,9 +17,11 @@ import lombok.NoArgsConstructor;
 public class NewOrUpdateApplicationDto {
 
     @Schema(description = "Название приложения", example = "Atomic Heart")
+    @Size(min = 2, max = 32, message = "{application.name.size}")
     private String name;
 
     @Schema(description = "Описание", example = "Игра")
+    @NotEmpty(message = "{application.description.empty}")
     private String description;
 
     @Schema(description = "Идентификатор разработчика", example = "1642")

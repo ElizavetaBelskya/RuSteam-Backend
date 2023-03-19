@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,6 +19,7 @@ public class NewOrUpdateReviewDto {
     private Long applicationId;
 
     @Schema(description = "Текст ревью", example = "Отличное приложение!")
+    @NotEmpty(message = "{review.text.empty}")
     private String text;
 
     @Schema(description = "Рейтинг приложения от 1 до 5", example = "4")

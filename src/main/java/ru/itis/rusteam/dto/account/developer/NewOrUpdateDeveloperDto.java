@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,8 +20,11 @@ public class NewOrUpdateDeveloperDto {
     private Long accountId;
 
     @Schema(description = "Наименование", example = "Oracle")
+    @Size(min = 2, max = 32, message = "{developer.name.size}")
     private String name;
+
     @Schema(description = "Описание", example = "Разрабатываем БД")
+    @NotEmpty(message = "{developer.description.empty}")
     private String description;
 
 }

@@ -10,6 +10,8 @@ import ru.itis.rusteam.dto.application.ApplicationsPage;
 import ru.itis.rusteam.dto.application.NewOrUpdateApplicationDto;
 import ru.itis.rusteam.services.ApplicationsService;
 
+import javax.validation.Valid;
+
 @RequiredArgsConstructor
 @RestController
 public class ApplicationsController implements ApplicationsApi {
@@ -23,7 +25,7 @@ public class ApplicationsController implements ApplicationsApi {
     }
 
     @Override
-    public ResponseEntity<ApplicationDto> addApplication(NewOrUpdateApplicationDto newApplication) {
+    public ResponseEntity<ApplicationDto> addApplication(@Valid NewOrUpdateApplicationDto newApplication) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(applicationsService.addApplication(newApplication));
     }
@@ -35,7 +37,7 @@ public class ApplicationsController implements ApplicationsApi {
     }
 
     @Override
-    public ResponseEntity<ApplicationDto> updateApplication(Long applicationId, NewOrUpdateApplicationDto updatedApplication) {
+    public ResponseEntity<ApplicationDto> updateApplication(Long applicationId,@Valid NewOrUpdateApplicationDto updatedApplication) {
         return ResponseEntity.accepted()
                 .body(applicationsService.updateApplication(applicationId, updatedApplication));
     }
