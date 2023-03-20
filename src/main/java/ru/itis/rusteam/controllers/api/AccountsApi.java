@@ -15,6 +15,8 @@ import ru.itis.rusteam.dto.account.AccountDto;
 import ru.itis.rusteam.dto.account.NewOrUpdateAccountDto;
 import ru.itis.rusteam.dto.exception.ExceptionDto;
 
+import javax.validation.Valid;
+
 @Tags(value = {
         @Tag(name = "Accounts")
 })
@@ -33,7 +35,7 @@ public interface AccountsApi {
     })
     @PostMapping
     ResponseEntity<AccountDto> addAccount(
-            @RequestBody NewOrUpdateAccountDto newAccount);
+            @Valid @RequestBody NewOrUpdateAccountDto newAccount);
 
 
     @Operation(summary = "Получение аккаунта")
@@ -75,7 +77,7 @@ public interface AccountsApi {
     @PutMapping("/{account-id}")
     ResponseEntity<AccountDto> updateAccount(
             @Parameter(description = "Идентификатор аккаунта", example = "1642") @PathVariable("account-id") Long accountId,
-            @RequestBody NewOrUpdateAccountDto updatedAccount);
+            @Valid @RequestBody NewOrUpdateAccountDto updatedAccount);
 
 
     @Operation(summary = "Удаление аккаунта")

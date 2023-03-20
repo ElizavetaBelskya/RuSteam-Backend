@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
@@ -17,10 +18,12 @@ import javax.validation.constraints.Size;
 public class NewOrUpdateDeveloperDto {
 
     @Schema(description = "Идентификатор аккаунта", example = "1642")
+    @NotNull(message = "{accountId.null}")
     private Long accountId;
 
     @Schema(description = "Наименование", example = "Oracle")
-    @Size(min = 2, max = 32, message = "{developer.name.size}")
+    @NotNull(message = "{developer.name.null}")
+    @Size(min = 2, max = 100, message = "{developer.name.size}")
     private String name;
 
     @Schema(description = "Описание", example = "Разрабатываем БД")

@@ -1,6 +1,7 @@
 package ru.itis.rusteam.validation.responses;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +13,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ValidationErrorDto {
-    private String field;
-    private String object;
+    @Schema(description = "Наименование поля", example = "email")
+    private String fieldName;
+    @Schema(description = "Наименование объекта", example = "Account")
+    private String objectName;
+    @Schema(description = "Сообщение", example = "Некорректный email")
     private String message;
 }

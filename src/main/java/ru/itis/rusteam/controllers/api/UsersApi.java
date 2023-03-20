@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.itis.rusteam.dto.account.user.NewOrUpdateUserDto;
 import ru.itis.rusteam.dto.account.user.UserDto;
 
+import javax.validation.Valid;
+
 @Tags(value = {
         @Tag(name = "users")
 })
@@ -31,5 +33,5 @@ public interface UsersApi {
     })
     @PostMapping
     ResponseEntity<UserDto> addUser(
-            @RequestBody NewOrUpdateUserDto newUser);
+            @Valid @RequestBody NewOrUpdateUserDto newUser);
 }

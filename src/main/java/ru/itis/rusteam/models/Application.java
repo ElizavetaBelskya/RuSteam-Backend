@@ -22,7 +22,9 @@ public class Application extends LongIdEntity {
         DRAFT, ACTIVE, HIDDEN, DELETED
     }
 
+    @Column(nullable = false)
     private String name;
+    @Column(columnDefinition = "text")
     private String description;
 
     @ManyToOne(optional = false)
@@ -30,5 +32,6 @@ public class Application extends LongIdEntity {
 
 
     @Enumerated(value = EnumType.STRING)
+    @Column(nullable = false)
     private State state;
 }
