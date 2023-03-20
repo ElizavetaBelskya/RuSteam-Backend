@@ -18,16 +18,16 @@ import javax.validation.constraints.Size;
 public class NewOrUpdateDeveloperDto {
 
     @Schema(description = "Идентификатор аккаунта", example = "1642")
-    @NotNull(message = "{accountId.null}")
+    @NotNull(message = "{dto.null}")
     private Long accountId;
 
     @Schema(description = "Наименование", example = "Oracle")
-    @NotNull(message = "{developer.name.null}")
-    @Size(min = 2, max = 100, message = "{developer.name.size}")
+    @NotNull(message = "{dto.null}")
+    @Size(min = 1, max = 100, message = "{developer.name.size}")
     private String name;
 
     @Schema(description = "Описание", example = "Разрабатываем БД")
-    @NotEmpty(message = "{developer.description.empty}")
+    @NotEmpty(message = "{dto.null}")
     private String description;
 
 }

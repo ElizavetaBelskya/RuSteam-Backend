@@ -17,19 +17,19 @@ import javax.validation.constraints.Size;
 @Schema(description = "Новый аккаунт/изменение аккаунта")
 public class NewOrUpdateAccountDto {
     @Schema(description = "Электронная почта", example = "example@mail.ru")
-    @NotNull(message = "{account.email.null}")
+    @NotNull(message = "{dto.null}")
     @Email(regexp = "^[\\w\\-\\.]+@[\\w-]+\\.[\\w-]{2,4}$", message = "{account.email.pattern}")
     private String email;
 
     @Schema(description = "Псевдоним", example = "PresidentCheese")
-    @NotNull(message = "{account.nickname.null}")
+    @NotNull(message = "{dto.null}")
     @Size(min = 5, max = 32, message = "{account.nickname.size}")
     //TODO - сделать регулярное выражение на псевдоним
     private String nickname;
 
     @Schema(description = "Пароль", example = "qwerty007")
-    @NotNull(message = "{account.password.null}")
-    @Size(min = 8, max = 100, message = "{account.password.size}")
+    @NotNull(message = "{dto.null}")
+    @Size(min = 8, max = 40, message = "{account.password.size}")
     private String password;
 
 }

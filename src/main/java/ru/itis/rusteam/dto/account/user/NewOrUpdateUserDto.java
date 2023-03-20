@@ -18,7 +18,7 @@ public class NewOrUpdateUserDto {
 
 
     @Schema(description = "Идентификатор аккаунта", example = "1642")
-    @NotNull(message = "{accountId.null}")
+    @NotNull(message = "{dto.null}")
     private Long accountId;
 
     @Schema(description = "Имя", example = "Иван")

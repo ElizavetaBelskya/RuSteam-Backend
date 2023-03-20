@@ -13,6 +13,8 @@ public class ValidationConfig {
 
         messageSource.setBasename("classpath:messages");
         messageSource.setDefaultEncoding("UTF-8");
+        messageSource.setUseCodeAsDefaultMessage(false);
+        messageSource.setCacheSeconds(0);
 
         return messageSource;
     }
