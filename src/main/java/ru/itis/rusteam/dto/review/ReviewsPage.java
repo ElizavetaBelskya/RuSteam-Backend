@@ -16,7 +16,7 @@ import java.util.List;
 public class ReviewsPage {
     @Schema(description = "Cписок отзывов")
     private List<ReviewDto> reviews;
-    @Schema(description = "общее количество страниц", example = "5")
+    @Schema(description = "Общее количество страниц", example = "5")
     private Integer totalPagesCount;
 
 }

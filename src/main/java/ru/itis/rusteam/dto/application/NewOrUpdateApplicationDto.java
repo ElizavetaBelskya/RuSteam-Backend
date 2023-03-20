@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
@@ -17,7 +18,8 @@ import javax.validation.constraints.Size;
 public class NewOrUpdateApplicationDto {
 
     @Schema(description = "Название приложения", example = "Atomic Heart")
-    @Size(min = 2, max = 32, message = "{application.name.size}")
+    @NotNull(message = "{application.name.null}")
+    @Size(min = 2, max = 200, message = "{application.name.size}")
     private String name;
 
     @Schema(description = "Описание", example = "Игра")
@@ -25,5 +27,6 @@ public class NewOrUpdateApplicationDto {
     private String description;
 
     @Schema(description = "Идентификатор разработчика", example = "1642")
+    @NotNull(message = "{developerId.notNull}")
     private Long developerId;
 }

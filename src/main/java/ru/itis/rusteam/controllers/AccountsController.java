@@ -9,7 +9,6 @@ import ru.itis.rusteam.dto.account.AccountDto;
 import ru.itis.rusteam.dto.account.NewOrUpdateAccountDto;
 import ru.itis.rusteam.services.AccountsService;
 
-import javax.validation.Valid;
 
 
 @RequiredArgsConstructor
@@ -20,7 +19,7 @@ public class AccountsController implements AccountsApi {
 
 
     @Override
-    public ResponseEntity<AccountDto> addAccount(@Valid NewOrUpdateAccountDto newAccount) {
+    public ResponseEntity<AccountDto> addAccount(NewOrUpdateAccountDto newAccount) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(accountsService.addAccount(newAccount));
     }
@@ -32,7 +31,7 @@ public class AccountsController implements AccountsApi {
     }
 
     @Override
-    public ResponseEntity<AccountDto> updateAccount(Long accountId,@Valid NewOrUpdateAccountDto updatedAccount) {
+    public ResponseEntity<AccountDto> updateAccount(Long accountId, NewOrUpdateAccountDto updatedAccount) {
         return ResponseEntity.accepted()
                 .body(accountsService.updateAccount(accountId, updatedAccount));
     }

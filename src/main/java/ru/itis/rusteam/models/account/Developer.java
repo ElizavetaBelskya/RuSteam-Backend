@@ -20,7 +20,8 @@ import javax.persistence.Table;
 @Table(name = "developers")
 public class Developer extends AccountExtension  {
 
+    @Column(nullable = false)
     private String name;
-    @Column(columnDefinition = "text")
+    @Column(nullable = false, columnDefinition = "text")
     private String description;
 }

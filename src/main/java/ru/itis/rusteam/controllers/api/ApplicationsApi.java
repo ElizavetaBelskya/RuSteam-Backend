@@ -16,6 +16,8 @@ import ru.itis.rusteam.dto.application.ApplicationsPage;
 import ru.itis.rusteam.dto.exception.ExceptionDto;
 import ru.itis.rusteam.dto.application.NewOrUpdateApplicationDto;
 
+import javax.validation.Valid;
+
 @Tags(value = {
         @Tag(name = "Applications")
 })
@@ -45,7 +47,7 @@ public interface ApplicationsApi {
     })
     @PostMapping
     ResponseEntity<ApplicationDto> addApplication(
-            @RequestBody NewOrUpdateApplicationDto newApplication);
+            @Valid @RequestBody NewOrUpdateApplicationDto newApplication);
 
 
     @Operation(summary = "Получение приложения")
@@ -87,7 +89,7 @@ public interface ApplicationsApi {
     @PutMapping("/{application-id}")
     ResponseEntity<ApplicationDto> updateApplication(
             @Parameter(description = "Идентификатор приложения", example = "1642") @PathVariable("application-id") Long applicationId,
-            @RequestBody NewOrUpdateApplicationDto updatedApplication);
+            @Valid @RequestBody NewOrUpdateApplicationDto updatedApplication);
 
 
     @Operation(summary = "Удаление приложения")

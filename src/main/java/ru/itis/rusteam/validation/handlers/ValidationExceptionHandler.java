@@ -1,5 +1,6 @@
 package ru.itis.rusteam.validation.handlers;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,20 +15,29 @@ import java.util.List;
 @ControllerAdvice
 public class ValidationExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ValidationErrorsDto> handleNotFound(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ValidationErrorsDto> handleControllerValidationError(MethodArgumentNotValidException ex) {
         List<ValidationErrorDto> errors = new ArrayList<>();
 
         ex.getBindingResult().getAllErrors().forEach(error -> {
             String errorMessage = error.getDefaultMessage();
-            String fieldName = ((FieldError) error).getField();
-            
+
+            String fieldName = null;
+            String objectName = error.getObjectName();
+
+            if (error instanceof FieldError) {
+                fieldName = ((FieldError)error).getField();
+            }
             ValidationErrorDto errorDto = ValidationErrorDto.builder()
                     .message(errorMessage)
-                    .field(fieldName)
+                    .fieldName(fieldName)
+                    .objectName(objectName)
                     .build();
+
             errors.add(errorDto);
         });
-        return ResponseEntity.ok(ValidationErrorsDto.builder()
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ValidationErrorsDto.builder()
                 .errors(errors)
                 .build());
     }
