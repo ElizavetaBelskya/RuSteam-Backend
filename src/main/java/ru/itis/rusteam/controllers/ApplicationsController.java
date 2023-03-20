@@ -10,6 +10,7 @@ import ru.itis.rusteam.dto.application.ApplicationsPage;
 import ru.itis.rusteam.dto.application.NewOrUpdateApplicationDto;
 import ru.itis.rusteam.services.ApplicationsService;
 
+
 @RequiredArgsConstructor
 @RestController
 public class ApplicationsController implements ApplicationsApi {

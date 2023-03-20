@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,11 +17,15 @@ import lombok.NoArgsConstructor;
 public class NewOrUpdateReviewDto {
 
     @Schema(description = "Идентификатор приложения", example = "1642")
+    @NotNull(message = "{dto.null}")
     private Long applicationId;
 
-    @Schema(description = "Текст ревью", example = "Отличное приложение!")
+    @Schema(description = "Текст отзыва", example = "Отличное приложение!")
+    @NotNull(message = "{dto.null}")
+    @Size(max = 1000, message = "{review.text.size}")
     private String text;
 
     @Schema(description = "Рейтинг приложения от 1 до 5", example = "4")
+    @NotNull(message = "{dto.null}")
     private int rating;
 }

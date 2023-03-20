@@ -10,6 +10,7 @@ import ru.itis.rusteam.dto.account.NewOrUpdateAccountDto;
 import ru.itis.rusteam.services.AccountsService;
 
 
+
 @RequiredArgsConstructor
 @RestController
 public class AccountsController implements AccountsApi {

@@ -16,6 +16,8 @@ import ru.itis.rusteam.dto.review.NewOrUpdateReviewDto;
 import ru.itis.rusteam.dto.review.ReviewDto;
 import ru.itis.rusteam.dto.review.ReviewsPage;
 
+import javax.validation.Valid;
+
 @Tags(value = {
         @Tag(name = "Reviews")
 })
@@ -46,7 +48,7 @@ public interface ReviewsApi {
     })
     @PostMapping
     ResponseEntity<ReviewDto> addReview(
-            @RequestBody NewOrUpdateReviewDto newReview);
+            @Valid @RequestBody NewOrUpdateReviewDto newReview);
 
 
     @Operation(summary = "Получение отзыва")
@@ -88,7 +90,7 @@ public interface ReviewsApi {
     @PutMapping("/{review-id}")
     ResponseEntity<ReviewDto> updateReview(
             @Parameter(description = "Идентификатор отзыва", example = "1642") @PathVariable("review-id") Long reviewId,
-            @RequestBody NewOrUpdateReviewDto updatedReview);
+            @Valid @RequestBody NewOrUpdateReviewDto updatedReview);
 
 
     @Operation(summary = "Удаление отзыва")
