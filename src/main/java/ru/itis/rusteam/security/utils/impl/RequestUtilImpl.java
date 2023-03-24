@@ -1,6 +1,7 @@
-package ru.itis.rusteam.security.utils;
+package ru.itis.rusteam.security.utils.impl;
 
 import org.springframework.stereotype.Component;
+import ru.itis.rusteam.security.utils.AuthorizationHeaderUtil;
 
 import javax.servlet.http.HttpServletRequest;
 
