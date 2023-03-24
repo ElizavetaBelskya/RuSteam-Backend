@@ -17,7 +17,7 @@ import java.io.Serializable;
 @Data
 
 @Entity
-@Table(name = "accounts", schema = "auth")
+@Table(name = "accounts")
 public class Account extends LongIdEntity implements Serializable {
 
     public enum State {

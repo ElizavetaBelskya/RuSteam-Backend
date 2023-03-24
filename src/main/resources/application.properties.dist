@@ -13,3 +13,7 @@ logging.level.org.springframework.web=TRACE
 server.port=80
 
 default.page-size=3
+
+jwt.secret=
+jwt.access_token.expires_time=
+jwt.refresh_token.expires_time=

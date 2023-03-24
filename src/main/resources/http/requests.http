@@ -1,11 +1,15 @@
 
 
 GET http://localhost/applications/1
-Authorization: Bearer 7493ab38-fe6d-467d-abfb-e02718529eb4
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQG1haWwucnUiLCJyb2xlIjoiVVNFUiIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3QvYXV0aC9sb2dpbiIsImV4cCI6MTY3OTY0NDUwOH0.Nxm3L44sNPNpTofJ5v-76oKxyjW0irI6vNbO4Kb2-JY
 ###
 
 
-
+#{
+#  "accessToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQG1haWwucnUiLCJyb2xlIjoiVVNFUiIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3QvYXV0aC9sb2dpbiIsImV4cCI6MTY3OTY0NDUwOH0.Nxm3L44sNPNpTofJ5v-76oKxyjW0irI6vNbO4Kb2-JY",
+#  "refreshToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQG1haWwucnUiLCJyb2xlIjoiVVNFUiIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3QvYXV0aC9sb2dpbiIsImV4cCI6MTY3OTY0NDk4OH0.P9u6n7tzWvrC4v27ZDBjNcMa96KmcoPpNYCFR20wZkg"
+#}
+###
 
 POST http://localhost/auth/login
 Content-Type: application/x-www-form-urlencoded
@@ -14,5 +18,10 @@ email=example@mail.ru&password=qwerty007
 
 ###
 
-GET http://localhost/auth/logout
+POST http://localhost/auth/login
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQG1haWwucnUiLCJyb2xlIjoiVVNFUiIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3QvYXV0aC9sb2dpbiIsImV4cCI6MTY3OTY0NDk4OH0.P9u6n7tzWvrC4v27ZDBjNcMa96KmcoPpNYCFR20wZkg
+
+###
+
+POST http://localhost/auth/logout
 Authorization: Bearer 0409a597-5f20-4aeb-98d7-2718c4340228
