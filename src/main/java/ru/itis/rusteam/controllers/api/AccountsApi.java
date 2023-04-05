@@ -31,6 +31,12 @@ public interface AccountsApi {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = AccountDto.class))
                     }
+            ),
+            @ApiResponse(responseCode = "401", description = "Введенный email уже используется",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = AccountDto.class))
+                    }
             )
     })
     @PostMapping

@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.itis.rusteam.dto.exception.ExceptionDto;
+import ru.itis.rusteam.exceptions.EmailAlreadyInUseException;
+import ru.itis.rusteam.exceptions.NotAllowedException;
 import ru.itis.rusteam.exceptions.NotFoundException;
 
 /**
@@ -20,6 +22,24 @@ public class RestExceptionHandler {
                 .body(ExceptionDto.builder()
                         .message(ex.getMessage())
                         .status(HttpStatus.NOT_FOUND.value())
+                        .build());
+    }
+
+    @ExceptionHandler(EmailAlreadyInUseException.class)
+    public ResponseEntity<ExceptionDto> handleEmailAlreadyInUse(EmailAlreadyInUseException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(ExceptionDto.builder()
+                        .message(ex.getMessage())
+                        .status(HttpStatus.UNAUTHORIZED.value())
+                        .build());
+    }
+
+    @ExceptionHandler(NotAllowedException.class)
+    public ResponseEntity<ExceptionDto> handleNotAllowed(NotAllowedException ex) {
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
+                .body(ExceptionDto.builder()
+                        .message(ex.getMessage())
+                        .status(HttpStatus.METHOD_NOT_ALLOWED.value())
                         .build());
     }
 

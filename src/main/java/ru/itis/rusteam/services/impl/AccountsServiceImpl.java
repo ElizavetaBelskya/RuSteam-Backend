@@ -5,12 +5,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.itis.rusteam.dto.account.AccountDto;
 import ru.itis.rusteam.dto.account.NewOrUpdateAccountDto;
+import ru.itis.rusteam.exceptions.EmailAlreadyInUseException;
 import ru.itis.rusteam.models.account.Account;
 import ru.itis.rusteam.repositories.AccountsRepository;
 import ru.itis.rusteam.services.AccountsService;
 
 import static ru.itis.rusteam.dto.account.AccountDto.from;
-import static ru.itis.rusteam.utils.ServicesUtils.getOrThrow;
+import static ru.itis.rusteam.utils.ServicesUtils.*;
 
 
 @RequiredArgsConstructor
@@ -23,6 +24,9 @@ public class AccountsServiceImpl implements AccountsService {
 
     @Override
     public AccountDto addAccount(NewOrUpdateAccountDto account) {
+        if (isEmailInUse(account.getEmail())) {
+            throw new EmailAlreadyInUseException("Email <" + account.getEmail() + "> is already in use");
+        }
         Account accountToSave = Account.builder()
                 .email(account.getEmail())
                 .nickname(account.getNickname())
@@ -79,7 +83,6 @@ public class AccountsServiceImpl implements AccountsService {
     }
 
 
-
     private Account changeState(Account account, Account.State newState) {
         account.setState(newState);
         accountsRepository.save(account);
@@ -91,6 +94,9 @@ public class AccountsServiceImpl implements AccountsService {
         return getOrThrow(id, accountsRepository, "Account");
     }
 
+    private boolean isEmailInUse(String email) {
+        return accountsRepository.findByEmail(email).isPresent();
+    }
 
 
 }
