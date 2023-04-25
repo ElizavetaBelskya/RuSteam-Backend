@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import ru.itis.rusteam.security.authentication.RefreshTokenAuthentication;
 import ru.itis.rusteam.security.exceptions.JWTVerificationException;
 import ru.itis.rusteam.security.exceptions.RefreshTokenException;
+import ru.itis.rusteam.security.repositories.BlackListRepository;
 import ru.itis.rusteam.security.utils.JwtUtil;
 
 @RequiredArgsConstructor
@@ -18,10 +19,15 @@ import ru.itis.rusteam.security.utils.JwtUtil;
 public class RefreshTokenAuthenticationProvider implements AuthenticationProvider {
 
     private final JwtUtil jwtUtil;
+    private final BlackListRepository blackListRepository;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String refreshTokenValue = (String) authentication.getCredentials();
+
+        if (blackListRepository.exists(refreshTokenValue)){
+            throw new RefreshTokenException("Token was revoked");
+        }
         try {
             return jwtUtil.buildAuthentication(refreshTokenValue);
         } catch (JWTVerificationException e) {

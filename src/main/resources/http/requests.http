@@ -1,7 +1,7 @@
 
 
 GET http://localhost/applications/1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQG1haWwucnUiLCJyb2xlIjoiVVNFUiIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3QvYXV0aC9sb2dpbiIsImV4cCI6MTY3OTY0NDUwOH0.Nxm3L44sNPNpTofJ5v-76oKxyjW0irI6vNbO4Kb2-JY
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aW1lcmhlbG11dEBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3QvYXV0aC9sb2dpbiIsImV4cCI6MTY4MjQ0Njc2NX0.9WBPl_T9xoxO7ni7cy-lfxJUlNSZoHvVcca12SDlp6c
 ###
 
 
@@ -14,14 +14,18 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQ
 POST http://localhost/auth/login
 Content-Type: application/x-www-form-urlencoded
 
-email=example@mail.ru&password=qwerty007
+email=timerhelmut@gmail.com&password=qwerty007
 
 ###
 
 POST http://localhost/auth/login
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQG1haWwucnUiLCJyb2xlIjoiVVNFUiIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3QvYXV0aC9sb2dpbiIsImV4cCI6MTY3OTY0NDk4OH0.P9u6n7tzWvrC4v27ZDBjNcMa96KmcoPpNYCFR20wZkg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aW1lcmhlbG11dEBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3QvYXV0aC9sb2dpbiIsImV4cCI6MTY3OTg1MDk3MH0.kbQl_vAMZK1by4KOyNs-IAYO2XJa7iDHauuM3hb01Uk
 
 ###
 
 POST http://localhost/auth/logout
 Authorization: Bearer 0409a597-5f20-4aeb-98d7-2718c4340228
+
+###
+POST http://localhost/auth/token/revoke
+Authorization: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0aW1lcmhlbG11dEBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3QvYXV0aC9sb2dpbiIsImV4cCI6MTY4MjQ0NzMxM30.Co9-HkIpDdOnPwXGnQ9aLpee4lmsED7ecB3fVBOzats
