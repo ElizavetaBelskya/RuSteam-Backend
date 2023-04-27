@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 
 import static ru.itis.rusteam.security.filters.JwtAuthenticationFilter.USERNAME_PARAMETER;
 import static ru.itis.rusteam.security.config.TokenSecurityConfig.AUTHENTICATION_URL;
+import static ru.itis.rusteam.security.filters.JwtRevokeFilter.REVOKE_TOKEN_URL;
 
 
 /**
@@ -36,7 +37,8 @@ public class OpenApiConfig {
 
     private Paths buildAuthenticationPath() {
         return new Paths()
-                .addPathItem(AUTHENTICATION_URL, buildAuthenticationPathItem());
+                .addPathItem(AUTHENTICATION_URL, buildAuthenticationPathItem())
+                .addPathItem(REVOKE_TOKEN_URL, buildLogoutPathItem());
     }
 
     private PathItem buildAuthenticationPathItem() {
@@ -67,13 +69,42 @@ public class OpenApiConfig {
                                                                 .$ref("Tokens")))))
                 .addApiResponse("401",
                         new ApiResponse()
-                                .description("Bad Unauthorized")
+                                .description("Unauthorized")
                                 .content(new Content()
                                         .addMediaType("application/json",
                                                 new MediaType()
                                                         .schema(new Schema<>()
                                                                 .$ref("Error")))));
     }
+
+    private PathItem buildLogoutPathItem() {
+        return new PathItem().post(
+                new Operation()
+                        .addTagsItem("Authentication")
+                        .requestBody(buildLogoutRequestBody())
+                        .responses(buildLogoutResponses()));
+    }
+
+    private RequestBody buildLogoutRequestBody() {
+        return new RequestBody().content(new Content());
+    }
+
+    private ApiResponses buildLogoutResponses() {
+        return new ApiResponses()
+                .addApiResponse("200",
+                        new ApiResponse()
+                                .description("Logout successful")
+                                )
+                .addApiResponse("400",
+                        new ApiResponse()
+                                .description("Bad Request")
+                                .content(new Content()
+                                        .addMediaType("application/json",
+                                                new MediaType()
+                                                        .schema(new Schema<>()
+                                                                .$ref("Error")))));
+    }
+
 
 
     private SecurityRequirement buildSecurity() {
