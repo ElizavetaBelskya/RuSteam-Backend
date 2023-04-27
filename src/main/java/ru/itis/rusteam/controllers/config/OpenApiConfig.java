@@ -65,25 +65,9 @@ public class OpenApiConfig {
                                                 new MediaType()
                                                         .schema(new Schema<>()
                                                                 .$ref("Tokens")))))
-                .addApiResponse("400",
-                        new ApiResponse()
-                                .description("Bad Request")
-                                .content(new Content()
-                                        .addMediaType("application/json",
-                                                new MediaType()
-                                                        .schema(new Schema<>()
-                                                                .$ref("Error")))))
                 .addApiResponse("401",
                         new ApiResponse()
-                                .description("Unauthorized")
-                                .content(new Content()
-                                        .addMediaType("application/json",
-                                                new MediaType()
-                                                        .schema(new Schema<>()
-                                                                .$ref("Error")))))
-                .addApiResponse("403",
-                        new ApiResponse()
-                                .description("Forbidden")
+                                .description("Bad Unauthorized")
                                 .content(new Content()
                                         .addMediaType("application/json",
                                                 new MediaType()
@@ -102,7 +86,11 @@ public class OpenApiConfig {
 
     private Components buildComponents() {
         Schema<?> error = new Schema<>().type("object").description("")
-                .addProperty("message", new Schema<>().type("string"));
+                .addProperty("timestamp", new Schema<>().type("integer"))
+                .addProperty("status", new Schema<>().type("integer"))
+                .addProperty("error", new Schema<>().type("string"))
+                .addProperty("path", new Schema<>().type("string"));
+
 
         Schema<?> emailAndPassword = new Schema<>()
                 .type("object").description("The email and password")
