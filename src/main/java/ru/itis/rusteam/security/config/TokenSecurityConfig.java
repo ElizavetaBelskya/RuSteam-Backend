@@ -14,6 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ru.itis.rusteam.security.filters.JwtAuthenticationFilter;
 import ru.itis.rusteam.security.filters.JwtAuthorizationFilter;
+import ru.itis.rusteam.security.filters.JwtRevokeFilter;
 
 
 @RequiredArgsConstructor
@@ -31,7 +32,8 @@ public class TokenSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity,
                                                    JwtAuthenticationFilter jwtAuthenticationFilter,
-                                                   JwtAuthorizationFilter jwtAuthorizationFilter) throws Exception {
+                                                   JwtAuthorizationFilter jwtAuthorizationFilter,
+                                                   JwtRevokeFilter jwtRevokeFilter) throws Exception {
 
         httpSecurity.csrf().disable();
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -42,6 +44,7 @@ public class TokenSecurityConfig {
 
         httpSecurity.addFilter(jwtAuthenticationFilter);
         httpSecurity.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(jwtRevokeFilter, JwtAuthenticationFilter.class);
 
         return httpSecurity.build();
     }
