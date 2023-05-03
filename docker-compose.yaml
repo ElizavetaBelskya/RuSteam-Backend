@@ -1,0 +1,28 @@
+version: '3.3'
+
+services:
+  database:
+    image: postgres
+    container_name: rusteam_database_1
+    ports:
+      - "5431:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=RuSteam
+    volumes:
+      - rusteam_postgres_volume:/var/lib/postgresql/data
+
+  redis:
+    image: rusteam_redis
+    container_name: rusteam_redis_1
+    ports:
+      - "6380:6380"
+    volumes:
+      - rusteam_redis_volume:/data
+
+volumes:
+  rusteam_postgres_volume:
+    external: true
+  rusteam_redis_volume:
+    external: true
