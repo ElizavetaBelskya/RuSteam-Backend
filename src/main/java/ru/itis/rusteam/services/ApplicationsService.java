@@ -19,7 +19,7 @@ public interface ApplicationsService {
 
     ApplicationDto publishApplication(Long id);
 
-    ApplicationsPage getAllApplicationsByDeveloper(Developer developer, int page);
+    ApplicationsPage getAllApplicationsByDeveloperId(Long id, int page);
 
 
 }

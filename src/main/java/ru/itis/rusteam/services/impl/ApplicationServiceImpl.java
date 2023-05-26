@@ -107,8 +107,9 @@ public class ApplicationServiceImpl implements ApplicationsService {
     }
 
     @Override
-    public ApplicationsPage getAllApplicationsByDeveloper(Developer developer, int page) {
+    public ApplicationsPage getAllApplicationsByDeveloperId(Long id, int page) {
         PageRequest pageRequest = PageRequest.of(page, defaultPageSize);
+        Developer developer = getDeveloperOrThrow(id);
         Page<Application> applicationsPage = applicationsRepository.findAllByDeveloper(pageRequest, developer);
 
         return ApplicationsPage.builder()
