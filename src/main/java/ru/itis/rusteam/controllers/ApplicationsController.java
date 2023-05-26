@@ -8,6 +8,7 @@ import ru.itis.rusteam.controllers.api.ApplicationsApi;
 import ru.itis.rusteam.dto.application.ApplicationDto;
 import ru.itis.rusteam.dto.application.ApplicationsPage;
 import ru.itis.rusteam.dto.application.NewOrUpdateApplicationDto;
+import ru.itis.rusteam.models.account.Developer;
 import ru.itis.rusteam.services.ApplicationsService;
 
 
@@ -21,6 +22,11 @@ public class ApplicationsController implements ApplicationsApi {
     public ResponseEntity<ApplicationsPage> getAllApplications(int page) {
         return ResponseEntity
                 .ok(applicationsService.getAllApplications(page));
+    }
+
+    @Override
+    public ResponseEntity<ApplicationsPage> getAllApplicationsByDeveloper(Developer developer, int page){
+        return ResponseEntity.ok(applicationsService.getAllApplicationsByDeveloper(developer, page));
     }
 
     @Override
