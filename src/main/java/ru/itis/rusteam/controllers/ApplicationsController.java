@@ -25,11 +25,6 @@ public class ApplicationsController implements ApplicationsApi {
     }
 
     @Override
-    public ResponseEntity<ApplicationsPage> getAllApplicationsByDeveloper(Developer developer, int page){
-        return ResponseEntity.ok(applicationsService.getAllApplicationsByDeveloper(developer, page));
-    }
-
-    @Override
     public ResponseEntity<ApplicationDto> addApplication(NewOrUpdateApplicationDto newApplication) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(applicationsService.addApplication(newApplication));
