@@ -3,6 +3,7 @@ package ru.itis.rusteam.services;
 import ru.itis.rusteam.dto.application.ApplicationDto;
 import ru.itis.rusteam.dto.application.ApplicationsPage;
 import ru.itis.rusteam.dto.application.NewOrUpdateApplicationDto;
+import ru.itis.rusteam.models.account.Developer;
 
 public interface ApplicationsService {
 
@@ -17,6 +18,8 @@ public interface ApplicationsService {
     void deleteApplication(Long id);
 
     ApplicationDto publishApplication(Long id);
+
+    ApplicationsPage getAllApplicationsByDeveloper(Developer developer, int page);
 
 
 }
