@@ -15,6 +15,7 @@ import ru.itis.rusteam.dto.application.ApplicationDto;
 import ru.itis.rusteam.dto.application.ApplicationsPage;
 import ru.itis.rusteam.dto.exception.ExceptionDto;
 import ru.itis.rusteam.dto.application.NewOrUpdateApplicationDto;
+import ru.itis.rusteam.models.account.Developer;
 
 import javax.validation.Valid;
 
@@ -33,6 +34,18 @@ public interface ApplicationsApi {
     })
     @GetMapping
     ResponseEntity<ApplicationsPage> getAllApplications(
+            @Parameter(description = "Номер страницы", example = "1") @RequestParam("page") int page);
+
+    @Operation(summary = "Получение списка приложений разработчика")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Страница с приложениями разработчика",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ApplicationsPage.class))
+                    })
+    })
+    @GetMapping
+    ResponseEntity<ApplicationsPage> getAllApplicationsByDeveloper(
+            @Parameter(description = "Разработчик", example = "Valve") @RequestParam("developer")Developer developer,
             @Parameter(description = "Номер страницы", example = "1") @RequestParam("page") int page);
 
 

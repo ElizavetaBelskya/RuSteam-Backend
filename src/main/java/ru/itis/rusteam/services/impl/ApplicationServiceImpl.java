@@ -94,6 +94,17 @@ public class ApplicationServiceImpl implements ApplicationsService {
         return from(applicationForPublish);
     }
 
+    @Override
+    public ApplicationsPage getAllApplicationsByDeveloper(Developer developer, int page) {
+        PageRequest pageRequest = PageRequest.of(page, defaultPageSize);
+        Page<Application> applicationsPage = applicationsRepository.findAllByDeveloper(pageRequest, developer);
+
+        return ApplicationsPage.builder()
+                .applications(from(applicationsPage.getContent()))
+                .totalPagesCount(applicationsPage.getTotalPages())
+                .build();
+    }
+
 
     private Application getApplicationOrThrow(Long id) {
         return getOrThrow(id, applicationsRepository, "Application");
