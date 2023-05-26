@@ -2,6 +2,7 @@ package ru.itis.rusteam.models;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import ru.itis.rusteam.dto.application.ActionDates;
 import ru.itis.rusteam.models.account.Developer;
 import ru.itis.rusteam.models.base.LongIdEntity;
 
@@ -34,4 +35,7 @@ public class Application extends LongIdEntity {
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
     private State state;
+
+    @Embedded
+    private ActionDates dates;
 }

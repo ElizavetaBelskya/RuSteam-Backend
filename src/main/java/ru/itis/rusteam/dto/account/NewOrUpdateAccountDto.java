@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.itis.rusteam.dto.application.ActionDates;
 
+import javax.persistence.Embedded;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -32,4 +34,7 @@ public class NewOrUpdateAccountDto {
     @Size(min = 8, max = 40, message = "{account.password.size}")
     private String password;
 
+    @Schema(description = "Даты публикации и последнего обновления приложения")
+    @Embedded
+    private ActionDates dates;
 }

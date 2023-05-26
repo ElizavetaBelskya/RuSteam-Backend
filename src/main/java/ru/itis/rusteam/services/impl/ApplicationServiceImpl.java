@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import ru.itis.rusteam.dto.application.ActionDates;
 import ru.itis.rusteam.dto.application.ApplicationDto;
 import ru.itis.rusteam.dto.application.ApplicationsPage;
 import ru.itis.rusteam.dto.application.NewOrUpdateApplicationDto;
@@ -13,6 +14,8 @@ import ru.itis.rusteam.models.account.Developer;
 import ru.itis.rusteam.repositories.ApplicationsRepository;
 import ru.itis.rusteam.repositories.DevelopersRepository;
 import ru.itis.rusteam.services.ApplicationsService;
+
+import java.time.LocalDateTime;
 
 import static ru.itis.rusteam.dto.application.ApplicationDto.from;
 import static ru.itis.rusteam.utils.ServicesUtils.getOrThrow;
@@ -46,6 +49,10 @@ public class ApplicationServiceImpl implements ApplicationsService {
                 .name(application.getName())
                 .description(application.getDescription())
                 .developer(getDeveloperOrThrow(application.getDeveloperId()))
+                .dates(ActionDates.builder()
+                        .publishDate(LocalDateTime.now())
+                        .modificationDate(LocalDateTime.now())
+                        .build())
                 .state(Application.State.DRAFT)
                 .build();
 
@@ -67,6 +74,11 @@ public class ApplicationServiceImpl implements ApplicationsService {
         applicationForUpdate.setName(updatedApplication.getName());
         applicationForUpdate.setDescription(updatedApplication.getDescription());
         applicationForUpdate.setDeveloper(getDeveloperOrThrow(updatedApplication.getDeveloperId()));
+        ActionDates dates = ActionDates.builder()
+                .publishDate(applicationForUpdate.getDates().getPublishDate())
+                .modificationDate(LocalDateTime.now())
+                .build();
+        applicationForUpdate.setDates(dates);
 
         //TODO - сделать проверку корректности данных
         applicationsRepository.save(applicationForUpdate);
