@@ -28,12 +28,16 @@ public class ApplicationDto extends LongIdDto {
     @Schema(description = "Идентификатор разработчика", example = "1642")
     private Long developerId;
 
+    @Schema(description = "Даты публикации и последнего изменения приложения")
+    private ActionDates dates;
+
 
     public static ApplicationDto from(Application application) {
         return ApplicationDto.builder()
                 .id(application.getId())
                 .name(application.getName())
                 .description(application.getDescription())
+                .dates(application.getDates())
                 .developerId(application.getDeveloper().getAccount().getId())
                 .build();
     }
