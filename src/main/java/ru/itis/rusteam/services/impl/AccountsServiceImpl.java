@@ -1,14 +1,21 @@
 package ru.itis.rusteam.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.itis.rusteam.dto.account.AccountDto;
 import ru.itis.rusteam.dto.account.NewOrUpdateAccountDto;
 import ru.itis.rusteam.models.account.Account;
 import ru.itis.rusteam.repositories.AccountsRepository;
+import ru.itis.rusteam.security.details.UserDetailsImpl;
 import ru.itis.rusteam.security.exceptions.AlreadyExistsException;
 import ru.itis.rusteam.services.AccountsService;
+
+import java.security.Principal;
 
 import static ru.itis.rusteam.dto.account.AccountDto.from;
 import static ru.itis.rusteam.utils.ServicesUtils.getOrThrow;
@@ -23,12 +30,22 @@ public class AccountsServiceImpl implements AccountsService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public AccountDto addAccount(NewOrUpdateAccountDto account) {
-        if(isEmailUsed(account.getEmail())){
-            throw new AlreadyExistsException("Account with email <"+account.getEmail()+"> already exists");
+    public Long getAccountId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.isAuthenticated()) {
+            String email = authentication.getName();
+            return accountsRepository.findByEmailIgnoreCase(email).get().getId();
         }
-        if(isNicknameUsed(account.getNickname())){
-            throw new AlreadyExistsException("Account with nickname <"+account.getNickname()+"> already exists");
+        throw new AuthenticationCredentialsNotFoundException("Account is not authenticated");
+    }
+
+    @Override
+    public AccountDto addAccount(NewOrUpdateAccountDto account) {
+        if (isEmailUsed(account.getEmail())) {
+            throw new AlreadyExistsException("Account with email <" + account.getEmail() + "> already exists");
+        }
+        if (isNicknameUsed(account.getNickname())) {
+            throw new AlreadyExistsException("Account with nickname <" + account.getNickname() + "> already exists");
         }
         Account accountToSave = Account.builder()
                 .email(account.getEmail())
@@ -55,11 +72,11 @@ public class AccountsServiceImpl implements AccountsService {
 
     @Override
     public AccountDto updateAccount(Long id, NewOrUpdateAccountDto updatedAccount) {
-        if(isEmailUsed(updatedAccount.getEmail())){
-            throw new AlreadyExistsException("Account with email <"+updatedAccount.getEmail()+"> already exists");
+        if (isEmailUsed(updatedAccount.getEmail())) {
+            throw new AlreadyExistsException("Account with email <" + updatedAccount.getEmail() + "> already exists");
         }
-        if(isNicknameUsed(updatedAccount.getNickname())){
-            throw new AlreadyExistsException("Account with nickname <"+updatedAccount.getNickname()+"> already exists");
+        if (isNicknameUsed(updatedAccount.getNickname())) {
+            throw new AlreadyExistsException("Account with nickname <" + updatedAccount.getNickname() + "> already exists");
         }
         Account accountForUpdate = getAccountOrThrow(id);
 
@@ -103,11 +120,11 @@ public class AccountsServiceImpl implements AccountsService {
         return getOrThrow(id, accountsRepository, "Account");
     }
 
-    private boolean isEmailUsed(String email){
+    private boolean isEmailUsed(String email) {
         return accountsRepository.findByEmailIgnoreCase(email).isPresent();
     }
 
-    private boolean isNicknameUsed(String nickname){
+    private boolean isNicknameUsed(String nickname) {
         return accountsRepository.findByNicknameIgnoreCase(nickname).isPresent();
     }
 
