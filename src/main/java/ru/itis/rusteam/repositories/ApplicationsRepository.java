@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import ru.itis.rusteam.models.Application;
 import ru.itis.rusteam.models.account.Developer;
 
@@ -15,8 +16,9 @@ public interface ApplicationsRepository extends JpaRepository<Application, Long>
 
     Page<Application> findAllByDeveloper(Pageable pageable,Developer developer);
 
-    @Query("SELECT a FROM Application a WHERE a.name LIKE %:content% OR a.description LIKE %:content%")
-    List<Application> findAllByContent(String content);
+    @Query(nativeQuery = true, value =
+            "SELECT * FROM applications WHERE applications.name ILIKE :content OR applications.description ILIKE :content")
+    List<Application> findAllByContent(@Param("content") String content);
 
 
 }
