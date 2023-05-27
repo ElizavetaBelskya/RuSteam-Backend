@@ -58,6 +58,18 @@ public interface AccountsApi {
             @Parameter(description = "Идентификатор аккаунта", example = "1642")
             @PathVariable("account-id") Long accountId);
 
+    @Operation(summary = "Получение id аккаунта")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Id аккаунта",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = AccountDto.class))
+                    }
+            )
+    })
+    @GetMapping("/account_id")
+    ResponseEntity<Long> getAccountId();
+
 
     @Operation(summary = "Обновление аккаунта")
     @ApiResponses(value = {

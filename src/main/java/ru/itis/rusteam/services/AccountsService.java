@@ -17,4 +17,6 @@ public interface AccountsService {
 
     void banAccount(Long id);
 
+    Long getAccountId();
+
 }

@@ -3,14 +3,17 @@ package ru.itis.rusteam.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ru.itis.rusteam.controllers.api.AccountsApi;
 import ru.itis.rusteam.dto.account.AccountDto;
 import ru.itis.rusteam.dto.account.NewOrUpdateAccountDto;
+import ru.itis.rusteam.security.details.UserDetailsImpl;
 import ru.itis.rusteam.services.AccountsService;
-
 
 
 @RequiredArgsConstructor
@@ -31,6 +34,11 @@ public class AccountsController implements AccountsApi {
     public ResponseEntity<AccountDto> getAccount(Long accountId) {
         return ResponseEntity
                 .ok(accountsService.getAccountById(accountId));
+    }
+
+    @Override
+    public ResponseEntity<Long> getAccountId() {
+        return ResponseEntity.ok(accountsService.getAccountId());
     }
 
     @Override
