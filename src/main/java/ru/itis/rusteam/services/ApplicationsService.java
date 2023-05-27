@@ -21,5 +21,7 @@ public interface ApplicationsService {
 
     ApplicationsPage getAllApplicationsByDeveloperId(Long id, int page);
 
+    ApplicationsPage getAllApplicationByContentString(int page, String content);
+
 
 }

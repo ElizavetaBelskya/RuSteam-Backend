@@ -3,28 +3,36 @@ package ru.itis.rusteam.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import ru.itis.rusteam.controllers.api.ReviewsApi;
 import ru.itis.rusteam.dto.review.NewOrUpdateReviewDto;
 import ru.itis.rusteam.dto.review.ReviewDto;
 import ru.itis.rusteam.dto.review.ReviewsPage;
 import ru.itis.rusteam.models.Application;
+import ru.itis.rusteam.repositories.ApplicationsRepository;
 import ru.itis.rusteam.services.ReviewsService;
+
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 public class ReviewsController implements ReviewsApi {
 
     private final ReviewsService reviewsService;
 
+    private final ApplicationsRepository applicationsRepository;
+
     @Override
     public ResponseEntity<ReviewsPage> getAllReviews(int page, Long applicationId) {
-        Application application = new Application();
-        application.setId(applicationId);
-
+        // TODO: сделать тут нормально через сервисы или еще что-то поправить
+        Optional<Application> application = applicationsRepository.findById(applicationId);
         return ResponseEntity
-                .ok(reviewsService.getAllReviewsForApplication(page, application));
+                .ok(reviewsService.getAllReviewsForApplication(page, application.get()));
+
     }
 
     @Override

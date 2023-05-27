@@ -25,7 +25,20 @@ import javax.validation.Valid;
 @RequestMapping("/applications")
 public interface ApplicationsApi {
 
-    @Operation(summary = "Получение списка приложений")
+
+    @Operation(summary = "Получение списка приложений по названию или описанию")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Страница с приложениями",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ApplicationsPage.class))
+                    })
+    })
+    @GetMapping("/search")
+    ResponseEntity<ApplicationsPage> getApplicationsByContentString(@RequestParam("content") String content,
+                                                                    @RequestParam("page") int page);
+
+
+        @Operation(summary = "Получение списка приложений")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Страница с приложениями",
                     content = {

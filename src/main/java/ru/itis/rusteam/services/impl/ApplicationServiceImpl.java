@@ -16,6 +16,7 @@ import ru.itis.rusteam.repositories.DevelopersRepository;
 import ru.itis.rusteam.services.ApplicationsService;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static ru.itis.rusteam.dto.application.ApplicationDto.from;
 import static ru.itis.rusteam.utils.ServicesUtils.getOrThrow;
@@ -30,6 +31,16 @@ public class ApplicationServiceImpl implements ApplicationsService {
 
     @Value("${default.page-size}")
     private int defaultPageSize;
+
+    @Override
+    public ApplicationsPage getAllApplicationByContentString(int page, String content) {
+        List<Application> apps = applicationsRepository.findAllByContent(content);
+        return ApplicationsPage.builder()
+                .applications(ApplicationDto.from(apps))
+                .totalPagesCount(apps.size())
+                .build();
+    }
+
 
 
     @Override
