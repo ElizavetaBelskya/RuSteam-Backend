@@ -7,6 +7,7 @@ import ru.itis.rusteam.dto.account.AccountDto;
 import ru.itis.rusteam.dto.account.NewOrUpdateAccountDto;
 import ru.itis.rusteam.models.account.Account;
 import ru.itis.rusteam.repositories.AccountsRepository;
+import ru.itis.rusteam.security.exceptions.AlreadyExistsException;
 import ru.itis.rusteam.services.AccountsService;
 
 import static ru.itis.rusteam.dto.account.AccountDto.from;
@@ -23,6 +24,12 @@ public class AccountsServiceImpl implements AccountsService {
 
     @Override
     public AccountDto addAccount(NewOrUpdateAccountDto account) {
+        if(isEmailUsed(account.getEmail())){
+            throw new AlreadyExistsException("Account with email <"+account.getEmail()+"> already exists");
+        }
+        if(isNicknameUsed(account.getNickname())){
+            throw new AlreadyExistsException("Account with nickname <"+account.getNickname()+"> already exists");
+        }
         Account accountToSave = Account.builder()
                 .email(account.getEmail())
                 .nickname(account.getNickname())
@@ -48,6 +55,12 @@ public class AccountsServiceImpl implements AccountsService {
 
     @Override
     public AccountDto updateAccount(Long id, NewOrUpdateAccountDto updatedAccount) {
+        if(isEmailUsed(updatedAccount.getEmail())){
+            throw new AlreadyExistsException("Account with email <"+updatedAccount.getEmail()+"> already exists");
+        }
+        if(isNicknameUsed(updatedAccount.getNickname())){
+            throw new AlreadyExistsException("Account with nickname <"+updatedAccount.getNickname()+"> already exists");
+        }
         Account accountForUpdate = getAccountOrThrow(id);
 
         accountForUpdate.setEmail(updatedAccount.getEmail());
@@ -79,7 +92,6 @@ public class AccountsServiceImpl implements AccountsService {
     }
 
 
-
     private Account changeState(Account account, Account.State newState) {
         account.setState(newState);
         accountsRepository.save(account);
@@ -91,6 +103,13 @@ public class AccountsServiceImpl implements AccountsService {
         return getOrThrow(id, accountsRepository, "Account");
     }
 
+    private boolean isEmailUsed(String email){
+        return accountsRepository.findByEmailIgnoreCase(email).isPresent();
+    }
+
+    private boolean isNicknameUsed(String nickname){
+        return accountsRepository.findByNicknameIgnoreCase(nickname).isPresent();
+    }
 
 
 }
