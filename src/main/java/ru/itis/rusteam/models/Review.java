@@ -28,11 +28,14 @@ public class Review extends LongIdEntity {
     @Column(nullable = false,
             columnDefinition = "text")
     private String text;
+
     @Column(nullable = false)
     private LocalDateTime publicationTime;
+
     @Column(nullable = false,
             columnDefinition = "int check (rating between 1 and 5)")
     private int rating;
+
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
     private State state;

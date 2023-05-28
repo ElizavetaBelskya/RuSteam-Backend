@@ -18,7 +18,9 @@ import ru.itis.rusteam.services.AccountsService;
 
 @RequiredArgsConstructor
 @RestController
-@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+@CrossOrigin(origins = "*",
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT,
+                RequestMethod.DELETE})
 public class AccountsController implements AccountsApi {
 
     private final AccountsService accountsService;

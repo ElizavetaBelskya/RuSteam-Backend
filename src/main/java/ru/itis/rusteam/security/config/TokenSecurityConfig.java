@@ -3,6 +3,7 @@ package ru.itis.rusteam.security.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -37,7 +38,7 @@ public class TokenSecurityConfig {
                                                    JwtRevokeFilter jwtRevokeFilter) throws Exception {
 
         httpSecurity.csrf().disable();
-        httpSecurity.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
+        httpSecurity.cors().configurationSource(request -> getCorsConfiguration());
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         httpSecurity.authorizeRequests()
@@ -49,6 +50,12 @@ public class TokenSecurityConfig {
         httpSecurity.addFilterBefore(jwtRevokeFilter, JwtAuthenticationFilter.class);
 
         return httpSecurity.build();
+    }
+
+    private CorsConfiguration getCorsConfiguration() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
+        corsConfiguration.addAllowedMethod(HttpMethod.DELETE);
+        return corsConfiguration;
     }
 
     @Autowired
