@@ -2,6 +2,7 @@ package ru.itis.rusteam.models;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import ru.itis.rusteam.models.account.User;
 import ru.itis.rusteam.models.base.LongIdEntity;
 
 import javax.persistence.*;
@@ -24,17 +25,18 @@ public class Review extends LongIdEntity {
     @ManyToOne(optional = false)
     private Application application;
 
+    @ManyToOne
+    private User user;
 
-    @Column(nullable = false,
-            columnDefinition = "text")
+
+    @Column(columnDefinition = "text", nullable = true)
     private String text;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalDateTime publicationTime;
 
-    @Column(nullable = false,
-            columnDefinition = "int check (rating between 1 and 5)")
-    private int rating;
+    @Column(columnDefinition = "int check (rating between 1 and 5)", nullable = true)
+    private Integer rating;
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)

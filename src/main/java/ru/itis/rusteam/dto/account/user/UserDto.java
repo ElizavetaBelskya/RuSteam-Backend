@@ -4,11 +4,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import ru.itis.rusteam.dto.account.AccountDto;
+import ru.itis.rusteam.dto.review.ReviewDto;
 import ru.itis.rusteam.models.account.Account;
 import ru.itis.rusteam.models.account.User;
 
 import java.time.LocalDate;
-
+import java.util.List;
 
 
 @EqualsAndHashCode(callSuper = true)
@@ -33,6 +34,8 @@ public class UserDto extends AccountDto {
     @Schema(description = "Дата рождения", example = "2000-01-01")
     private LocalDate birthdayDate;
 
+    private List<ReviewDto> reviewsList;
+
 
     public static UserDto from(User user) {
         Account account = user.getAccount();
@@ -44,6 +47,7 @@ public class UserDto extends AccountDto {
                 .surname(user.getSurname())
                 .gender(user.getGender())
                 .birthdayDate(user.getBirthdayDate())
+                .reviewsList(ReviewDto.from(user.getReviewList()))
                 .build();
     }
 

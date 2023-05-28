@@ -57,7 +57,6 @@ public class UsersServiceImpl implements UsersService {
         userForUpdate.setSurname(updatedUser.getSurname());
         userForUpdate.setGender(User.Gender.valueOf(updatedUser.getGender()));
         userForUpdate.setBirthdayDate(updatedUser.getBirthdayDate());
-
         //TODO - сделать проверку корректности данных
         usersRepository.save(userForUpdate);
 

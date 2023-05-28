@@ -30,7 +30,7 @@ public class ReviewDto extends LongIdDto {
     private LocalDateTime publicationTime;
 
     @Schema(description = "Рейтинг приложения от 1 до 5", example = "4")
-    private int rating;
+    private Integer rating;
 
     public static ReviewDto from(Review review) {
         return ReviewDto.builder()

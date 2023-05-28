@@ -2,9 +2,11 @@ package ru.itis.rusteam.models.account;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import ru.itis.rusteam.models.Review;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 
 @EqualsAndHashCode(callSuper = true)
@@ -29,5 +31,8 @@ public class User extends AccountExtension {
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
     private LocalDate birthdayDate;
+
+    @OneToMany(mappedBy = "user")
+    private List<Review> reviewList;
 
 }
