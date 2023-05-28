@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 import ru.itis.rusteam.security.filters.JwtAuthenticationFilter;
 import ru.itis.rusteam.security.filters.JwtAuthorizationFilter;
 import ru.itis.rusteam.security.filters.JwtRevokeFilter;
@@ -21,7 +22,7 @@ import ru.itis.rusteam.security.filters.JwtRevokeFilter;
 @EnableWebSecurity
 public class TokenSecurityConfig {
 
-    public static final String AUTHENTICATION_URL = "/auth/login";
+    public static final String  AUTHENTICATION_URL = "/auth/login";
 
 
     private final PasswordEncoder passwordEncoder;
@@ -36,6 +37,7 @@ public class TokenSecurityConfig {
                                                    JwtRevokeFilter jwtRevokeFilter) throws Exception {
 
         httpSecurity.csrf().disable();
+        httpSecurity.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues());
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         httpSecurity.authorizeRequests()

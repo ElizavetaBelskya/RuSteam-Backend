@@ -34,7 +34,7 @@ public class ApplicationServiceImpl implements ApplicationsService {
 
     @Override
     public ApplicationsPage getAllApplicationByContentString(int page, String content) {
-        List<Application> apps = applicationsRepository.findAllByContent("%" + content + "%");
+        List<Application> apps = applicationsRepository.findAllByContent("%" + content + "%ьтт");
         return ApplicationsPage.builder()
                 .applications(ApplicationDto.from(apps))
                 .totalPagesCount(apps.size())

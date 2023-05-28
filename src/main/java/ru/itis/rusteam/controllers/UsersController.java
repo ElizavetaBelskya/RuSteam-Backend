@@ -24,4 +24,11 @@ public class UsersController implements UsersApi {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(usersService.addUser(newUser));
     }
+
+    @Override
+    public ResponseEntity<UserDto> getUserByAccountId(Long accountId) {
+        return ResponseEntity.status(HttpStatus.OK).body(usersService.getUserByAccountId(accountId));
+    }
+
+
 }

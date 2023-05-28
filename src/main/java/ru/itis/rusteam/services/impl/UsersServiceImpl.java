@@ -4,11 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.itis.rusteam.dto.account.user.NewOrUpdateUserDto;
 import ru.itis.rusteam.dto.account.user.UserDto;
+import ru.itis.rusteam.exceptions.NotFoundException;
 import ru.itis.rusteam.models.account.Account;
 import ru.itis.rusteam.models.account.User;
 import ru.itis.rusteam.repositories.AccountsRepository;
 import ru.itis.rusteam.repositories.UsersRepository;
 import ru.itis.rusteam.services.UsersService;
+
+import java.util.Optional;
 
 import static ru.itis.rusteam.dto.account.user.UserDto.from;
 import static ru.itis.rusteam.utils.ServicesUtils.getOrThrow;
@@ -22,14 +25,16 @@ public class UsersServiceImpl implements UsersService {
 
 
     @Override
-    public UserDto addUser(NewOrUpdateUserDto user) {
+    public UserDto addUser(NewOrUpdateUserDto userDto) {
+        Optional<Account> account = accountsRepository.findById(userDto.getAccountId());
+        User user = usersRepository.findByAccount(account.get());
         User userToSave = User.builder()
-                .id(user.getAccountId())
-                .account(getAccountOrThrow(user.getAccountId()))
-                .name(user.getName())
-                .surname(user.getSurname())
-                .gender(user.getGender())
-                .birthdayDate(user.getBirthdayDate())
+                .id(user.getId())
+                .account(getAccountOrThrow(userDto.getAccountId()))
+                .name(userDto.getName())
+                .surname(userDto.getSurname())
+                .gender(User.Gender.valueOf(userDto.getGender()))
+                .birthdayDate(userDto.getBirthdayDate())
                 .build();
 
         //TODO - сделать проверку корректности данных
@@ -50,7 +55,7 @@ public class UsersServiceImpl implements UsersService {
 
         userForUpdate.setName(updatedUser.getName());
         userForUpdate.setSurname(updatedUser.getSurname());
-        userForUpdate.setGender(updatedUser.getGender());
+        userForUpdate.setGender(User.Gender.valueOf(updatedUser.getGender()));
         userForUpdate.setBirthdayDate(updatedUser.getBirthdayDate());
 
         //TODO - сделать проверку корректности данных
@@ -66,6 +71,13 @@ public class UsersServiceImpl implements UsersService {
 
         //TODO - продумать удаление данных подтаблиц
         usersRepository.deleteById(id);
+    }
+
+    @Override
+    public UserDto getUserByAccountId(Long accountId) {
+        Optional<Account> account = accountsRepository.findById(accountId);
+        User user = usersRepository.findByAccount(account.get());
+        return UserDto.from(user);
     }
 
 
