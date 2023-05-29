@@ -40,7 +40,7 @@ public class UserDto extends AccountDto {
     public static UserDto from(User user) {
         Account account = user.getAccount();
         return UserDto.builder()
-                .id(account.getId())
+                .id(user.getId())
                 .email(account.getEmail())
                 .nickname(account.getNickname())
                 .name(user.getName())

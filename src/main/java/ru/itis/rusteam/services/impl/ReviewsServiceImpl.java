@@ -12,6 +12,7 @@ import ru.itis.rusteam.models.Application;
 import ru.itis.rusteam.models.Review;
 import ru.itis.rusteam.repositories.ApplicationsRepository;
 import ru.itis.rusteam.repositories.ReviewsRepository;
+import ru.itis.rusteam.repositories.UsersRepository;
 import ru.itis.rusteam.services.ReviewsService;
 
 
@@ -27,6 +28,7 @@ public class ReviewsServiceImpl implements ReviewsService {
 
     private final ReviewsRepository reviewsRepository;
     private final ApplicationsRepository applicationsRepository;
+    private final UsersRepository usersRepository;
 
     @Value("${default.page-size}")
     private int defaultPageSize;
@@ -55,7 +57,8 @@ public class ReviewsServiceImpl implements ReviewsService {
                 .text(review.getText())
                 .publicationTime(LocalDateTime.now())
                 .rating(review.getRating())
-                .state(Review.State.DRAFT)
+                .state(Review.State.ACTIVE)
+                .user(usersRepository.findById(review.getAuthorId()).get())
                 .build();
 
         //TODO - сделать проверку корректности данных

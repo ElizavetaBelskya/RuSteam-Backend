@@ -9,12 +9,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import ru.itis.rusteam.dto.account.developer.DeveloperDto;
+import ru.itis.rusteam.dto.account.developer.NewOrUpdateDeveloperDto;
+import ru.itis.rusteam.dto.account.user.NewOrUpdateUserDto;
+import ru.itis.rusteam.dto.account.user.UserDto;
 import ru.itis.rusteam.dto.application.ApplicationsPage;
 import ru.itis.rusteam.models.account.Developer;
+
+import javax.validation.Valid;
 
 @Tags(value = {
         @Tag(name = "Applications")
@@ -32,4 +35,19 @@ public interface DevelopersApi {
     ResponseEntity<ApplicationsPage> getAllApplicationsByDeveloper(
             @Parameter(description = "Идентификатор разработчика", example = "42") @PathVariable("id") Long developerId,
             @Parameter(description = "Номер страницы", example = "1") @RequestParam("page") int page);
+
+
+    @Operation(summary = "Добавление разработчика")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Добавленный разработчик",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = DeveloperDto.class))
+                    }
+            )
+    })
+    @PostMapping
+    ResponseEntity<DeveloperDto> addDeveloper(
+            @Valid @RequestBody NewOrUpdateDeveloperDto newDeveloper);
+
 }

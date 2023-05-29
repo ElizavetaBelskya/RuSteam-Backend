@@ -20,6 +20,8 @@ public class NewOrUpdateReviewDto {
     @NotNull(message = "{dto.null}")
     private Long applicationId;
 
+    private Long authorId;
+
     @Schema(description = "Текст отзыва", example = "Отличное приложение!")
     @NotNull(message = "{dto.null}")
     @Size(max = 1000, message = "{review.text.size}")

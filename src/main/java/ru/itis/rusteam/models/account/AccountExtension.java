@@ -13,6 +13,7 @@ import javax.persistence.*;
 public abstract class AccountExtension {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne

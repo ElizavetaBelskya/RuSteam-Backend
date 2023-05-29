@@ -24,6 +24,8 @@ public class ReviewDto extends LongIdDto {
     @Schema(description = "Идентификатор приложения", example = "1642")
     private Long applicationId;
 
+    private Long authorId;
+
     @Schema(description = "Текст", example = "Отличное приложение!")
     private String text;
 
@@ -44,6 +46,7 @@ public class ReviewDto extends LongIdDto {
                 .publicationTime(review.getPublicationTime())
                 .rating(review.getRating())
                 .status(review.getState().name())
+                .authorId(review.getUser().getId())
                 .build();
     }
 

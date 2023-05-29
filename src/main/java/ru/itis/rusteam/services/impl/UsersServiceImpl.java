@@ -27,21 +27,32 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public UserDto addUser(NewOrUpdateUserDto userDto) {
         Optional<Account> account = accountsRepository.findById(userDto.getAccountId());
-        User user = usersRepository.findByAccount(account.get());
-        User userToSave = User.builder()
-                .id(user.getId())
-                .account(getAccountOrThrow(userDto.getAccountId()))
-                .name(userDto.getName())
-                .surname(userDto.getSurname())
-                .gender(User.Gender.valueOf(userDto.getGender()))
-                .birthdayDate(userDto.getBirthdayDate())
-                .build();
+        Optional<User> user = usersRepository.findByAccount(account.get());
+        if (user.isPresent()) {
+            User userToSave = User.builder()
+                    .id(user.get().getId())
+                    .account(getAccountOrThrow(userDto.getAccountId()))
+                    .name(userDto.getName())
+                    .surname(userDto.getSurname())
+                    .gender(User.Gender.valueOf(userDto.getGender()))
+                    .birthdayDate(userDto.getBirthdayDate())
+                    .build();
+            usersRepository.save(userToSave);
+            return from(userToSave);
+        } else {
+            User userToSave = User.builder()
+                    .account(getAccountOrThrow(userDto.getAccountId()))
+                    .name(userDto.getName())
+                    .surname(userDto.getSurname())
+                    .gender(User.Gender.valueOf(userDto.getGender()))
+                    .birthdayDate(userDto.getBirthdayDate())
+                    .build();
+            usersRepository.save(userToSave);
+            return from(userToSave);
+        }
 
         //TODO - сделать проверку корректности данных
-        usersRepository.save(userToSave);
 
-
-        return from(userToSave);
     }
 
     @Override
@@ -75,8 +86,13 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public UserDto getUserByAccountId(Long accountId) {
         Optional<Account> account = accountsRepository.findById(accountId);
-        User user = usersRepository.findByAccount(account.get());
-        return UserDto.from(user);
+        Optional<User> user = usersRepository.findByAccount(account.get());
+        if (user.isPresent()) {
+            return UserDto.from(user.get());
+        } else {
+            throw new NotFoundException("User with id <" + accountId + "> not found");
+        }
+
     }
 
 
