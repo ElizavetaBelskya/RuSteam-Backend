@@ -25,12 +25,15 @@ public class Application extends LongIdEntity {
 
     @Column(nullable = false)
     private String name;
+
     @Column(columnDefinition = "text")
     private String description;
 
+    @Column(nullable = false)
+    private Double price;
+
     @ManyToOne(optional = false)
     private Developer developer;
-
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
