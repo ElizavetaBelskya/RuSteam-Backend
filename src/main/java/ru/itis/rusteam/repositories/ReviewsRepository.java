@@ -8,4 +8,6 @@ import ru.itis.rusteam.models.Review;
 
 public interface ReviewsRepository extends JpaRepository<Review, Long> {
     Page<Review> findAllByStateAndApplicationOrderById(Pageable pageable, Review.State state, Application application);
+
+    Long countByApplication(Application application);
 }

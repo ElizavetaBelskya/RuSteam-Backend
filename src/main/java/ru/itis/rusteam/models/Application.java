@@ -32,6 +32,9 @@ public class Application extends LongIdEntity {
     @Column(nullable = false)
     private Double price;
 
+    @Column(nullable = false)
+    private Double rating;
+
     @ManyToOne(optional = false)
     private Developer developer;
 
