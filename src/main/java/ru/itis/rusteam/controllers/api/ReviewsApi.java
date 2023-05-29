@@ -128,4 +128,25 @@ public interface ReviewsApi {
             @Parameter(description = "Идентификатор отзыва", example = "1642") @PathVariable("review-id") Long reviewId);
 
 
+    @Operation(summary = "Обновление отзыва")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "202", description = "Обновленный отзыв",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ReviewDto.class))
+                    }
+            ),
+            @ApiResponse(responseCode = "404", description = "Сведения об ошибке",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
+            )
+    })
+    @PutMapping("/{review-id}/update_status")
+    ResponseEntity<ReviewDto> updateReviewStatus(
+            @Parameter(description = "Идентификатор отзыва", example = "1642") @PathVariable("review-id") Long reviewId,
+            @RequestParam String status);
+
+
 }

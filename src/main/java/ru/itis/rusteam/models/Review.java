@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @Table(name = "reviews")
 public class Review extends LongIdEntity {
     public enum State {
-        DRAFT, ACTIVE, HIDDEN, DELETED
+        DRAFT, ACTIVE, DELETED
     }
 
     @ManyToOne(optional = false)

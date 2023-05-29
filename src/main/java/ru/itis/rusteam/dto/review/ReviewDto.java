@@ -7,6 +7,7 @@ import ru.itis.rusteam.dto.base.LongIdDto;
 import ru.itis.rusteam.models.Review;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +33,9 @@ public class ReviewDto extends LongIdDto {
     @Schema(description = "Рейтинг приложения от 1 до 5", example = "4")
     private Integer rating;
 
+    @Schema(description = "Состояние отзыва", example = "DRAFT")
+    private String status;
+
     public static ReviewDto from(Review review) {
         return ReviewDto.builder()
                 .id(review.getId())
@@ -39,13 +43,18 @@ public class ReviewDto extends LongIdDto {
                 .text(review.getText())
                 .publicationTime(review.getPublicationTime())
                 .rating(review.getRating())
+                .status(review.getState().name())
                 .build();
     }
 
-    public static List<ReviewDto> from(List<Review> users) {
-        return users.stream()
-                .map(ReviewDto::from)
-                .collect(Collectors.toList());
+    public static List<ReviewDto> from(List<Review> reviews) {
+        if (reviews == null) {
+            return new ArrayList<>();
+        } else {
+            return reviews.stream()
+                    .map(ReviewDto::from)
+                    .collect(Collectors.toList());
+        }
     }
 
 }

@@ -96,6 +96,14 @@ public class ReviewsServiceImpl implements ReviewsService {
         return ReviewDto.from(reviewToPublish);
     }
 
+    @Override
+    public ReviewDto updateReviewStatus(Long id, String status) {
+        Review review = getReviewOrThrow(id);
+        review.setState(Review.State.valueOf(status));
+        reviewsRepository.save(review);
+        return ReviewDto.from(review);
+    }
+
 
     private Review getReviewOrThrow(Long id) {
         return getOrThrow(id, reviewsRepository, "Review");

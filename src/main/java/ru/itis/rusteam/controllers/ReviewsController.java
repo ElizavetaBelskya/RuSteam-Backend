@@ -63,4 +63,9 @@ public class ReviewsController implements ReviewsApi {
     public ResponseEntity<ReviewDto> publishApplication(Long reviewId) {
         return ResponseEntity.accepted().body(reviewsService.publishReview(reviewId));
     }
+
+    @Override
+    public ResponseEntity<ReviewDto> updateReviewStatus(Long reviewId, String status) {
+        return ResponseEntity.accepted().body(reviewsService.updateReviewStatus(reviewId, status));
+    }
 }

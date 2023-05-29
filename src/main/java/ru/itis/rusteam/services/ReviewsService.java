@@ -17,4 +17,6 @@ public interface ReviewsService {
     void deleteReview(Long id);
 
     ReviewDto publishReview(Long id);
+
+    ReviewDto updateReviewStatus(Long id, String status);
 }
