@@ -55,11 +55,23 @@ public class ApplicationServiceImpl implements ApplicationsService {
     }
 
     @Override
+    public ApplicationsPage getAllFreeApplications(int page){
+        PageRequest pageRequest = PageRequest.of(page, defaultPageSize);
+        Page<Application> applicationsPage = applicationsRepository.findAllByPrice(pageRequest,0L);
+
+        return ApplicationsPage.builder()
+                .applications(from(applicationsPage.getContent()))
+                .totalPagesCount(applicationsPage.getTotalPages())
+                .build();
+    }
+
+    @Override
     public ApplicationDto addApplication(NewOrUpdateApplicationDto application) {
         Application applicationToSave = Application.builder()
                 .name(application.getName())
                 .description(application.getDescription())
                 .developer(getDeveloperOrThrow(application.getDeveloperId()))
+                .price(application.getPrice())
                 .dates(ActionDates.builder()
                         .publishDate(LocalDateTime.now())
                         .modificationDate(LocalDateTime.now())

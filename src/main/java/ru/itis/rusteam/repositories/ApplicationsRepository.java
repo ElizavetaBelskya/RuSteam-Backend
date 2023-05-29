@@ -16,6 +16,8 @@ public interface ApplicationsRepository extends JpaRepository<Application, Long>
 
     Page<Application> findAllByDeveloper(Pageable pageable,Developer developer);
 
+    Page<Application> findAllByPrice(Pageable pageable,Long price);
+
     @Query(nativeQuery = true, value =
             "SELECT * FROM applications WHERE applications.name ILIKE :content OR applications.description ILIKE :content")
     List<Application> findAllByContent(@Param("content") String content);

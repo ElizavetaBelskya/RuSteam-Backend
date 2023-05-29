@@ -23,5 +23,7 @@ public interface ApplicationsService {
 
     ApplicationsPage getAllApplicationByContentString(int page, String content);
 
+    ApplicationsPage getAllFreeApplications(int page);
+
 
 }

@@ -6,9 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Data
 @AllArgsConstructor
@@ -25,6 +23,11 @@ public class NewOrUpdateApplicationDto {
     @Schema(description = "Описание", example = "Игра")
     @NotEmpty(message = "{dto.null}")
     private String description;
+
+    @Schema(description = "Стоимость", example = "1500 (цена в рублях)")
+    @NotEmpty(message = "{dto.null}")
+    @Min(value = 0, message = "{application.price.min}")
+    private Double price;
 
     @Schema(description = "Идентификатор разработчика", example = "1642")
     @NotNull(message = "{dto.null}")
