@@ -48,9 +48,9 @@ public class ReviewsController implements ReviewsApi {
     }
 
     @Override
-    public ResponseEntity<ReviewDto> updateReview(Long applicationId, NewOrUpdateReviewDto updatedReview) {
+    public ResponseEntity<ReviewDto> updateReview(Long id, NewOrUpdateReviewDto updatedReview) {
         return ResponseEntity.accepted()
-                .body(reviewsService.updateReview(applicationId, updatedReview));
+                .body(reviewsService.updateReview(id, updatedReview));
     }
 
     @Override
