@@ -15,6 +15,7 @@ import ru.itis.rusteam.repositories.ReviewsRepository;
 import ru.itis.rusteam.services.ReviewsService;
 
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 
 import static ru.itis.rusteam.dto.review.ReviewDto.from;
@@ -42,7 +43,12 @@ public class ReviewsServiceImpl implements ReviewsService {
                 .build();
     }
 
+    private Long getApplicationReviewsCount(Application application) {
+        return reviewsRepository.countByApplication(application);
+    }
+
     @Override
+    @Transactional
     public ReviewDto addReview(NewOrUpdateReviewDto review) {
         Review reviewToSave = Review.builder()
                 .application(getApplicationOrThrow(review.getApplicationId()))
@@ -54,6 +60,11 @@ public class ReviewsServiceImpl implements ReviewsService {
 
         //TODO - сделать проверку корректности данных
         reviewsRepository.save(reviewToSave);
+        Application application = reviewToSave.getApplication();
+        long reviewsCount = getApplicationReviewsCount(application);
+        double newRating = (reviewsCount * application.getRating() + review.getRating()) / (reviewsCount + 1);
+        application.setRating(newRating);
+        applicationsRepository.save(application);
 
         return from(reviewToSave);
     }
@@ -64,8 +75,13 @@ public class ReviewsServiceImpl implements ReviewsService {
     }
 
     @Override
+    @Transactional
     public ReviewDto updateReview(Long id, NewOrUpdateReviewDto updatedReview) {
         Review reviewForUpdate = getReviewOrThrow(id);
+        Application application = reviewForUpdate.getApplication();
+
+        long reviewsCount = getApplicationReviewsCount(application);
+        double newRating = (reviewsCount * application.getRating() - reviewForUpdate.getRating() + updatedReview.getRating()) / reviewsCount;
 
         reviewForUpdate.setText(updatedReview.getText());
         //TODO - подумать над датой изменения
@@ -73,16 +89,27 @@ public class ReviewsServiceImpl implements ReviewsService {
 
         //TODO - сделать проверку корректности данных
         reviewsRepository.save(reviewForUpdate);
+
+        application.setRating(newRating);
+        applicationsRepository.save(application);
+
         return ReviewDto.from(reviewForUpdate);
     }
 
     @Override
+    @Transactional
     public void deleteReview(Long id) {
         Review reviewForDelete = getReviewOrThrow(id);
 
         reviewForDelete.setState(Review.State.DELETED);
 
         reviewsRepository.save(reviewForDelete);
+
+        Application application = reviewForDelete.getApplication();
+        long reviewsCount = getApplicationReviewsCount(application);
+        double newRating = (reviewsCount * application.getRating() - reviewForDelete.getRating()) / (reviewsCount - 1);
+        application.setRating(newRating);
+        applicationsRepository.save(application);
     }
 
     @Override

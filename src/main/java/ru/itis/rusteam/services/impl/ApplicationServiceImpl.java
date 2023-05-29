@@ -72,6 +72,7 @@ public class ApplicationServiceImpl implements ApplicationsService {
                 .description(application.getDescription())
                 .developer(getDeveloperOrThrow(application.getDeveloperId()))
                 .price(application.getPrice())
+                .rating(0.0)
                 .dates(ActionDates.builder()
                         .publishDate(LocalDateTime.now())
                         .modificationDate(LocalDateTime.now())

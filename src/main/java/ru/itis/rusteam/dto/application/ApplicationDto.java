@@ -28,6 +28,9 @@ public class ApplicationDto extends LongIdDto {
     @Schema(description = "Стоимость", example = "1500 (цена в рублях)")
     private Double price;
 
+    @Schema(description = "Рейтинг приложения", example = "4.79")
+    private Double rating;
+
     @Schema(description = "Идентификатор разработчика", example = "1642")
     private Long developerId;
 
@@ -41,6 +44,7 @@ public class ApplicationDto extends LongIdDto {
                 .name(application.getName())
                 .description(application.getDescription())
                 .price(application.getPrice())
+                .rating(application.getRating())
                 .dates(application.getDates())
                 .developerId(application.getDeveloper().getAccount().getId())
                 .build();
