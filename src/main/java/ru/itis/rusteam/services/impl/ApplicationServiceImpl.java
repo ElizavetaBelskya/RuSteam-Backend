@@ -2,23 +2,26 @@ package ru.itis.rusteam.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import ru.itis.rusteam.converters.StringToCategoryConverter;
 import ru.itis.rusteam.dto.application.ActionDates;
 import ru.itis.rusteam.dto.application.ApplicationDto;
 import ru.itis.rusteam.dto.application.ApplicationsPage;
 import ru.itis.rusteam.dto.application.NewOrUpdateApplicationDto;
 import ru.itis.rusteam.models.Application;
+import ru.itis.rusteam.models.Category;
 import ru.itis.rusteam.models.account.Developer;
 import ru.itis.rusteam.repositories.ApplicationsRepository;
 import ru.itis.rusteam.repositories.DevelopersRepository;
 import ru.itis.rusteam.services.ApplicationsService;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 import static ru.itis.rusteam.dto.application.ApplicationDto.from;
 import static ru.itis.rusteam.utils.ServicesUtils.getOrThrow;
@@ -45,8 +48,17 @@ public class ApplicationServiceImpl implements ApplicationsService {
 
 
     @Override
-    public ApplicationsPage getAllApplications(Integer page, Double price, Double rating, String isNew) {
+    public ApplicationsPage getAllApplications(Integer page, Double price, Double rating, String isNew, String category) {
         PageRequest pageRequest = PageRequest.of(page, defaultPageSize);
+
+        StringToCategoryConverter converter = new StringToCategoryConverter();
+
+        Set<Category> categories = new HashSet<>();
+
+        if (category != null) {
+            Category categoryToSearch = (Category) converter.convert(converter, TypeDescriptor.valueOf(String.class), TypeDescriptor.valueOf(Category.class));
+            categories.add(categoryToSearch);
+        }
 
         LocalDateTime withinMonth = null;
         if (isNew == null || !isNew.equals("true")) {
@@ -61,24 +73,15 @@ public class ApplicationServiceImpl implements ApplicationsService {
         Page<Application> page1 = null;
         if (price == null || price != 0.0) {
             page1 = applicationsRepository.findAllByPublishDateAndRating(pageRequest, withinMonth, rating);
-        } else {
+        } else if (category == null) {
             page1 = applicationsRepository.findAllByPublishDateAndRatingAndFree(pageRequest, withinMonth, rating);
+        } else {
+            page1 = applicationsRepository.findAllByPublishDateAndRatingAndFreeAndCategories(pageRequest, withinMonth, rating, categories);
         }
 
         return ApplicationsPage.builder()
                 .applications(ApplicationDto.from(page1.getContent()))
                 .totalPagesCount(page1.getTotalPages())
-                .build();
-    }
-
-    @Override
-    public ApplicationsPage getAllFreeApplications(int page) {
-        PageRequest pageRequest = PageRequest.of(page, defaultPageSize);
-        Page<Application> applicationsPage = applicationsRepository.findAllByPrice(pageRequest, 0L);
-
-        return ApplicationsPage.builder()
-                .applications(from(applicationsPage.getContent()))
-                .totalPagesCount(applicationsPage.getTotalPages())
                 .build();
     }
 
@@ -90,6 +93,7 @@ public class ApplicationServiceImpl implements ApplicationsService {
                 .developer(getDeveloperOrThrow(application.getDeveloperId()))
                 .price(application.getPrice())
                 .rating(0.0)
+                .categories(application.getCategories())
                 .dates(ActionDates.builder()
                         .publishDate(LocalDateTime.now())
                         .modificationDate(LocalDateTime.now())
@@ -115,6 +119,7 @@ public class ApplicationServiceImpl implements ApplicationsService {
         applicationForUpdate.setName(updatedApplication.getName());
         applicationForUpdate.setDescription(updatedApplication.getDescription());
         applicationForUpdate.setDeveloper(getDeveloperOrThrow(updatedApplication.getDeveloperId()));
+        applicationForUpdate.setCategories(updatedApplication.getCategories());
         ActionDates dates = ActionDates.builder()
                 .publishDate(applicationForUpdate.getDates().getPublishDate())
                 .modificationDate(LocalDateTime.now())
@@ -167,6 +172,4 @@ public class ApplicationServiceImpl implements ApplicationsService {
     private Developer getDeveloperOrThrow(Long id) {
         return getOrThrow(id, developersRepository, "Developer");
     }
-
-
 }
