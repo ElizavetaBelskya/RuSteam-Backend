@@ -19,6 +19,9 @@ public interface ApplicationsRepository extends JpaRepository<Application, Long>
 
     Page<Application> findAllByPrice(Pageable pageable,Long price);
 
+    @Query("from Application a where a.dates.publishDate >= :withinMonth and a.rating>= :rating and a.price = 0.0")
+    Page<Application> findAllByPublishDateAndRatingAndFree(Pageable pageable,@Param("withinMonth") LocalDateTime time,@Param("rating") Double rating);
+
     @Query("from Application a where a.dates.publishDate >= :withinMonth and a.rating>= :rating")
     Page<Application> findAllByPublishDateAndRating(Pageable pageable,@Param("withinMonth") LocalDateTime time,@Param("rating") Double rating);
 

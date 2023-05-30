@@ -50,7 +50,7 @@ public interface ApplicationsApi {
             @Parameter(description = "Номер страницы", example = "1") @RequestParam("page") int page,
             @Parameter(description = "Стоимость приложения", example = "?price=1500") @RequestParam(value = "price", required = false) Double price,
             @Parameter(description = "Рейтинг приложения", example = "?rating=4.8") @RequestParam(value = "rating", required = false) Double rating,
-            @Parameter(description = "Номер страницы", example = "?new=true") @RequestParam("new") String isNew);
+            @Parameter(description = "Условие на поиск новых приложений", example = "?new=true") @RequestParam(value = "new", required = false) String isNew);
 
     @Operation(summary = "Добавление приложения")
     @ApiResponses(value = {

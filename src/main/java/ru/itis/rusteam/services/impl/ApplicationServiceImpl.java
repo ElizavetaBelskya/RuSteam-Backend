@@ -45,36 +45,29 @@ public class ApplicationServiceImpl implements ApplicationsService {
 
 
     @Override
-    public ApplicationsPage getAllApplications(int page, Double price, Double rating, String isNew) {
+    public ApplicationsPage getAllApplications(Integer page, Double price, Double rating, String isNew) {
         PageRequest pageRequest = PageRequest.of(page, defaultPageSize);
 
         LocalDateTime withinMonth = null;
-
-        if (rating == null) {
-            rating = 0.0;
-        }
         if (isNew == null) {
             withinMonth = LocalDateTime.of(1970, 1, 1, 0, 0);
         } else if (isNew.equals("true")) {
             withinMonth = LocalDateTime.now().minusDays(30);
         }
+        if (rating == null) {
+            rating = 0.0;
+        }
 
-        Page<Application> page1 = applicationsRepository.findAllByPublishDateAndRating(pageRequest, withinMonth, rating);
-
-        List<Application> list;
-        if (price != null) {
-            if (price == 0) {
-                list = page1.getContent().stream().filter(app -> app.getPrice() == 0).collect(Collectors.toList());
-            } else {
-                list = page1.getContent().stream().filter(app -> app.getPrice() >= price).collect(Collectors.toList());
-            }
+        Page<Application> page1 = null;
+        if (price == null || price != 0.0) {
+            page1 = applicationsRepository.findAllByPublishDateAndRating(pageRequest, withinMonth, rating);
         } else {
-            list = page1.getContent();
+            page1 = applicationsRepository.findAllByPublishDateAndRatingAndFree(pageRequest, withinMonth, rating);
         }
 
         return ApplicationsPage.builder()
-                .applications(from(list))
-                .totalPagesCount(list.size()/defaultPageSize +1)
+                .applications(ApplicationDto.from(page1.getContent()))
+                .totalPagesCount(page1.getTotalPages())
                 .build();
     }
 
