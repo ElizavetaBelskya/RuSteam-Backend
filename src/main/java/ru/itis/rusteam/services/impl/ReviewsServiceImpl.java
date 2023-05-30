@@ -10,6 +10,7 @@ import ru.itis.rusteam.dto.review.ReviewDto;
 import ru.itis.rusteam.dto.review.ReviewsPage;
 import ru.itis.rusteam.models.Application;
 import ru.itis.rusteam.models.Review;
+import ru.itis.rusteam.models.account.User;
 import ru.itis.rusteam.repositories.ApplicationsRepository;
 import ru.itis.rusteam.repositories.ReviewsRepository;
 import ru.itis.rusteam.repositories.UsersRepository;
@@ -18,6 +19,7 @@ import ru.itis.rusteam.services.ReviewsService;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static ru.itis.rusteam.dto.review.ReviewDto.from;
 import static ru.itis.rusteam.utils.ServicesUtils.getOrThrow;
@@ -52,24 +54,30 @@ public class ReviewsServiceImpl implements ReviewsService {
     @Override
     @Transactional
     public ReviewDto addReview(NewOrUpdateReviewDto review) {
+        User user = getUserOrThrow(review.getAuthorId());
         Review reviewToSave = Review.builder()
                 .application(getApplicationOrThrow(review.getApplicationId()))
                 .text(review.getText())
                 .publicationTime(LocalDateTime.now())
                 .rating(review.getRating())
                 .state(Review.State.ACTIVE)
-                .user(usersRepository.findById(review.getAuthorId()).get())
+                .user(user)
                 .build();
 
-        //TODO - сделать проверку корректности данных
-        reviewsRepository.save(reviewToSave);
-        Application application = reviewToSave.getApplication();
-        long reviewsCount = getApplicationReviewsCount(application);
-        double newRating = (reviewsCount * application.getRating() + review.getRating()) / (reviewsCount + 1);
-        application.setRating(newRating);
-        applicationsRepository.save(application);
+        Optional<Review> readyReview = reviewsRepository.findByUserAndApplication(user, getApplicationOrThrow(review.getApplicationId()));
+        if (readyReview.isPresent()) {
+            return updateReview(readyReview.get().getId(), review);
+        } else {
+            //TODO - сделать проверку корректности данных
+            reviewsRepository.save(reviewToSave);
+            Application application = reviewToSave.getApplication();
+            long reviewsCount = getApplicationReviewsCount(application);
+            double newRating = (reviewsCount * application.getRating() + review.getRating()) / (reviewsCount + 1);
+            application.setRating(newRating);
+            applicationsRepository.save(application);
 
-        return from(reviewToSave);
+            return from(reviewToSave);
+        }
     }
 
     @Override
@@ -134,6 +142,9 @@ public class ReviewsServiceImpl implements ReviewsService {
         return ReviewDto.from(review);
     }
 
+    private User getUserOrThrow(Long id) {
+        return getOrThrow(id, usersRepository, "User");
+    }
 
     private Review getReviewOrThrow(Long id) {
         return getOrThrow(id, reviewsRepository, "Review");
