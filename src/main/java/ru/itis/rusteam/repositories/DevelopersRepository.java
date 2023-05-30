@@ -7,4 +7,5 @@ import ru.itis.rusteam.models.account.Developer;
 public interface DevelopersRepository extends JpaRepository<Developer, Long> {
 
     Developer findByAccount(Account state);
+
 }

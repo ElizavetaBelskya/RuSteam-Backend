@@ -29,4 +29,9 @@ public class DevelopersController implements DevelopersApi {
     public ResponseEntity<DeveloperDto> addDeveloper(NewOrUpdateDeveloperDto newDeveloper) {
         return ResponseEntity.ok(developersService.addDeveloper(newDeveloper));
     }
+
+    @Override
+    public ResponseEntity<DeveloperDto> getDeveloperByAccountId(Long accountId) {
+        return ResponseEntity.ok(developersService.getDeveloperById(accountId));
+    }
 }
