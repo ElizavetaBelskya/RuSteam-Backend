@@ -15,8 +15,10 @@ import ru.itis.rusteam.repositories.ApplicationsRepository;
 import ru.itis.rusteam.repositories.DevelopersRepository;
 import ru.itis.rusteam.services.ApplicationsService;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static ru.itis.rusteam.dto.application.ApplicationDto.from;
 import static ru.itis.rusteam.utils.ServicesUtils.getOrThrow;
@@ -42,22 +44,44 @@ public class ApplicationServiceImpl implements ApplicationsService {
     }
 
 
-
     @Override
-    public ApplicationsPage getAllApplications(int page) {
+    public ApplicationsPage getAllApplications(int page, Double price, Double rating, String isNew) {
         PageRequest pageRequest = PageRequest.of(page, defaultPageSize);
-        Page<Application> applicationsPage = applicationsRepository.findAllByStateOrderById(pageRequest, Application.State.ACTIVE);
+
+        LocalDateTime withinMonth = null;
+
+        if (rating == null) {
+            rating = 0.0;
+        }
+        if (isNew == null) {
+            withinMonth = LocalDateTime.of(1970, 1, 1, 0, 0);
+        } else if (isNew.equals("true")) {
+            withinMonth = LocalDateTime.now().minusDays(30);
+        }
+
+        Page<Application> page1 = applicationsRepository.findAllByPublishDateAndRating(pageRequest, withinMonth, rating);
+
+        List<Application> list;
+        if (price != null) {
+            if (price == 0) {
+                list = page1.getContent().stream().filter(app -> app.getPrice() == 0).collect(Collectors.toList());
+            } else {
+                list = page1.getContent().stream().filter(app -> app.getPrice() >= price).collect(Collectors.toList());
+            }
+        } else {
+            list = page1.getContent();
+        }
 
         return ApplicationsPage.builder()
-                .applications(from(applicationsPage.getContent()))
-                .totalPagesCount(applicationsPage.getTotalPages())
+                .applications(from(list))
+                .totalPagesCount(list.size()/defaultPageSize +1)
                 .build();
     }
 
     @Override
-    public ApplicationsPage getAllFreeApplications(int page){
+    public ApplicationsPage getAllFreeApplications(int page) {
         PageRequest pageRequest = PageRequest.of(page, defaultPageSize);
-        Page<Application> applicationsPage = applicationsRepository.findAllByPrice(pageRequest,0L);
+        Page<Application> applicationsPage = applicationsRepository.findAllByPrice(pageRequest, 0L);
 
         return ApplicationsPage.builder()
                 .applications(from(applicationsPage.getContent()))
@@ -148,7 +172,7 @@ public class ApplicationServiceImpl implements ApplicationsService {
     }
 
     private Developer getDeveloperOrThrow(Long id) {
-        return  getOrThrow(id, developersRepository, "Developer");
+        return getOrThrow(id, developersRepository, "Developer");
     }
 
 

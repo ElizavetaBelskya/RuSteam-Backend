@@ -7,7 +7,7 @@ import ru.itis.rusteam.models.account.Developer;
 
 public interface ApplicationsService {
 
-    ApplicationsPage getAllApplications(int page);
+    ApplicationsPage getAllApplications(int page, Double price, Double rating, String isNew);
 
     ApplicationDto getApplicationById(Long id);
 

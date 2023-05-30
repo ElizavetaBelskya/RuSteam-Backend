@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import ru.itis.rusteam.models.Application;
 import ru.itis.rusteam.models.account.Developer;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ApplicationsRepository extends JpaRepository<Application, Long> {
@@ -17,6 +18,9 @@ public interface ApplicationsRepository extends JpaRepository<Application, Long>
     Page<Application> findAllByDeveloper(Pageable pageable,Developer developer);
 
     Page<Application> findAllByPrice(Pageable pageable,Long price);
+
+    @Query("from Application a where a.dates.publishDate >= :withinMonth and a.rating>= :rating")
+    Page<Application> findAllByPublishDateAndRating(Pageable pageable,@Param("withinMonth") LocalDateTime time,@Param("rating") Double rating);
 
     @Query(nativeQuery = true, value =
             "SELECT * FROM applications WHERE applications.name ILIKE :content OR applications.description ILIKE :content")

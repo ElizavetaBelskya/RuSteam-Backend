@@ -22,9 +22,9 @@ public class ApplicationsController implements ApplicationsApi {
     private final ApplicationsService applicationsService;
 
     @Override
-    public ResponseEntity<ApplicationsPage> getAllApplications(int page) {
+    public ResponseEntity<ApplicationsPage> getAllApplications(int page, Double price, Double rating, String isNew) {
         return ResponseEntity
-                .ok(applicationsService.getAllApplications(page));
+                .ok(applicationsService.getAllApplications(page, price, rating, isNew));
     }
 
     @Override
