@@ -34,7 +34,7 @@ public class ApplicationDto extends LongIdDto {
     private Double rating;
 
     @Schema(description = "Категории приложения", example = "Шутер, Аркада")
-    private Set<Category> categories;
+    private List<String> categories;
 
     @Schema(description = "Идентификатор разработчика", example = "1642")
     private Long developerId;
@@ -51,7 +51,7 @@ public class ApplicationDto extends LongIdDto {
                 .price(application.getPrice())
                 .rating(application.getRating())
                 .dates(application.getDates())
-                .categories(application.getCategories())
+                .categories(application.getCategories().stream().map(x -> x.toString()).collect(Collectors.toList()))
                 .developerId(application.getDeveloper().getAccount().getId())
                 .build();
     }

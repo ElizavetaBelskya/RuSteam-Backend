@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import ru.itis.rusteam.models.Category;
 
 import javax.validation.constraints.*;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -33,7 +34,7 @@ public class NewOrUpdateApplicationDto {
 
     @Schema(description = "Категории", example = "Шутер, Аркада")
     @NotNull(message = "{dto.null}")
-    private Set<Category> categories;
+    private List<Category> categories;
 
     @Schema(description = "Идентификатор разработчика", example = "1642")
     @NotNull(message = "{dto.null}")

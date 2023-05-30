@@ -2,11 +2,9 @@ package ru.itis.rusteam.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.itis.rusteam.converters.StringToCategoryConverter;
 import ru.itis.rusteam.dto.application.ActionDates;
 import ru.itis.rusteam.dto.application.ApplicationDto;
 import ru.itis.rusteam.dto.application.ApplicationsPage;
@@ -15,13 +13,12 @@ import ru.itis.rusteam.models.Application;
 import ru.itis.rusteam.models.Category;
 import ru.itis.rusteam.models.account.Developer;
 import ru.itis.rusteam.repositories.ApplicationsRepository;
+import ru.itis.rusteam.repositories.CategoryRepository;
 import ru.itis.rusteam.repositories.DevelopersRepository;
 import ru.itis.rusteam.services.ApplicationsService;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static ru.itis.rusteam.dto.application.ApplicationDto.from;
 import static ru.itis.rusteam.utils.ServicesUtils.getOrThrow;
@@ -33,6 +30,8 @@ public class ApplicationServiceImpl implements ApplicationsService {
     private final ApplicationsRepository applicationsRepository;
 
     private final DevelopersRepository developersRepository;
+
+    private final CategoryRepository categoryRepository;
 
     @Value("${default.page-size}")
     private int defaultPageSize;
@@ -50,14 +49,16 @@ public class ApplicationServiceImpl implements ApplicationsService {
     @Override
     public ApplicationsPage getAllApplications(Integer page, Double price, Double rating, String isNew, String category) {
         PageRequest pageRequest = PageRequest.of(page, defaultPageSize);
+        Collection<Category> categories = Collections.emptyList();
 
-        StringToCategoryConverter converter = new StringToCategoryConverter();
-
-        Set<Category> categories = new HashSet<>();
-
+        Optional<Category> categoryToSearch;
         if (category != null) {
-            Category categoryToSearch = (Category) converter.convert(converter, TypeDescriptor.valueOf(String.class), TypeDescriptor.valueOf(Category.class));
-            categories.add(categoryToSearch);
+            categoryToSearch = categoryRepository.findByName(category);
+            if (categoryToSearch.isPresent()) {
+                categories = Collections.singleton(categoryToSearch.get());
+            }
+        } else {
+            categoryToSearch = Optional.empty();
         }
 
         LocalDateTime withinMonth = null;
@@ -70,13 +71,18 @@ public class ApplicationServiceImpl implements ApplicationsService {
             rating = 0.0;
         }
 
+        if (price == null) {
+            price = Double.valueOf(-1);
+        }
         Page<Application> page1 = null;
-        if (price == null || price != 0.0) {
+        if (price != 0.0 && categoryToSearch.isEmpty()) {
             page1 = applicationsRepository.findAllByPublishDateAndRating(pageRequest, withinMonth, rating);
-        } else if (category == null) {
+        } else if (price == 0.0 && categoryToSearch.isEmpty()) {
             page1 = applicationsRepository.findAllByPublishDateAndRatingAndFree(pageRequest, withinMonth, rating);
-        } else {
+        } else if (price == 0.0 && categoryToSearch.isPresent()) {
             page1 = applicationsRepository.findAllByPublishDateAndRatingAndFreeAndCategories(pageRequest, withinMonth, rating, categories);
+        } else {
+            page1 = applicationsRepository.findAllByPublishDateAndRatingAndCategories(pageRequest, withinMonth, rating, categories);
         }
 
         return ApplicationsPage.builder()
