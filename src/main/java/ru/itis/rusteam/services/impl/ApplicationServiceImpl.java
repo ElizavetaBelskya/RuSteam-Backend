@@ -49,9 +49,9 @@ public class ApplicationServiceImpl implements ApplicationsService {
         PageRequest pageRequest = PageRequest.of(page, defaultPageSize);
 
         LocalDateTime withinMonth = null;
-        if (isNew == null) {
+        if (isNew == null || !isNew.equals("true")) {
             withinMonth = LocalDateTime.of(1970, 1, 1, 0, 0);
-        } else if (isNew.equals("true")) {
+        } else {
             withinMonth = LocalDateTime.now().minusDays(30);
         }
         if (rating == null) {
