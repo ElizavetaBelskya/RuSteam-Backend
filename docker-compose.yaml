@@ -2,8 +2,12 @@ version: '3.3'
 
 services:
   database:
-    image: postgres
-    container_name: rusteam_database_1
+    image:
+      postgres
+    container_name:
+      rusteam_database_1
+    networks:
+      - main
     ports:
       - "5431:5432"
     environment:
@@ -14,15 +18,42 @@ services:
       - rusteam_postgres_volume:/var/lib/postgresql/data
 
   redis:
-    image: rusteam_redis
-    container_name: rusteam_redis_1
+    image:
+      rusteam_redis
+    container_name:
+      rusteam_redis_1
+    networks:
+      - main
     ports:
       - "6380:6380"
     volumes:
       - rusteam_redis_volume:/data
 
+  application:
+    image:
+      rusteam_app_image
+    container_name:
+      rusteam_app
+    networks:
+      - main
+    ports:
+      - "80:8080"
+    depends_on:
+      - database
+      - redis
+    environment:
+      - "SPRING_DATASOURCE_USERNAME=postgres"
+      - "SPRING_DATASOURCE_PASSWORD=1234"
+      - "SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/RuSteam"
+      - "REDIS_HOST=redis"
+      - "REDIS_PORT=6380"
+
 volumes:
   rusteam_postgres_volume:
     external: true
   rusteam_redis_volume:
+    external: true
+
+networks:
+  main:
     external: true
