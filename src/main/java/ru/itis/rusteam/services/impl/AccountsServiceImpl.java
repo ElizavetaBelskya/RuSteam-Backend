@@ -52,7 +52,7 @@ public class AccountsServiceImpl implements AccountsService {
                 .nickname(account.getNickname())
                 .passwordHash(passwordEncoder.encode(account.getPassword()))
                 .state(Account.State.NOT_CONFIRMED)
-                .role(Account.Role.USER)
+                .role(Account.Role.ANON)
                 .build();
 
         //TODO - сделать проверку корректности данных

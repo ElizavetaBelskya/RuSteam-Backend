@@ -26,8 +26,8 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public UserDto addUser(NewOrUpdateUserDto userDto) {
-        Optional<Account> account = accountsRepository.findById(userDto.getAccountId());
-        Optional<User> user = usersRepository.findByAccount(account.get());
+        Account account = getAccountOrThrow(userDto.getAccountId());
+        Optional<User> user = usersRepository.findByAccount(account);
         if (user.isPresent()) {
             User userToSave = User.builder()
                     .id(user.get().getId())
@@ -48,6 +48,8 @@ public class UsersServiceImpl implements UsersService {
                     .birthdayDate(userDto.getBirthdayDate())
                     .build();
             usersRepository.save(userToSave);
+            account.setRole(Account.Role.USER);
+            accountsRepository.save(account);
             return from(userToSave);
         }
 
