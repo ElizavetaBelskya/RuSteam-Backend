@@ -133,6 +133,8 @@ public class ApplicationServiceImpl implements ApplicationsService {
         applicationForUpdate.setName(updatedApplication.getName());
         applicationForUpdate.setDescription(updatedApplication.getDescription());
         applicationForUpdate.setDeveloper(getDeveloperOrThrow(updatedApplication.getDeveloperId()));
+        applicationForUpdate.setAndroidDownloadLink(updatedApplication.getAndroidDownloadLink());
+        applicationForUpdate.setWindowsDownloadLink(updatedApplication.getWindowsDownloadLink());
         ActionDates dates = ActionDates.builder()
                 .publishDate(applicationForUpdate.getDates().getPublishDate())
                 .modificationDate(LocalDateTime.now())
