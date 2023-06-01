@@ -32,6 +32,11 @@ public class DevelopersController implements DevelopersApi {
 
     @Override
     public ResponseEntity<DeveloperDto> getDeveloperByAccountId(Long accountId) {
-        return ResponseEntity.ok(developersService.getDeveloperById(accountId));
+        return ResponseEntity.ok(developersService.getDeveloperByAccountId(accountId));
+    }
+
+    @Override
+    public ResponseEntity<DeveloperDto> getDeveloperById(Long id) {
+        return ResponseEntity.ok(developersService.getDeveloperById(id));
     }
 }

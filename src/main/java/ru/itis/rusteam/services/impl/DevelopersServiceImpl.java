@@ -39,8 +39,13 @@ public class DevelopersServiceImpl implements DevelopersService {
     }
 
     @Override
-    public DeveloperDto getDeveloperById(Long id) {
+    public DeveloperDto getDeveloperByAccountId(Long id) {
         return from(developersRepository.findByAccount(getAccountOrThrow(id)));
+    }
+
+    @Override
+    public DeveloperDto getDeveloperById(Long id) {
+        return from(getDeveloperOrThrow(id));
     }
 
     @Override
