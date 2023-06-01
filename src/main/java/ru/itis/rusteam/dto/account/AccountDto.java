@@ -26,12 +26,16 @@ public class AccountDto extends LongIdDto {
     @Schema(description = "Псевдоним", example = "PresidentCheese")
     private String nickname;
 
+    @Schema(description = "Роль", example = "USER")
+    private String role;
+
 
     public static AccountDto from(Account account) {
         return AccountDto.builder()
                 .id(account.getId())
                 .email(account.getEmail())
                 .nickname(account.getNickname())
+                .role(account.getRole().name())
                 .build();
     }
 

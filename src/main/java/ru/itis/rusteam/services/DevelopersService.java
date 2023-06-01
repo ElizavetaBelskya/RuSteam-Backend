@@ -6,6 +6,8 @@ import ru.itis.rusteam.dto.account.developer.NewOrUpdateDeveloperDto;
 
 public interface DevelopersService {
 
+    DeveloperDto getDeveloperByAccountId(Long id);
+
     DeveloperDto getDeveloperById(Long id);
 
     DeveloperDto addDeveloper(NewOrUpdateDeveloperDto developer);

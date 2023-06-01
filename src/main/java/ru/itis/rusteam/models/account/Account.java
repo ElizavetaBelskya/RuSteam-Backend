@@ -25,7 +25,7 @@ public class Account extends LongIdEntity implements Serializable {
     }
 
     public enum Role {
-        USER, MODERATOR, ADMIN
+        USER, MODERATOR, ADMIN, ANON
     }
 
 

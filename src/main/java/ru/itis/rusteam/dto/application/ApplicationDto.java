@@ -5,8 +5,11 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import ru.itis.rusteam.dto.base.LongIdDto;
 import ru.itis.rusteam.models.Application;
+import ru.itis.rusteam.models.Category;
 
+import javax.persistence.ElementCollection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @EqualsAndHashCode(callSuper = true)
@@ -31,11 +34,32 @@ public class ApplicationDto extends LongIdDto {
     @Schema(description = "Рейтинг приложения", example = "4.79")
     private Double rating;
 
+    @Schema(description = "Категории приложения", example = "Шутер, Аркада")
+    private List<String> categories;
+
     @Schema(description = "Идентификатор разработчика", example = "1642")
     private Long developerId;
 
     @Schema(description = "Даты публикации и последнего изменения приложения")
     private ActionDates dates;
+
+    @Schema(description = "Ссылка на Youtube-трейлер приложения")
+    private String youtubeUrl;
+
+    @Schema(description = "Ссылка на скачивание приложения для Android")
+    private String androidDownloadLink;
+
+    @Schema(description = "Ссылка на скачивание приложения для Windows")
+    private String windowsDownloadLink;
+
+    @Schema(description = "Ссылка иконку приложения")
+    private String iconUrl;
+
+    @Schema(description = "Ссылки на изображения для приложения")
+    private Set<String> imagesUrl;
+
+    @Schema(description = "Состояние приложения")
+    private String state;
 
 
     public static ApplicationDto from(Application application) {
@@ -45,8 +69,13 @@ public class ApplicationDto extends LongIdDto {
                 .description(application.getDescription())
                 .price(application.getPrice())
                 .rating(application.getRating())
+                .state(application.getState().name())
                 .dates(application.getDates())
-                .developerId(application.getDeveloper().getAccount().getId())
+                .youtubeUrl(application.getYoutubeUrl())
+                .iconUrl(application.getIconUrl())
+                .imagesUrl(application.getImagesUrl())
+                .categories(application.getCategories().stream().map(x -> x.toString()).collect(Collectors.toList()))
+                .developerId(application.getDeveloper().getId())
                 .build();
     }
 

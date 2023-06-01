@@ -23,16 +23,24 @@ public class DevelopersServiceImpl implements DevelopersService {
 
     @Override
     public DeveloperDto addDeveloper(NewOrUpdateDeveloperDto developer) {
+        Account account = getAccountOrThrow(developer.getAccountId());
         Developer developerToSave = Developer.builder()
                 .account(getAccountOrThrow(developer.getAccountId()))
                 .name(developer.getName())
                 .description(developer.getDescription())
                 .build();
 
+        account.setRole(Account.Role.MODERATOR);
+        accountsRepository.save(account);
         //TODO - сделать проверку корректности данных
         developersRepository.save(developerToSave);
 
         return from(developerToSave);
+    }
+
+    @Override
+    public DeveloperDto getDeveloperByAccountId(Long id) {
+        return from(developersRepository.findByAccount(getAccountOrThrow(id)));
     }
 
     @Override

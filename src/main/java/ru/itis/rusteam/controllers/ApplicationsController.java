@@ -10,7 +10,6 @@ import ru.itis.rusteam.controllers.api.ApplicationsApi;
 import ru.itis.rusteam.dto.application.ApplicationDto;
 import ru.itis.rusteam.dto.application.ApplicationsPage;
 import ru.itis.rusteam.dto.application.NewOrUpdateApplicationDto;
-import ru.itis.rusteam.models.account.Developer;
 import ru.itis.rusteam.services.ApplicationsService;
 
 
@@ -22,9 +21,9 @@ public class ApplicationsController implements ApplicationsApi {
     private final ApplicationsService applicationsService;
 
     @Override
-    public ResponseEntity<ApplicationsPage> getAllApplications(int page, Double price, Double rating, String isNew) {
+    public ResponseEntity<ApplicationsPage> getAllApplications(int page, Double price, Double rating, String isNew,String category) {
         return ResponseEntity
-                .ok(applicationsService.getAllApplications(page, price, rating, isNew));
+                .ok(applicationsService.getAllApplications(page, price, rating, isNew, category));
     }
 
     @Override

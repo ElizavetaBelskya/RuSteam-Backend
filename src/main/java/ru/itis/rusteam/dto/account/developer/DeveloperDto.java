@@ -30,7 +30,7 @@ public class DeveloperDto extends AccountDto {
     public static DeveloperDto from(Developer developer) {
         Account account = developer.getAccount();
         return DeveloperDto.builder()
-                .id(account.getId())
+                .id(developer.getId())
                 .email(account.getEmail())
                 .nickname(account.getNickname())
                 .name(developer.getName())

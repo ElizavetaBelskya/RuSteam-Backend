@@ -6,10 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.itis.rusteam.models.Application;
+import ru.itis.rusteam.models.Category;
 import ru.itis.rusteam.models.account.Developer;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public interface ApplicationsRepository extends JpaRepository<Application, Long> {
 
@@ -21,7 +24,11 @@ public interface ApplicationsRepository extends JpaRepository<Application, Long>
 
     @Query("from Application a where a.dates.publishDate >= :withinMonth and a.rating>= :rating and a.price = 0.0")
     Page<Application> findAllByPublishDateAndRatingAndFree(Pageable pageable,@Param("withinMonth") LocalDateTime time,@Param("rating") Double rating);
+    @Query("from Application a where a.dates.publishDate >= :withinMonth and a.rating>= :rating and a.price = 0.0 and :categories member of a.categories")
+    Page<Application> findAllByPublishDateAndRatingAndFreeAndCategories(Pageable pageable,@Param("withinMonth") LocalDateTime time,@Param("rating") Double rating,  @Param("categories") Collection<Category> categories);
 
+    @Query("from Application a where a.dates.publishDate >= :withinMonth and a.rating>= :rating and :categories member of a.categories")
+    Page<Application> findAllByPublishDateAndRatingAndCategories(Pageable pageable,@Param("withinMonth") LocalDateTime time,@Param("rating") Double rating,  @Param("categories") Collection<Category> categories);
     @Query("from Application a where a.dates.publishDate >= :withinMonth and a.rating>= :rating")
     Page<Application> findAllByPublishDateAndRating(Pageable pageable,@Param("withinMonth") LocalDateTime time,@Param("rating") Double rating);
 

@@ -15,6 +15,7 @@ import ru.itis.rusteam.dto.account.developer.NewOrUpdateDeveloperDto;
 import ru.itis.rusteam.dto.account.user.NewOrUpdateUserDto;
 import ru.itis.rusteam.dto.account.user.UserDto;
 import ru.itis.rusteam.dto.application.ApplicationsPage;
+import ru.itis.rusteam.dto.exception.ExceptionDto;
 import ru.itis.rusteam.models.account.Developer;
 
 import javax.validation.Valid;
@@ -49,5 +50,46 @@ public interface DevelopersApi {
     @PostMapping
     ResponseEntity<DeveloperDto> addDeveloper(
             @Valid @RequestBody NewOrUpdateDeveloperDto newDeveloper);
+
+    @Operation(summary = "Получение разработчика по id аккаунта")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Информация об аккаунте",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = DeveloperDto.class))
+                    }
+            ),
+            @ApiResponse(responseCode = "404", description = "Сведения об ошибке",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
+            )
+    })
+    @GetMapping("/{account-id}")
+    ResponseEntity<DeveloperDto> getDeveloperByAccountId(
+            @Parameter(description = "Идентификатор аккаунта", example = "1642")
+            @PathVariable("account-id") Long accountId);
+
+
+    @Operation(summary = "Получение разработчика по его id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Информация об аккаунте",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = DeveloperDto.class))
+                    }
+            ),
+            @ApiResponse(responseCode = "404", description = "Сведения об ошибке",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
+            )
+    })
+    @GetMapping("/dev-id/{id}")
+    ResponseEntity<DeveloperDto> getDeveloperById(
+            @Parameter(description = "Идентификатор аккаунта", example = "1642")
+            @PathVariable("id") Long id);
 
 }
