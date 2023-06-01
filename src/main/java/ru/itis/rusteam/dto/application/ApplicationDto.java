@@ -71,7 +71,7 @@ public class ApplicationDto extends LongIdDto {
                 .iconUrl(application.getIconUrl())
                 .imagesUrl(application.getImagesUrl())
                 .categories(application.getCategories().stream().map(x -> x.toString()).collect(Collectors.toList()))
-                .developerId(application.getDeveloper().getAccount().getId())
+                .developerId(application.getDeveloper().getId())
                 .build();
     }
 

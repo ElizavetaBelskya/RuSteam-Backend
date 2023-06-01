@@ -99,14 +99,22 @@ public class ApplicationServiceImpl implements ApplicationsService {
                 .developer(getDeveloperOrThrow(application.getDeveloperId()))
                 .price(application.getPrice())
                 .rating(0.0)
-                .categories(application.getCategories())
                 .dates(ActionDates.builder()
                         .publishDate(LocalDateTime.now())
                         .modificationDate(LocalDateTime.now())
                         .build())
                 .state(Application.State.DRAFT)
+                .androidDownloadLink(application.getAndroidDownloadLink())
+                .windowsDownloadLink(application.getWindowsDownloadLink())
+                .youtubeUrl(application.getYoutubeUrl())
+                .iconUrl(application.getIconUrl())
                 .build();
 
+        if (categoryRepository.findByName(application.getCategory()).isPresent()) {
+            applicationToSave.setCategories(new ArrayList<>(Collections.singleton(categoryRepository.findByName(application.getCategory()).get())));
+        } else {
+            applicationToSave.setCategories(new ArrayList<>());
+        }
         //TODO - сделать проверку корректности данных
         applicationsRepository.save(applicationToSave);
 
@@ -125,13 +133,15 @@ public class ApplicationServiceImpl implements ApplicationsService {
         applicationForUpdate.setName(updatedApplication.getName());
         applicationForUpdate.setDescription(updatedApplication.getDescription());
         applicationForUpdate.setDeveloper(getDeveloperOrThrow(updatedApplication.getDeveloperId()));
-        applicationForUpdate.setCategories(updatedApplication.getCategories());
         ActionDates dates = ActionDates.builder()
                 .publishDate(applicationForUpdate.getDates().getPublishDate())
                 .modificationDate(LocalDateTime.now())
                 .build();
         applicationForUpdate.setDates(dates);
 
+        if (categoryRepository.findByName(updatedApplication.getCategory()).isPresent()) {
+            applicationForUpdate.setCategories(new ArrayList<>(Collections.singleton(categoryRepository.findByName(updatedApplication.getCategory()).get())));
+        }
         //TODO - сделать проверку корректности данных
         applicationsRepository.save(applicationForUpdate);
 

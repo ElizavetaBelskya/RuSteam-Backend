@@ -28,15 +28,31 @@ public class NewOrUpdateApplicationDto {
     private String description;
 
     @Schema(description = "Стоимость", example = "1500 (цена в рублях)")
-    @NotEmpty(message = "{dto.null}")
     @Min(value = 0, message = "{application.price.min}")
     private Double price;
 
     @Schema(description = "Категории", example = "Шутер, Аркада")
     @NotNull(message = "{dto.null}")
-    private List<Category> categories;
+    private String category;
 
     @Schema(description = "Идентификатор разработчика", example = "1642")
     @NotNull(message = "{dto.null}")
     private Long developerId;
+
+    @Schema(description = "Ссылка на иконку")
+    @NotEmpty(message = "{dto.null}")
+    private String iconUrl;
+
+    @Schema(description = "Ссылка на Youtube-трейлер приложения")
+    @NotEmpty(message = "{dto.null}")
+    private String youtubeUrl;
+
+    @Schema(description = "Ссылка на скачивание приложения для Android")
+    @NotEmpty(message = "{dto.null}")
+    private String androidDownloadLink;
+
+    @Schema(description = "Ссылка на скачивание приложения для Windows")
+    @NotEmpty(message = "{dto.null}")
+    private String windowsDownloadLink;
+
 }
