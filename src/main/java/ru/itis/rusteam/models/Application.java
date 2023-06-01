@@ -55,4 +55,20 @@ public class Application extends LongIdEntity {
 
     @Embedded
     private ActionDates dates;
+
+    @Column(nullable = true)
+    private String youtubeUrl;
+
+    @Column(nullable = true)
+    private String androidDownloadLink;
+
+    @Column(nullable = true)
+    private String windowsDownloadLink;
+
+    @Column(nullable = true)
+    private String iconUrl;
+
+    @ElementCollection
+    private Set<String> imagesUrl;
+
 }

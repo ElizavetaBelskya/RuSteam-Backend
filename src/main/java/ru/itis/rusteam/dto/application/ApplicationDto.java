@@ -7,6 +7,7 @@ import ru.itis.rusteam.dto.base.LongIdDto;
 import ru.itis.rusteam.models.Application;
 import ru.itis.rusteam.models.Category;
 
+import javax.persistence.ElementCollection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -42,6 +43,21 @@ public class ApplicationDto extends LongIdDto {
     @Schema(description = "Даты публикации и последнего изменения приложения")
     private ActionDates dates;
 
+    @Schema(description = "Ссылка на Youtube-трейлер приложения")
+    private String youtubeUrl;
+
+    @Schema(description = "Ссылка на скачивание приложения для Android")
+    private String androidDownloadLink;
+
+    @Schema(description = "Ссылка на скачивание приложения для Windows")
+    private String windowsDownloadLink;
+
+    @Schema(description = "Ссылка иконку приложения")
+    private String iconUrl;
+
+    @Schema(description = "Ссылки на изображения для приложения")
+    private Set<String> imagesUrl;
+
 
     public static ApplicationDto from(Application application) {
         return ApplicationDto.builder()
@@ -51,6 +67,9 @@ public class ApplicationDto extends LongIdDto {
                 .price(application.getPrice())
                 .rating(application.getRating())
                 .dates(application.getDates())
+                .youtubeUrl(application.getYoutubeUrl())
+                .iconUrl(application.getIconUrl())
+                .imagesUrl(application.getImagesUrl())
                 .categories(application.getCategories().stream().map(x -> x.toString()).collect(Collectors.toList()))
                 .developerId(application.getDeveloper().getAccount().getId())
                 .build();
