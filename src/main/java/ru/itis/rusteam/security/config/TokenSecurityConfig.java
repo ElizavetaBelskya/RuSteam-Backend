@@ -43,7 +43,7 @@ public class TokenSecurityConfig {
 
         httpSecurity.authorizeRequests()
                 .antMatchers("/auth/logout").authenticated()
-                .antMatchers("/swagger-ui.html/**", "/applications").permitAll();
+                .antMatchers("/swagger-ui.html/**").permitAll();
 
         httpSecurity.addFilter(jwtAuthenticationFilter);
         httpSecurity.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);

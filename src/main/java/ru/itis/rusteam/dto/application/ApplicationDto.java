@@ -58,6 +58,9 @@ public class ApplicationDto extends LongIdDto {
     @Schema(description = "Ссылки на изображения для приложения")
     private Set<String> imagesUrl;
 
+    @Schema(description = "Состояние приложения")
+    private String state;
+
 
     public static ApplicationDto from(Application application) {
         return ApplicationDto.builder()
@@ -66,6 +69,7 @@ public class ApplicationDto extends LongIdDto {
                 .description(application.getDescription())
                 .price(application.getPrice())
                 .rating(application.getRating())
+                .state(application.getState().name())
                 .dates(application.getDates())
                 .youtubeUrl(application.getYoutubeUrl())
                 .iconUrl(application.getIconUrl())
