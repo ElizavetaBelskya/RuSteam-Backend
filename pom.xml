@@ -95,7 +95,7 @@
 					</execution>
 					<execution>
 						<configuration>
-							<mainClass>ru.os.MemorandumApp</mainClass>
+							<mainClass>ru.itis.rusteam.RuSteamApplication</mainClass>
 						</configuration>
 					</execution>
 				</executions>
