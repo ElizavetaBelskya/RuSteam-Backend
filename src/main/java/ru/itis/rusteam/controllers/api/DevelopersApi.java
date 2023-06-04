@@ -18,7 +18,7 @@ import ru.itis.rusteam.dto.exception.ExceptionDto;
 import javax.validation.Valid;
 
 @Tags(value = {
-        @Tag(name = "Applications")
+        @Tag(name = "Developers")
 })
 @RequestMapping("/developers")
 public interface DevelopersApi {
