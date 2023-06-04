@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -21,6 +22,7 @@ import ru.itis.rusteam.security.filters.JwtRevokeFilter;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
+@EnableMethodSecurity
 public class TokenSecurityConfig {
 
     public static final String  AUTHENTICATION_URL = "/auth/login";
@@ -43,7 +45,8 @@ public class TokenSecurityConfig {
 
         httpSecurity.authorizeRequests()
                 .antMatchers("/auth/logout").authenticated()
-                .antMatchers("/swagger-ui.html/**").permitAll();
+                .antMatchers("/swagger-ui.html/**").permitAll()
+                .anyRequest().permitAll();
 
         httpSecurity.addFilter(jwtAuthenticationFilter);
         httpSecurity.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);

@@ -53,7 +53,6 @@ public class UsersServiceImpl implements UsersService {
             return from(userToSave);
         }
 
-        //TODO - сделать проверку корректности данных
 
     }
 
@@ -70,7 +69,6 @@ public class UsersServiceImpl implements UsersService {
         userForUpdate.setSurname(updatedUser.getSurname());
         userForUpdate.setGender(User.Gender.valueOf(updatedUser.getGender()));
         userForUpdate.setBirthdayDate(updatedUser.getBirthdayDate());
-        //TODO - сделать проверку корректности данных
         usersRepository.save(userForUpdate);
 
         return from(userForUpdate);
@@ -81,7 +79,6 @@ public class UsersServiceImpl implements UsersService {
     public void deleteUser(Long id) {
         getUserOrThrow(id);
 
-        //TODO - продумать удаление данных подтаблиц
         usersRepository.deleteById(id);
     }
 

@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.itis.rusteam.dto.exception.ExceptionDto;
 import ru.itis.rusteam.dto.review.NewOrUpdateReviewDto;
@@ -47,6 +48,7 @@ public interface ReviewsApi {
             )
     })
     @PostMapping
+    @PreAuthorize("isAuthenticated()")
     ResponseEntity<ReviewDto> addReview(
             @Valid @RequestBody NewOrUpdateReviewDto newReview);
 
@@ -88,6 +90,7 @@ public interface ReviewsApi {
             )
     })
     @PutMapping("/{review-id}")
+    @PreAuthorize("isAuthenticated()")
     ResponseEntity<ReviewDto> updateReview(
             @Parameter(description = "Идентификатор отзыва", example = "1642") @PathVariable("review-id") Long reviewId,
             @Valid @RequestBody NewOrUpdateReviewDto updatedReview);
@@ -104,6 +107,7 @@ public interface ReviewsApi {
             )
     })
     @DeleteMapping("/{review-id}")
+    @PreAuthorize("isAuthenticated()")
     ResponseEntity<?> deleteReview(
             @Parameter(description = "Идентификатор отзыва", example = "1642") @PathVariable("review-id") Long reviewId);
 
@@ -124,6 +128,7 @@ public interface ReviewsApi {
             )
     })
     @PutMapping("/{review-id}/publish")
+    @PreAuthorize("isAuthenticated()")
     ResponseEntity<ReviewDto> publishApplication(
             @Parameter(description = "Идентификатор отзыва", example = "1642") @PathVariable("review-id") Long reviewId);
 
@@ -144,6 +149,7 @@ public interface ReviewsApi {
             )
     })
     @PutMapping("/{review-id}/update_status")
+    @PreAuthorize("isAuthenticated()")
     ResponseEntity<ReviewDto> updateReviewStatus(
             @Parameter(description = "Идентификатор отзыва", example = "1642") @PathVariable("review-id") Long reviewId,
             @RequestParam String status);

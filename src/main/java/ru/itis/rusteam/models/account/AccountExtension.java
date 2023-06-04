@@ -17,6 +17,5 @@ public abstract class AccountExtension {
     private Long id;
 
     @OneToOne
-    //TODO: тут бы объединить столбцы
     private Account account;
 }

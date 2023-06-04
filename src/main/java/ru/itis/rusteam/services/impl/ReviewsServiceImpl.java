@@ -68,7 +68,6 @@ public class ReviewsServiceImpl implements ReviewsService {
         if (readyReview.isPresent()) {
             return updateReview(readyReview.get().getId(), review);
         } else {
-            //TODO - сделать проверку корректности данных
             reviewsRepository.save(reviewToSave);
             Application application = reviewToSave.getApplication();
             long reviewsCount = getApplicationReviewsCount(application);
@@ -95,10 +94,8 @@ public class ReviewsServiceImpl implements ReviewsService {
         double newRating = (reviewsCount * application.getRating() - reviewForUpdate.getRating() + updatedReview.getRating()) / reviewsCount;
 
         reviewForUpdate.setText(updatedReview.getText());
-        //TODO - подумать над датой изменения
         reviewForUpdate.setRating(updatedReview.getRating());
 
-        //TODO - сделать проверку корректности данных
         reviewsRepository.save(reviewForUpdate);
 
         application.setRating(newRating);

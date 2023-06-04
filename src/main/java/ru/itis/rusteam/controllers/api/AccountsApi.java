@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.itis.rusteam.dto.account.AccountDto;
 import ru.itis.rusteam.dto.account.NewOrUpdateAccountDto;
@@ -54,6 +55,7 @@ public interface AccountsApi {
             )
     })
     @GetMapping("/{account-id}")
+    @PreAuthorize("isAuthenticated()")
     ResponseEntity<AccountDto> getAccount(
             @Parameter(description = "Идентификатор аккаунта", example = "1642")
             @PathVariable("account-id") Long accountId);
@@ -68,6 +70,7 @@ public interface AccountsApi {
             )
     })
     @GetMapping("/account_id")
+    @PreAuthorize("isAuthenticated()")
     ResponseEntity<Long> getAccountId();
 
 
@@ -87,6 +90,7 @@ public interface AccountsApi {
             )
     })
     @PutMapping("/{account-id}")
+    @PreAuthorize("isAuthenticated()")
     ResponseEntity<AccountDto> updateAccount(
             @Parameter(description = "Идентификатор аккаунта", example = "1642") @PathVariable("account-id") Long accountId,
             @Valid @RequestBody NewOrUpdateAccountDto updatedAccount);
@@ -103,6 +107,7 @@ public interface AccountsApi {
             )
     })
     @DeleteMapping("/{account-id}")
+    @PreAuthorize("isAuthenticated()")
     ResponseEntity<?> deleteAccount(
             @Parameter(description = "Идентификатор аккаунта", example = "1642") @PathVariable("account-id") Long accountId);
 
@@ -123,11 +128,9 @@ public interface AccountsApi {
             )
     })
     @PutMapping("/{account-id}/publish")
+    @PreAuthorize("isAuthenticated()")
     ResponseEntity<AccountDto> confirmAccount(
             @Parameter(description = "Идентификатор аккаунта", example = "1642") @PathVariable("account-id") Long accountId);
-
-
-//    @PostMapping("/login")
 
 
 }

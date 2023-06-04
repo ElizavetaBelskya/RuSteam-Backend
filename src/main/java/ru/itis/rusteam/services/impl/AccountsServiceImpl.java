@@ -4,18 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.itis.rusteam.dto.account.AccountDto;
 import ru.itis.rusteam.dto.account.NewOrUpdateAccountDto;
 import ru.itis.rusteam.models.account.Account;
 import ru.itis.rusteam.repositories.AccountsRepository;
-import ru.itis.rusteam.security.details.UserDetailsImpl;
 import ru.itis.rusteam.security.exceptions.AlreadyExistsException;
 import ru.itis.rusteam.services.AccountsService;
-
-import java.security.Principal;
 
 import static ru.itis.rusteam.dto.account.AccountDto.from;
 import static ru.itis.rusteam.utils.ServicesUtils.getOrThrow;
@@ -55,10 +51,8 @@ public class AccountsServiceImpl implements AccountsService {
                 .role(Account.Role.ANON)
                 .build();
 
-        //TODO - сделать проверку корректности данных
         accountsRepository.save(accountToSave);
 
-        //TODO - временная заглушка подтверждения email
         confirmAccount(accountToSave.getId());
         accountToSave.setState(Account.State.CONFIRMED);
 
@@ -84,7 +78,6 @@ public class AccountsServiceImpl implements AccountsService {
         accountForUpdate.setNickname(updatedAccount.getNickname());
         accountForUpdate.setPasswordHash(updatedAccount.getPassword());
 
-        //TODO - сделать проверку корректности данных
         accountsRepository.save(accountForUpdate);
 
         return from(accountForUpdate);
@@ -92,19 +85,16 @@ public class AccountsServiceImpl implements AccountsService {
 
     @Override
     public void deleteAccount(Long id) {
-        //TODO - продумать бл: из какого в какое состояния можно переводить
         changeState(getAccountOrThrow(id), Account.State.DELETED);
     }
 
     @Override
     public AccountDto confirmAccount(Long id) {
-        //TODO - продумать бл: из какого в какое состояния можно переводить
         return from(changeState(getAccountOrThrow(id), Account.State.CONFIRMED));
     }
 
     @Override
     public void banAccount(Long id) {
-        //TODO - продумать бл: из какого в какое состояния можно переводить
         changeState(getAccountOrThrow(id), Account.State.BANNED);
     }
 

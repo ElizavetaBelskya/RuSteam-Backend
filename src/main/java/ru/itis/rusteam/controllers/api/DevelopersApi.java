@@ -12,11 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.itis.rusteam.dto.account.developer.DeveloperDto;
 import ru.itis.rusteam.dto.account.developer.NewOrUpdateDeveloperDto;
-import ru.itis.rusteam.dto.account.user.NewOrUpdateUserDto;
-import ru.itis.rusteam.dto.account.user.UserDto;
 import ru.itis.rusteam.dto.application.ApplicationsPage;
 import ru.itis.rusteam.dto.exception.ExceptionDto;
-import ru.itis.rusteam.models.account.Developer;
 
 import javax.validation.Valid;
 

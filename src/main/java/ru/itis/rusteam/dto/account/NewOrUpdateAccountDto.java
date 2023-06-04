@@ -26,7 +26,6 @@ public class NewOrUpdateAccountDto {
     @Schema(description = "Псевдоним", example = "PresidentCheese")
     @NotNull(message = "{dto.null}")
     @Size(min = 5, max = 32, message = "{account.nickname.size}")
-    //TODO - сделать регулярное выражение на псевдоним
     private String nickname;
 
     @Schema(description = "Пароль", example = "qwerty007")

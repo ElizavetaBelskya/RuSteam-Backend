@@ -28,7 +28,6 @@ public class ReviewsController implements ReviewsApi {
 
     @Override
     public ResponseEntity<ReviewsPage> getAllReviews(int page, Long applicationId) {
-        // TODO: сделать тут нормально через сервисы или еще что-то поправить
         Optional<Application> application = applicationsRepository.findById(applicationId);
         return ResponseEntity
                 .ok(reviewsService.getAllReviewsForApplication(page, application.get()));

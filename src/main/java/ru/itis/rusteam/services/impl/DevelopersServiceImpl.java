@@ -32,7 +32,6 @@ public class DevelopersServiceImpl implements DevelopersService {
 
         account.setRole(Account.Role.MODERATOR);
         accountsRepository.save(account);
-        //TODO - сделать проверку корректности данных
         developersRepository.save(developerToSave);
 
         return from(developerToSave);
@@ -55,7 +54,6 @@ public class DevelopersServiceImpl implements DevelopersService {
         developerForUpdate.setName(updatedDeveloper.getName());
         developerForUpdate.setDescription(updatedDeveloper.getDescription());
 
-        //TODO - сделать проверку корректности данных
         developersRepository.save(developerForUpdate);
 
         return from(developerForUpdate);
@@ -65,7 +63,6 @@ public class DevelopersServiceImpl implements DevelopersService {
     public void deleteDeveloper(Long id) {
         getDeveloperOrThrow(id);
 
-        //TODO - продумать удаление данных подтаблиц
         developersRepository.deleteById(id);
     }
 

@@ -115,7 +115,6 @@ public class ApplicationServiceImpl implements ApplicationsService {
         } else {
             applicationToSave.setCategories(new ArrayList<>());
         }
-        //TODO - сделать проверку корректности данных
         applicationsRepository.save(applicationToSave);
 
         return from(applicationToSave);
@@ -144,7 +143,6 @@ public class ApplicationServiceImpl implements ApplicationsService {
         if (categoryRepository.findByName(updatedApplication.getCategory()).isPresent()) {
             applicationForUpdate.setCategories(new ArrayList<>(Collections.singleton(categoryRepository.findByName(updatedApplication.getCategory()).get())));
         }
-        //TODO - сделать проверку корректности данных
         applicationsRepository.save(applicationForUpdate);
 
         return from(applicationForUpdate);

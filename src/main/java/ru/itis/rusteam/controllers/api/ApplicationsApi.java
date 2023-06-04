@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.itis.rusteam.dto.application.ApplicationDto;
 import ru.itis.rusteam.dto.application.ApplicationsPage;
@@ -37,7 +38,7 @@ public interface ApplicationsApi {
                                                                     @RequestParam("page") int page);
 
 
-        @Operation(summary = "Получение списка приложений")
+    @Operation(summary = "Получение списка приложений")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Страница с приложениями",
                     content = {
@@ -62,6 +63,7 @@ public interface ApplicationsApi {
             )
     })
     @PostMapping
+    @PreAuthorize("isAuthenticated()")
     ResponseEntity<ApplicationDto> addApplication(
             @Valid @RequestBody NewOrUpdateApplicationDto newApplication);
 
@@ -103,6 +105,7 @@ public interface ApplicationsApi {
             )
     })
     @PutMapping("/{application-id}")
+    @PreAuthorize("isAuthenticated()")
     ResponseEntity<ApplicationDto> updateApplication(
             @Parameter(description = "Идентификатор приложения", example = "1642") @PathVariable("application-id") Long applicationId,
             @Valid @RequestBody NewOrUpdateApplicationDto updatedApplication);
@@ -119,6 +122,7 @@ public interface ApplicationsApi {
             )
     })
     @DeleteMapping("/{application-id}")
+    @PreAuthorize("isAuthenticated()")
     ResponseEntity<?> deleteApplication(
             @Parameter(description = "Идентификатор приложения", example = "1642") @PathVariable("application-id") Long applicationId);
 
@@ -139,6 +143,7 @@ public interface ApplicationsApi {
             )
     })
     @PutMapping("/{application-id}/publish")
+    @PreAuthorize("isAuthenticated()")
     ResponseEntity<ApplicationDto> publishApplication(
             @Parameter(description = "Идентификатор приложения", example = "1642") @PathVariable("application-id") Long applicationId);
 
